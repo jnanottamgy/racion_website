@@ -51,8 +51,15 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
   // Capability first, in its own effect, so the Lenis effect below can key off
   // the resolved tier rather than guessing during the first paint.
   useEffect(() => {
-    setCapability(detectCapability());
-    setReady(true);
+    // Deferred by a frame. Detection has to happen on the client — the server
+    // has no GPU, no pointer and no connection hints — but setting it inline
+    // cascades a second render before the first has painted. One frame later
+    // costs nothing and keeps the first paint clean.
+    const id = requestAnimationFrame(() => {
+      setCapability(detectCapability());
+      setReady(true);
+    });
+    return () => cancelAnimationFrame(id);
   }, []);
 
   useEffect(() => {
