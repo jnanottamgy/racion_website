@@ -1,72 +1,102 @@
 /* ---------------------------------------------------------------------------
-   RACION — BRAND TOKEN LAYER
+   RACEON — BRAND TOKEN LAYER
    ---------------------------------------------------------------------------
-   This is the ONLY file that changes when the brochure lands. Every colour,
-   type decision and material value in the site resolves through these
-   variables, so re-skinning the entire product to the real brand is a single
-   file edit — not a refactor.
+   Derived from the identity, not copied from the brochure.
 
-   Values marked PROVISIONAL are informed placeholders, replaced at P0.
+   The logo carries two inks, both at full chroma: green #65C100 and purple
+   #8F1AA3. Printed flat on white they read as sports collateral. The move that
+   makes them read premium is to stop treating them as fills and start treating
+   them as *light*:
+
+     · the purple is pulled down into the room itself — every dark surface on
+       this site is violet-black, never neutral black, so the whole page is
+       unmistakably RACEON before a single accent appears;
+     · the green stays at full strength but is rationed, used only where
+       something is live, active, or being measured;
+     · teak, sampled from RACEON's own installed floors, supplies the warmth
+       that stops a violet room from feeling cold.
+
+   Both brand inks appear at their exact values. Everything else is built
+   around them.
    --------------------------------------------------------------------------- */
 
 :root {
-  /* -- Stage ---------------------------------------------------------------
-     The site is staged like a photographed object: a near-black room where
-     the only colour comes from the wood and the light. Not pure #000 — pure
-     black kills the sense of depth and makes grain look like noise.          */
-  --brand-stage:          #0b0b0c;
-  --brand-stage-raised:   #131315;
-  --brand-stage-sunk:     #060607;
-  --brand-hairline:       #26262a;
+  /* -- The room ------------------------------------------------------------
+     Violet-black. #0c0710 next to #0c0c0c looks like nothing on its own and
+     like a completely different brand across a full screen.                  */
+  --brand-stage:          #0c0710;
+  --brand-stage-raised:   #150c1b;
+  --brand-stage-sunk:     #070409;
+  --brand-hairline:       #2a2130;
+  --brand-hairline-bright:#3d3145;
 
-  /* -- Bone / type ---------------------------------------------------------
-     Warm off-white. Pure #fff against near-black is harsh at large sizes.    */
-  --brand-bone:           #f4f1ec;
-  --brand-bone-dim:       #a5a29c;
-  --brand-bone-faint:     #6b6864;
+  /* -- Violet atmosphere ---------------------------------------------------
+     Between the room and the brand purple. Used for glows, gradients and the
+     ambient bounce in the 3D scene — never as a flat panel.                  */
+  --brand-violet-deep:    #2a1035;
+  --brand-violet:         #5e1a6e;
 
-  /* -- Maple ---------------------------------------------------------------
-     PROVISIONAL. Sampled from finished maple under 4000K sports lighting —
-     this is the hero material colour and drives the 3D wood shader too.      */
-  --brand-maple:          #c9925a;
-  --brand-maple-light:    #e0b183;
-  --brand-maple-deep:     #8a5a2b;
-  --brand-maple-shadow:   #4a2f16;
+  /* -- Brand purple — EXACT, from the logo ---------------------------------- */
+  --brand-purple:         #8f1aa3;
+  --brand-purple-lift:    #b23fc6;
 
-  /* -- Court line green ----------------------------------------------------
-     PROVISIONAL. The classic badminton mat green, used sparingly as a
-     secondary. Real courts use this or a deep blue.                          */
-  --brand-court:          #1f5c47;
+  /* -- Brand green — EXACT, from the logo -----------------------------------
+     `lift` is the same hue raised for legibility as small text on violet-black,
+     where the pure ink sits just under comfortable contrast.                  */
+  --brand-green:          #65c100;
+  --brand-green-lift:     #8be034;
+  --brand-green-glow:     #a6f45c;
 
-  /* -- Accent --------------------------------------------------------------
-     PROVISIONAL — pulled from the logo at P0. Currently aliased to maple so
-     nothing looks broken before the brochure arrives.                        */
-  --brand-accent:         var(--brand-maple);
+  /* -- Teak ----------------------------------------------------------------
+     Sampled from photographs of RACEON's finished African teak courts:
+     lit boards, mid-tone, and the shadow between planks.                      */
+  --brand-teak-lit:       #e0a96b;
+  --brand-teak:           #b97e50;
+  --brand-teak-deep:      #8a5424;
+  --brand-teak-shadow:    #4a2a10;
+
+  /* -- Type ----------------------------------------------------------------
+     Neutrals are violet-tinted rather than grey. Grey text on a violet ground
+     reads dirty; carrying a little of the room's hue into the text keeps the
+     whole page on one colour axis.                                            */
+  --brand-bone:           #f3efe9;
+  --brand-bone-dim:       #a8a0ac;
+  --brand-bone-faint:     #6e6474;
+
+  /* -- Accent alias --------------------------------------------------------
+     Green is the accent: it is the "ON" in the logo, and the only thing on the
+     site allowed to look switched on.                                         */
+  --brand-accent:          var(--brand-green);
+  --brand-accent-text:     var(--brand-green-lift);
   --brand-accent-contrast: var(--brand-stage);
 
   /* -- Light ---------------------------------------------------------------
-     Sports luminaire colour temperature, shared by CSS glows and the 3D rig
-     so the page and the canvas are lit by the same fixtures.                 */
+     RACEON install 150W LED fixtures. These are the colour temperatures those
+     throw, shared by CSS glows and the 3D luminaire rig so the page and the
+     canvas are lit by the same fittings.                                      */
   --brand-light-warm:     #ffd9a8;
-  --brand-light-neutral:  #fff4e2;
-  --brand-light-cool:     #dfeaff;
+  --brand-light-neutral:  #fff6ea;
+  --brand-light-cool:     #e6efff;
 
-  /* -- Type ---------------------------------------------------------------- */
-  --brand-font-sans: var(--font-archivo), "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --brand-font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  /* -- Type families -------------------------------------------------------
+     Bricolage Grotesque for display: variable optical size, tight apertures
+     and a genuine voice at 150px — modern without being a trend.
+     Instrument Sans for everything read rather than looked at.
+     Geist Mono for anything measured: lux, millimetres, court counts.         */
+  --brand-font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
+  --brand-font-sans:    var(--font-instrument), "Helvetica Neue", Arial, sans-serif;
+  --brand-font-mono:    var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Display type is set wide and tight — architectural, not editorial.       */
-  --brand-display-width:    112;
-  --brand-display-weight:   500;
-  --brand-display-tracking: -0.035em;
+  --brand-display-weight:   600;
+  --brand-display-tracking: -0.03em;
 
   /* -- Motion --------------------------------------------------------------
-     One easing vocabulary across CSS, Framer Motion and GSAP. Consistent
-     easing is most of what separates expensive motion from busy motion.      */
-  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+     One easing vocabulary across CSS, Motion and GSAP. Consistent easing is
+     most of what separates expensive motion from busy motion.                 */
+  --ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
-  --ease-out-quart:  cubic-bezier(0.25, 1, 0.5, 1);
-  --ease-glide:      cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out-quart:   cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-glide:       cubic-bezier(0.22, 0.61, 0.36, 1);
 
   --dur-fast:   180ms;
   --dur-base:   420ms;

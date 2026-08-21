@@ -11,25 +11,36 @@
   --color-stage-raised:   var(--brand-stage-raised);
   --color-stage-sunk:     var(--brand-stage-sunk);
   --color-hairline:       var(--brand-hairline);
+  --color-hairline-bright: var(--brand-hairline-bright);
+
+  --color-violet-deep:    var(--brand-violet-deep);
+  --color-violet:         var(--brand-violet);
+  --color-purple:         var(--brand-purple);
+  --color-purple-lift:    var(--brand-purple-lift);
+
+  --color-green:          var(--brand-green);
+  --color-green-lift:     var(--brand-green-lift);
+  --color-green-glow:     var(--brand-green-glow);
+
+  --color-teak-lit:       var(--brand-teak-lit);
+  --color-teak:           var(--brand-teak);
+  --color-teak-deep:      var(--brand-teak-deep);
+  --color-teak-shadow:    var(--brand-teak-shadow);
 
   --color-bone:           var(--brand-bone);
   --color-bone-dim:       var(--brand-bone-dim);
   --color-bone-faint:     var(--brand-bone-faint);
 
-  --color-maple:          var(--brand-maple);
-  --color-maple-light:    var(--brand-maple-light);
-  --color-maple-deep:     var(--brand-maple-deep);
-  --color-maple-shadow:   var(--brand-maple-shadow);
-
-  --color-court:          var(--brand-court);
   --color-accent:         var(--brand-accent);
+  --color-accent-text:    var(--brand-accent-text);
 
   --color-light-warm:     var(--brand-light-warm);
   --color-light-neutral:  var(--brand-light-neutral);
   --color-light-cool:     var(--brand-light-cool);
 
-  --font-sans: var(--brand-font-sans);
-  --font-mono: var(--brand-font-mono);
+  --font-display: var(--brand-font-display);
+  --font-sans:    var(--brand-font-sans);
+  --font-mono:    var(--brand-font-mono);
 
   /* Fluid display scale. The jump between body and display is deliberately
      extreme — restraint everywhere else buys one very loud voice.            */
@@ -96,7 +107,7 @@
   }
 
   h1, h2, h3, h4 {
-    font-variation-settings: "wdth" var(--brand-display-width);
+    font-family: var(--brand-font-display);
     font-weight: var(--brand-display-weight);
     letter-spacing: var(--brand-display-tracking);
     line-height: 0.92;
@@ -133,7 +144,7 @@
 
 /* Wide-set display type, used for anything above ~3rem. */
 @utility display {
-  font-variation-settings: "wdth" var(--brand-display-width);
+  font-family: var(--brand-font-display);
   font-weight: var(--brand-display-weight);
   letter-spacing: var(--brand-display-tracking);
   line-height: 0.9;

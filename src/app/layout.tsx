@@ -1,22 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Geist_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans, Geist_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import { ScrollProvider } from "@/components/providers/scroll-provider";
 import "./globals.css";
 
 /**
- * One grotesk, used across the whole site from 11px labels to 200px display.
- * The `wdth` axis is what makes that possible — display type runs wide and
- * tight, body type runs normal. Two voices, one family, one download.
+ * Display. Variable optical size means the same face can be drawn for 150px
+ * headlines and still hold together — the apertures tighten and the contrast
+ * lifts as it scales, which is why it reads as designed rather than enlarged.
  */
-const archivo = Archivo({
-  variable: "--font-archivo",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  axes: ["wdth"],
+  axes: ["opsz"],
   display: "swap",
 });
 
-/** Reserved for technical data: lux values, layer codes, spec tables. */
+/** Everything read rather than looked at. */
+const instrument = Instrument_Sans({
+  variable: "--font-instrument",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+/** Reserved for anything measured: lux, millimetres, court counts. */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -50,7 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${bricolage.variable} ${instrument.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <a

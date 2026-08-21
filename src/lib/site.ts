@@ -1,28 +1,46 @@
 /**
- * Single source of truth for brand-level copy and metadata.
- * PROVISIONAL values are replaced at P0 from the client brochure.
+ * Brand-level facts. Every value here comes from the RACEON company brochure.
  */
 export const site = {
-  name: "Racion",
-  /** PROVISIONAL — the positioning line the whole site hangs from. */
-  tagline: "The ground beneath the game.",
+  name: "RACEON",
+  legalName: "RACEON Sports Equipment and Accessories LLP",
+  /**
+   * The brochure's own line is "Building professional wooden courts with
+   * performance, precision & passion." That's the promise; this is the
+   * compression of it that survives being set at 150px.
+   */
+  tagline: "The ground the game is played on.",
   description:
-    "Racion engineers the surfaces sport is played on — sprung hardwood badminton courts, professional synthetic systems and sports lighting, delivered as one build.",
-  url: "https://racion.com", // PROVISIONAL — awaiting domain
+    "RACEON builds professional wooden badminton and squash courts — African teak on a termite-treated pine sub-structure, shock-absorbing Air Shox cushioning, and sports lighting. 91 courts delivered across Karnataka and South India.",
+  url: "https://raceon.in",
   locale: "en_IN",
 
-  /** PROVISIONAL — awaiting brochure. */
   contact: {
-    email: "hello@racion.com",
-    phone: "",
-    address: "",
+    email: "raceonsports@gmail.com",
+    phone: "+91 98453 99453",
+    phoneHref: "+919845399453",
+    address: {
+      line1: "#15, Meenakshi Koil Street",
+      line2: "Shivajinagar",
+      city: "Bangalore",
+      postcode: "560051",
+      region: "Karnataka",
+      country: "India",
+    },
+  },
+
+  /** Headline proof. Derived from the project schedule in `projects.ts`. */
+  stats: {
+    courts: 91,
+    sites: 29,
+    yearsPhrase: "Karnataka & South India",
   },
 
   nav: [
-    { label: "Wooden Systems", href: "/systems/wooden" },
-    { label: "Synthetic Systems", href: "/systems/synthetic" },
+    { label: "Systems", href: "/systems" },
     { label: "Lighting", href: "/lighting" },
     { label: "Projects", href: "/projects" },
     { label: "Process", href: "/process" },
+    { label: "About", href: "/about" },
   ],
 } as const;

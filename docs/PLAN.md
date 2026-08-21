@@ -173,3 +173,78 @@ one reveal at the end.
 3. **CMS** — does the client edit content themselves after launch, or is hardcoded fine?
 4. **Domain** and business email for the enquiry form.
 5. **Regions / languages** — single English site, or multi-language?
+
+---
+
+# P0 — Brand extraction: findings
+
+Both brochures analysed. Logo rebuilt as vector. Palette, type and content
+locked. Three things materially change the plan.
+
+## 1. The brand is RACEON, not Racion
+
+Both documents, throughout, read **RACEON Sports Equipment and Accessories LLP**
+— the registered LLP name, the logo wordmark ("RACE" purple + "ON" green), and
+the email `raceonsports@gmail.com`. The site is built as RACEON. The repository
+name is cosmetic and can stay.
+
+## 2. They do not sell synthetic flooring
+
+The plan assumed three lines: wooden, synthetic, lighting. The brochure sells
+**wooden courts (African teak on termite-treated pine), sports lighting, and
+poles & nets** — badminton *and squash* — delivered turnkey. There is no
+synthetic product anywhere in either document.
+
+The synthetic-surfaced courts pictured are lighting-only projects (Karnataka
+Badminton Association, Karnataka Police Academy). The `/systems/synthetic` page
+is dropped and the "material swap" beat is re-cut — see below.
+
+## 3. Photography is print-resolution
+
+Largest embedded image is 780 × 1359, most are ~780 × 421, all JPEG-compressed
+for print. Usable at card and inset scale after grading; **not** usable
+full-bleed on a large display. Originals requested. The 3D engine carries the
+hero regardless, so this constrains rather than blocks.
+
+---
+
+## Locked identity
+
+| | |
+| --- | --- |
+| **Green** | `#65C100` — exact, from logo vector |
+| **Purple** | `#8F1AA3` — exact, from logo vector |
+| **Stage** | `#0C0710` violet-black, derived by pulling the purple down into the room |
+| **Teak** | `#B97E50` / `#E0A96B` / `#8A5424`, sampled from RACEON's own finished floors |
+| **Display** | Bricolage Grotesque (variable optical size) |
+| **Text** | Instrument Sans |
+| **Data** | Geist Mono — lux, millimetres, court counts |
+
+The brochure sets both inks as flat fills on white, which reads as print
+collateral. The site treats them as *light* instead: purple becomes the room,
+green is rationed to whatever is live or being measured, teak supplies warmth.
+Both brand inks appear at their exact values.
+
+**Logo:** rebuilt from the PDF's own vector paths into a 10 KB SVG —
+`raceon-logo.svg`, `raceon-mark.svg`, `raceon-wordmark.svg`. Pixel-accurate to
+the original, infinitely scalable, no raster fallback needed.
+
+## Revised narrative
+
+Beat 03 was "maple → synthetic cross-dissolve". It becomes **"Blind-nailed"** —
+the camera pushes into a plank joint and the pneumatic nailing through the
+tongue is shown, the detail that makes the finish seamless. It sells the
+craftsmanship the brochure claims but never shows, and it is true.
+
+The build-up in beat 02 is now RACEON's actual six-layer system: vapour barrier
+→ Air Shox cushioning → pine box structure → African teak → sanding & PU finish
+→ markings, poles & nets.
+
+## Proof
+
+**91 courts across 29 sites.** Karnataka and South India. Karnataka Badminton
+Association (10), Karnataka Police Academy (8), Feather Smash Arena (8),
+Vidyaranyapura (8), Manipal University (4), PES College Mandya (6).
+
+That number is the strongest asset the business has and the brochure prints it
+as four bulleted columns on a back panel. It becomes the proof layer of the site.
