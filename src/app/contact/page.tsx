@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageShell, Section } from "@/components/chrome/page-shell";
 import { site } from "@/lib/site";
+import { Suspense } from "react";
 import { EnquiryForm } from "./enquiry-form";
 
 export const metadata: Metadata = {
@@ -19,7 +20,11 @@ export default function ContactPage() {
     >
       <Section>
         <div className="grid gap-16 lg:grid-cols-[1.2fr_0.8fr]">
-          <EnquiryForm />
+          {/* useSearchParams needs a boundary so the rest of the page can
+              still be statically rendered. */}
+          <Suspense fallback={<div className="h-[32rem]" />}>
+            <EnquiryForm />
+          </Suspense>
 
           <aside className="space-y-10">
             <div>

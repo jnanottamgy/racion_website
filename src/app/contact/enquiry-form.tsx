@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
 import { site } from "@/lib/site";
 import { submitEnquiry, type EnquiryState } from "./actions";
 
@@ -13,6 +14,22 @@ const field =
 
 export function EnquiryForm() {
   const [state, action, pending] = useActionState(submitEnquiry, INITIAL);
+  const params = useSearchParams();
+
+  // A visitor arriving from the planner has already told us the sport, the
+  // court count and the set-out. Making them retype it is the fastest way to
+  // lose the enquiry the planner just earned.
+  const fromPlanner = params.get("courts");
+  const prefill = fromPlanner
+    ? [
+        `${params.get("courts")} × ${params.get("sport") ?? "badminton"} court${fromPlanner === "1" ? "" : "s"}`,
+        params.get("plan") && `Planned hall: ${params.get("plan")}`,
+        "",
+        "",
+      ]
+        .filter((line) => line !== null)
+        .join("\n")
+    : "";
 
   if (state.status === "sent") {
     return (
@@ -56,11 +73,22 @@ export function EnquiryForm() {
         </label>
         <label className="block">
           <span className="label">Courts</span>
-          <input type="number" name="courts" min={1} max={40} className={`${field} mt-2`} />
+          <input
+            type="number"
+            name="courts"
+            min={1}
+            max={40}
+            defaultValue={params.get("courts") ?? ""}
+            className={`${field} mt-2`}
+          />
         </label>
         <label className="block">
           <span className="label">Scope</span>
-          <select name="scope" className={`${field} mt-2`} defaultValue="">
+          <select
+            name="scope"
+            className={`${field} mt-2`}
+            defaultValue={params.get("scope") ?? ""}
+          >
             <option value="">Select…</option>
             <option>Wooden court</option>
             <option>Wooden court + lighting</option>
@@ -78,7 +106,13 @@ export function EnquiryForm() {
 
       <label className="block">
         <span className="label">About the project *</span>
-        <textarea name="message" required rows={5} className={`${field} mt-2 resize-y`} />
+        <textarea
+          name="message"
+          required
+          rows={5}
+          defaultValue={prefill}
+          className={`${field} mt-2 resize-y`}
+        />
       </label>
 
       {state.status === "error" && (
