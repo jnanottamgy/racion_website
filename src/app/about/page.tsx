@@ -60,7 +60,7 @@ export default function AboutPage() {
             height={hero.height}
             placeholder="blur"
             blurDataURL={hero.blurDataURL}
-            sizes="(min-width: 1024px) 40vw, 100vw"
+            sizes="(min-width: 1024px) 520px, 100vw"
             className="w-full border border-hairline"
           />
         </div>

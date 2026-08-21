@@ -1,14 +1,16 @@
 /**
- * Grades RACEON's brochure photography to the site's palette.
+ * Grades RACEON's supplied photography into the site's palette.
  *
- * The source images are print-compressed at ~780px and shot under mixed
- * fluorescent and daylight, so they arrive cool, flat and slightly green. On a
- * violet-black page they read as a foreign object dropped into the design.
- * This pulls them onto the site's colour axis: contrast up, teak protected,
- * shadows carried toward the page's violet, and a vignette so they sit into the
- * background instead of on top of it.
+ * These arrive at 1240 x 826 native. They are NOT resized up — enlarging a
+ * 1240px source to fill a 2000px slot just spends bytes to look softer, so the
+ * manifest records the real dimensions and the layout is sized to respect them.
  *
- * Run: node scripts/grade-photography.mjs
+ * The grade is deliberately light. Each frame is already close to the site's
+ * colour, and the failure mode this project has hit repeatedly is pushing
+ * things darker than a normal display can show. Shadows are *lifted* on the
+ * already-dark frames rather than crushed.
+ *
+ * Usage: node scripts/grade-photography.mjs <source-dir>
  */
 import sharp from "sharp";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -22,38 +24,60 @@ if (!SRC) {
 
 const OUT = "public/photography";
 
-/** Selected frames, with the grade each one needs. */
+/**
+ * Slots, in the order the source PDF supplied them — which was reverse of the
+ * prompt sheet.
+ *
+ * `lift` is added to every channel: positive opens the shadows, negative
+ * deepens them. `vignette` is how far the frame edges are carried toward the
+ * page background so the image sits into the layout instead of on top of it.
+ */
 const PLATES = [
   {
-    file: "v1-p1-3-75d41ffa.jpeg",
-    name: "court-teak-portrait",
-    alt: "Finished African teak badminton court under RACEON lighting",
-    // Warm, glossy, already strong. Mostly needs contrast and a shadow tint.
-    grade: { contrast: 1.14, lift: -12, saturation: 1.06, warmth: 1.03, vignette: 0.42 },
+    file: "p06-06.jpeg",
+    name: "court-hero",
+    alt: "Finished African teak badminton court in a darkened hall, lit by a single pool of light",
+    grade: { contrast: 1.04, lift: 6, saturation: 1.02, vignette: 0.12 },
   },
   {
-    file: "v1-p1-2-90f32396.jpeg",
-    name: "court-teak-wide",
-    alt: "Multi-court RACEON teak installation seen across the hall",
-    grade: { contrast: 1.12, lift: -10, saturation: 1.05, warmth: 1.03, vignette: 0.38 },
+    file: "p05-05.jpeg",
+    name: "court-lit",
+    alt: "Finished African teak badminton court under full sports lighting",
+    grade: { contrast: 1.06, lift: -4, saturation: 0.97, vignette: 0.3 },
   },
   {
-    file: "v1-p2-9-f8ce70e4.jpeg",
-    name: "lighting-installation",
-    alt: "Training session under a RACEON lighting installation",
-    // Strong greens and blues competing with the brand palette — pulled down
-    // hard so the fixtures, not the court colour, are what you notice.
-    grade: { contrast: 1.1, lift: -8, saturation: 0.78, warmth: 1.02, vignette: 0.46 },
+    file: "p04-04.jpeg",
+    name: "framework",
+    alt: "Interlocked pine timber framework, notched at every crossing, on shock pads over a concrete slab",
+    grade: { contrast: 1.08, lift: 0, saturation: 1.02, vignette: 0.28 },
+  },
+  {
+    file: "p03-03.jpeg",
+    name: "lighting",
+    alt: "Two rows of linear fixtures running outboard of the sidelines down a badminton hall",
+    grade: { contrast: 1.05, lift: 4, saturation: 0.98, vignette: 0.22 },
+  },
+  {
+    file: "p02-02.jpeg",
+    name: "teak-detail",
+    alt: "Close detail of polished African teak boards and a painted court line",
+    grade: { contrast: 1.04, lift: 0, saturation: 0.92, vignette: 0.26 },
+  },
+  {
+    file: "p01-01.jpeg",
+    name: "installation",
+    alt: "Teak flooring being blind-nailed with a pneumatic nailer over the pine framework",
+    grade: { contrast: 1.06, lift: -2, saturation: 0.97, vignette: 0.32 },
   },
 ];
 
-/** Radial vignette + edge tint toward the page background. */
-function vignetteSvg(w, h, strength) {
+/** Carries the frame edges toward the page background. */
+function vignette(w, h, strength) {
   return Buffer.from(
     `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
        <defs>
-         <radialGradient id="v" cx="50%" cy="46%" r="76%">
-           <stop offset="45%" stop-color="#ffffff" stop-opacity="1"/>
+         <radialGradient id="v" cx="50%" cy="48%" r="78%">
+           <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
            <stop offset="100%" stop-color="#0c0710" stop-opacity="${strength}"/>
          </radialGradient>
        </defs>
@@ -67,30 +91,19 @@ const manifest = [];
 
 for (const plate of PLATES) {
   const input = path.join(SRC, plate.file);
-  const meta = await sharp(input).metadata();
-  const { width: w = 0, height: h = 0 } = meta;
+  const { width: w = 0, height: h = 0 } = await sharp(input).metadata();
   const g = plate.grade;
 
-  const graded = sharp(input)
-    // Contrast first, so the tint that follows lands on separated tones rather
-    // than on a flat midtone mush.
+  const outfile = path.join(OUT, `${plate.name}.webp`);
+  await sharp(input)
+    // No resize at all. Any resampling of a 1240px source costs detail the
+    // site cannot get back.
     .linear(g.contrast, g.lift)
     .modulate({ saturation: g.saturation })
-    // A gentle warm bias protects the teak while the vignette cools the edges.
-    .recomb([
-      [g.warmth, 0, 0],
-      [0, 1, 0],
-      [0, 0, 2 - g.warmth],
-    ])
-    .composite([{ input: vignetteSvg(w, h, g.vignette), blend: "multiply" }]);
+    .composite([{ input: vignette(w, h, g.vignette), blend: "multiply" }])
+    .webp({ quality: 88, effort: 6 })
+    .toFile(outfile);
 
-  const outfile = path.join(OUT, `${plate.name}.webp`);
-  await graded.webp({ quality: 82, effort: 6 }).toFile(outfile);
-
-  // A tiny blurred version, inlined as the blur placeholder so nothing pops in.
-  // Built from the finished file rather than by cloning the pipeline: the
-  // vignette overlay is sized to the full image, and sharp refuses to composite
-  // something larger than what it is compositing onto.
   const placeholder = await sharp(outfile)
     .resize(16)
     .blur(1.4)
@@ -106,17 +119,17 @@ for (const plate of PLATES) {
     blurDataURL: `data:image/webp;base64,${placeholder.toString("base64")}`,
   });
 
-  console.log(`${plate.name}.webp  ${w}x${h}`);
+  console.log(`${plate.name.padEnd(14)} ${w}x${h}`);
 }
 
 await writeFile(
   "src/content/photography.ts",
   `/**
- * Graded photography, generated by \`scripts/grade-photography.mjs\`.
+ * Photography, generated by \\\`scripts/grade-photography.mjs\\\`.
  *
- * Source frames are RACEON's own brochure images. They are print-resolution
- * (~780px), so every usage below is sized to stay within their native
- * resolution — none of them is used full-bleed.
+ * Supplied at 1240 x 826 native and never enlarged — the recorded dimensions
+ * are the real ones, so \\\`next/image\\\` will not be asked to serve more pixels
+ * than exist.
  *
  * Do not edit by hand; re-run the script.
  */

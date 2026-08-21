@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { PageShell, Section } from "@/components/chrome/page-shell";
+import { plate } from "@/content/photography";
 import { process } from "@/content/systems";
 
 export const metadata: Metadata = {
@@ -9,6 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default function ProcessPage() {
+  const shot = plate("installation");
+
   return (
     <PageShell
       eyebrow="Process"
@@ -16,6 +20,16 @@ export default function ProcessPage() {
       lede="Flooring, lighting, poles and nets from one contractor — so there is one programme, one site team and one person answerable for the result."
     >
       <Section>
+        <Image
+          src={shot.src}
+          alt={shot.alt}
+          width={shot.width}
+          height={shot.height}
+          placeholder="blur"
+          blurDataURL={shot.blurDataURL}
+          sizes="(min-width: 1280px) 1240px, 100vw"
+          className="mb-16 w-full border border-hairline"
+        />
         <ol className="border-t border-hairline">
           {process.map((step) => (
             <li

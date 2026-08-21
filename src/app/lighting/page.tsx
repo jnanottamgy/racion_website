@@ -31,7 +31,7 @@ export default function LightingPage() {
           height={hero.height}
           placeholder="blur"
           blurDataURL={hero.blurDataURL}
-          sizes="100vw"
+          sizes="(min-width: 1280px) 1240px, 100vw"
           className="w-full border border-hairline"
         />
       </Section>

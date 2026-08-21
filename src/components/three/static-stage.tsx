@@ -22,11 +22,11 @@ import { BEATS, sceneState } from "@/lib/scene-state";
 /** Which plate carries each beat. Beats without one inherit the previous. */
 const PLATE_FOR_BEAT: Record<(typeof BEATS)[number], string> = {
   hero: "court-hero",
-  base: "court-hero",
+  base: "framework",
   framework: "framework",
   interlock: "framework",
-  nailing: "framework",
-  decking: "court-lit",
+  nailing: "installation",
+  decking: "teak-detail",
   lighting: "lighting",
   court: "court-lit",
   proof: "court-lit",
@@ -81,10 +81,10 @@ export function StaticStage() {
               sizes="100vw"
               placeholder="blur"
               blurDataURL={p.blurDataURL}
-              // These are 2000px renders of the same scene the canvas draws,
-              // so they can be shown sharp. The old brochure frames had to be
-              // blurred and dimmed to hide how little resolution they had.
-              className="scale-[1.02] object-cover opacity-[0.72]"
+              // These frames are already shot dark and vignetted, so they need
+              // very little help from the page. Dimming them further — which is
+              // what this did at 0.68 behind a 35% scrim — buried them.
+              className="scale-[1.02] object-cover opacity-[0.88]"
               priority={i === 0}
             />
           </div>
@@ -92,7 +92,7 @@ export function StaticStage() {
       })}
       {/* Carries the page's own colour across the photography so it belongs to
           the design rather than sitting behind it. */}
-      <div className="absolute inset-0 bg-stage/35" />
+      <div className="absolute inset-0 bg-stage/18" />
       <div className="absolute inset-0 bg-gradient-to-t from-stage via-transparent to-stage/85" />
     </div>
   );

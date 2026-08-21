@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 export default function SystemsPage() {
   const hero = plate("framework");
+  const detail = plate("teak-detail");
 
   return (
     <PageShell
@@ -19,6 +20,19 @@ export default function SystemsPage() {
       title={<>Six layers. Only one of them is the floor.</>}
       lede="Badminton and squash courts in African teak, built from the slab up. Everything under the teak is what decides whether the court is still flat in ten years."
     >
+      <Section>
+        <Image
+          src={detail.src}
+          alt={detail.alt}
+          width={detail.width}
+          height={detail.height}
+          placeholder="blur"
+          blurDataURL={detail.blurDataURL}
+          sizes="(min-width: 1280px) 1240px, 100vw"
+          className="w-full border border-hairline"
+        />
+      </Section>
+
       <Section title="The build-up">
         <ol className="border-t border-hairline">
           {[...buildUp].reverse().map((layer) => (
@@ -119,7 +133,7 @@ export default function SystemsPage() {
             height={hero.height}
             placeholder="blur"
             blurDataURL={hero.blurDataURL}
-            sizes="(min-width: 1024px) 50vw, 100vw"
+            sizes="(min-width: 1024px) 620px, 100vw"
             className="w-full border border-hairline"
           />
           <ul className="space-y-10">
