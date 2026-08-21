@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   BEATS,
   beatStops,
@@ -37,15 +35,16 @@ const KEYS = {
 const PEAK_LUX = 1500;
 
 export function useNarrative(containerId: string) {
-  const { ready, capability } = useScroll();
+  const { harnessReady, capability } = useScroll();
 
   useEffect(() => {
-    if (!ready) return;
+    if (!harnessReady) return;
 
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    gsap.registerPlugin(ScrollTrigger);
+    let disposed = false;
+    let trigger: { kill: () => void } | undefined;
 
     /**
      * Where each beat's section is centred, as a fraction of the scrubbed
@@ -96,28 +95,34 @@ export function useNarrative(containerId: string) {
       sceneState.lux = Math.round(lights * PEAK_LUX);
     };
 
-    const trigger = ScrollTrigger.create({
-      trigger: container,
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-      onUpdate: (self) => {
-        apply(self.progress);
-        sceneState.velocity = self.getVelocity();
-      },
-      onRefresh: (self) => {
-        measureStops();
-        apply(self.progress);
-      },
-    });
+    void (async () => {
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      if (disposed) return;
 
-    measureStops();
-    apply(trigger.progress);
+      trigger = ScrollTrigger.create({
+        trigger: container,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: (self) => {
+          apply(self.progress);
+          sceneState.velocity = self.getVelocity();
+        },
+        onRefresh: (self) => {
+          measureStops();
+          apply(self.progress);
+        },
+      });
+
+      measureStops();
+      apply((trigger as unknown as { progress: number }).progress);
+    })();
 
     return () => {
-      trigger.kill();
+      disposed = true;
+      trigger?.kill();
     };
-  }, [ready, containerId, capability.reducedMotion]);
+  }, [harnessReady, containerId, capability.reducedMotion]);
 }
 
 export { KEYS, PEAK_LUX };

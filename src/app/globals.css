@@ -230,3 +230,32 @@
     transition: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   ENTER
+   ---------------------------------------------------------------------------
+   The hero's load animation. Motion was carried in the bundle for this alone —
+   about 35 KB gzipped on the critical path for one fade — so it is CSS now.
+   --------------------------------------------------------------------------- */
+[data-enter] {
+  opacity: 0;
+  animation: enter var(--dur-cinema) var(--ease-out-expo) forwards;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-enter] {
+    opacity: 1;
+    animation: none;
+  }
+}

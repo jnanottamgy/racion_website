@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
 import { buildUp } from "@/content/systems";
 import { projects, totalCourts, totalSites } from "@/content/projects";
 import { site } from "@/lib/site";
@@ -26,11 +25,7 @@ export function Narrative() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[78%] bg-gradient-to-t from-stage via-stage/78 to-transparent"
         />
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.3, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-        >
+        <div data-enter style={{ animationDelay: "250ms" }}>
           <p className="label">{site.legalName}</p>
           <h1 className="display mt-8 text-[length:var(--text-hero)] text-bone">
             Built from
@@ -53,16 +48,11 @@ export function Narrative() {
               </div>
             </dl>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.p
-          className="label mt-16"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 1 }}
-        >
+        <p className="label mt-16" data-enter style={{ animationDelay: "1400ms" }}>
           Scroll to build one
-        </motion.p>
+        </p>
       </section>
 
       {/* ---------------------------------------------------------------- 01 */}

@@ -22,6 +22,13 @@ export function PageShell({
   return (
     <>
       <Header />
+      {/* The homepage sits in a lit room; without this the inner pages read as
+          a different, flatter site. One soft violet wash is enough to keep them
+          on the same set. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,var(--brand-violet-deep),transparent_70%)] opacity-60"
+      />
       <main id="main" className="relative">
         <header className="container-x border-b border-hairline pt-[9.5rem] pb-16">
           <p className="label">{eyebrow}</p>

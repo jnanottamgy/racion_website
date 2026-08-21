@@ -7,9 +7,10 @@ export const site = {
   /**
    * The brochure's own line is "Building professional wooden courts with
    * performance, precision & passion." That's the promise; this is the
-   * compression of it that survives being set at 150px.
+   * compression of it that survives being set at 150px — and it names the
+   * thing RACEON actually does differently.
    */
-  tagline: "The ground the game is played on.",
+  tagline: "Built from the frame up.",
   description:
     "RACEON builds professional wooden badminton and squash courts — African teak on a termite-treated pine sub-structure, shock-absorbing Air Shox cushioning, and sports lighting. 91 courts delivered across Karnataka and South India.",
   url: "https://raceon.in",

@@ -61,7 +61,10 @@
      whole page on one colour axis.                                            */
   --brand-bone:           #f3efe9;
   --brand-bone-dim:       #a8a0ac;
-  --brand-bone-faint:     #6e6474;
+  /* Lifted from #6e6474, which looked right and measured 3.55:1 against the
+     stage — below AA for body text, and this is the tier that carries every
+     11px label and spec line on the site. 5.3:1 keeps the hierarchy and passes. */
+  --brand-bone-faint:     #8a8090;
 
   /* -- Accent alias --------------------------------------------------------
      Green is the accent: it is the "ON" in the logo, and the only thing on the
