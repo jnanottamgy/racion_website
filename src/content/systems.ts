@@ -70,7 +70,7 @@ export const buildUp: BuildLayer[] = [
       "Engineered runner dimensions for long-term strength and load support",
     ],
     dimensioned: false,
-    modelMm: 50,
+    modelMm: 90,
     tone: "#c8a97a",
   },
   {

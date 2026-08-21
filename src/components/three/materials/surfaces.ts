@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { clamp01, fbm2D, lerp } from "@/lib/noise";
 
 /**
- * Runtime-generated PBR texture sets for every surface Racion installs.
+ * Runtime-generated PBR texture sets for every material in the RACEON build-up.
  *
  * All three maps (albedo, roughness, normal) come out of a single pixel loop —
  * they share the same underlying height field, which is also why they agree
@@ -38,65 +38,62 @@ interface SurfaceRecipe {
 }
 
 const RECIPES: Record<string, SurfaceRecipe> = {
-  /** Hard maple under two coats of polyurethane — the BWF-grade reference. */
-  maple: {
-    base: ["#b8834a", "#e6c69b"],
-    detail: "#8a5a2b",
+  /**
+   * African teak, precision-sanded under a water-based PU court finish.
+   * Tones sampled directly from photographs of RACEON's finished floors:
+   * #E0A96B where the fixtures hit it, #B97E50 mid-board, #692B06 in the
+   * shadow between planks.
+   */
+  teak: {
+    base: ["#8a5424", "#dda469"],
+    detail: "#5d3212",
     grain: 1,
-    grainFrequency: 5.5,
-    grainWarp: 0.42,
-    poreScale: 150,
-    poreDepth: 0.1,
-    roughness: [0.18, 0.34],
-    relief: 0.55,
+    grainFrequency: 4.5,
+    grainWarp: 0.5,
+    poreScale: 130,
+    poreDepth: 0.14,
+    roughness: [0.16, 0.32],
+    relief: 0.6,
   },
-  /** European beech — pinker, tighter figure, slightly harder. */
-  beech: {
-    base: ["#c08d63", "#ecd3b4"],
-    detail: "#9a6a44",
-    grain: 0.75,
-    grainFrequency: 8,
-    grainWarp: 0.22,
-    poreScale: 190,
-    poreDepth: 0.07,
-    roughness: [0.2, 0.36],
-    relief: 0.4,
+  /**
+   * Termite-treated seasoned pine — the base structure. Pale, yellow, coarse
+   * figure. Only ever seen in the exploded view, so it is generated at half
+   * resolution.
+   */
+  pine: {
+    base: ["#b18a55", "#e8d0a4"],
+    detail: "#8a6535",
+    grain: 0.85,
+    grainFrequency: 3.2,
+    grainWarp: 0.7,
+    poreScale: 90,
+    poreDepth: 0.2,
+    roughness: [0.62, 0.82],
+    relief: 0.8,
   },
-  /** Seamless poured polyurethane. Near-uniform, soft sheen, faint orange peel. */
-  pu: {
-    base: ["#1d4f3e", "#256250"],
-    detail: "#173f31",
+  /** Button-type shock pad rubber — matte, slightly granular. */
+  shockpad: {
+    base: ["#174436", "#215c4a"],
+    detail: "#0f3227",
     grain: 0,
     grainFrequency: 0,
     grainWarp: 0,
-    poreScale: 46,
-    poreDepth: 0.22,
-    roughness: [0.44, 0.58],
-    relief: 0.22,
+    poreScale: 210,
+    poreDepth: 0.4,
+    roughness: [0.72, 0.9],
+    relief: 0.5,
   },
-  /** Calendered vinyl roll with an embossed anti-slip grain. */
-  vinyl: {
-    base: ["#1b4b6b", "#25617f"],
-    detail: "#12384f",
-    grain: 0.28,
-    grainFrequency: 120,
-    grainWarp: 0.9,
-    poreScale: 300,
-    poreDepth: 0.3,
-    roughness: [0.36, 0.52],
-    relief: 0.75,
-  },
-  /** Acrylic over asphalt — visible sand aggregate, fully matte. */
-  acrylic: {
-    base: ["#8a3b2e", "#a8503d"],
-    detail: "#6d2c22",
-    grain: 0,
-    grainFrequency: 0,
-    grainWarp: 0,
-    poreScale: 520,
-    poreDepth: 0.55,
-    roughness: [0.78, 0.92],
-    relief: 0.95,
+  /** 6-mil vapour barrier sheeting — near-flat with faint creasing. */
+  membrane: {
+    base: ["#23202c", "#37323f"],
+    detail: "#1a1822",
+    grain: 0.35,
+    grainFrequency: 1.4,
+    grainWarp: 1.6,
+    poreScale: 40,
+    poreDepth: 0.12,
+    roughness: [0.3, 0.5],
+    relief: 0.35,
   },
 };
 
@@ -108,8 +105,8 @@ function hexToRgb(hex: string): [number, number, number] {
 }
 
 /**
- * @param size    texture resolution. 512 is enough for anything but the hero
- *                wood, where the camera gets close enough to read grain.
+ * @param size    texture resolution. 512 is enough for anything but the teak,
+ *                where beat 03 puts the camera inside a plank joint.
  * @param repeatU how many times the tile wraps along a board's length. Higher
  *                values keep grain fine when a texture covers a 13m court.
  */

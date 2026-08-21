@@ -13,7 +13,7 @@ export const BEATS = [
   "hero",
   "descent",
   "exploded",
-  "materials",
+  "joint",
   "lighting",
   "court",
   "configurator",
@@ -22,9 +22,9 @@ export const BEATS = [
 
 export type Beat = (typeof BEATS)[number];
 
-/** Surfaces the court can wear, in the order beat 03 cycles them. */
-export const SURFACES = ["maple", "pu", "vinyl", "acrylic"] as const;
-export type Surface = (typeof SURFACES)[number];
+/** Timber RACEON build with, in the order the build-up lays them. */
+export const TIMBERS = ["pine", "teak"] as const;
+export type Timber = (typeof TIMBERS)[number];
 
 export interface SceneState {
   /** 0 → 1 across the entire narrative. The master clock. */
@@ -39,8 +39,8 @@ export interface SceneState {
   /** Which layer is being read, or -1. Drives the highlight + spec callout. */
   activeLayer: number;
 
-  /** Fractional index into SURFACES; 1.5 means half-way between pu and vinyl. */
-  surface: number;
+  /** Beat 03 push-in on a plank joint. 0 = wide, 1 = inside the tongue. */
+  joint: number;
   /** 0 → 1 luminaire ignition across the rig. */
   lights: number;
   /** Illuminance readout, animated 0 → 1500. */
@@ -58,7 +58,7 @@ export const sceneState: SceneState = {
   beatProgress: 0,
   explode: 0,
   activeLayer: -1,
-  surface: 0,
+  joint: 0,
   lights: 0,
   lux: 0,
   pointer: { x: 0, y: 0 },
@@ -73,7 +73,7 @@ export function resetSceneState() {
     beatProgress: 0,
     explode: 0,
     activeLayer: -1,
-    surface: 0,
+    joint: 0,
     lights: 0,
     lux: 0,
     velocity: 0,
