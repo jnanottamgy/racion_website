@@ -268,10 +268,10 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
     // Two real lights carry the whole rig. Sixteen shadow-casting lights would
     // be sixteen shadow-map passes a frame for a difference nobody can see.
     if (keyRef.current) {
-      keyRef.current.intensity = damp(keyRef.current.intensity, lights * 6.2, 5, dt);
+      keyRef.current.intensity = damp(keyRef.current.intensity, lights * 2.9, 5, dt);
     }
     if (fillRef.current) {
-      fillRef.current.intensity = damp(fillRef.current.intensity, lights * 38, 5, dt);
+      fillRef.current.intensity = damp(fillRef.current.intensity, lights * 16, 5, dt);
     }
   });
 

@@ -79,6 +79,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <ScrollProvider>{children}</ScrollProvider>
         <StructuredData />
+        <div className="vignette" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
       </body>
     </html>

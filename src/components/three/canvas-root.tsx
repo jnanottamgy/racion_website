@@ -2,17 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import {
-  Bloom,
-  ChromaticAberration,
-  EffectComposer,
-  Noise,
-  ToneMapping,
-  Vignette,
-} from "@react-three/postprocessing";
-import { BlendFunction, KernelSize, ToneMappingMode } from "postprocessing";
 import * as THREE from "three";
-import { Vector2 } from "three";
 import { useScroll } from "@/components/providers/scroll-provider";
 import { sceneState } from "@/lib/scene-state";
 import { Scene } from "./scene";
@@ -20,6 +10,15 @@ import { StaticStage } from "./static-stage";
 
 /**
  * The single persistent WebGL canvas.
+ *
+ * Deliberately no post-processing chain. It carried bloom, chromatic
+ * aberration, a vignette and film grain, and it was the *only* thing separating
+ * a device on the `full` tier from one on `lite` beyond cost — MSAA render
+ * targets and mipmap-blur bloom are the most driver-dependent code in the whole
+ * application. Phones landed on `lite` and rendered correctly; laptops landed on
+ * `full` and blacked out. One render path for every device removes that entire
+ * class of failure, and the grain and vignette are done in CSS over the canvas
+ * where they cost nothing and cannot fail.
  *
  * Fixed behind the whole document for the length of the narrative. One canvas,
  * mounted once: every beat is the same scene under a different camera, so
@@ -79,7 +78,7 @@ export default function CanvasRoot() {
           // The court is lit by warm fixtures against a violet room; without a
           // filmic curve the highlights on lacquered teak clip to white.
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.4,
+          toneMappingExposure: 1.15,
         }}
         camera={{ fov: 38, near: 0.02, far: 120, position: [14.5, 3, 11.5] }}
         onCreated={({ gl }) => {
@@ -97,35 +96,6 @@ export default function CanvasRoot() {
       >
         <Scene volumetric={full} />
 
-        {full && (
-          <EffectComposer multisampling={4} enableNormalPass={false}>
-            {/* Only the fixtures and the sheen on the lacquer are above 1.0,
-                so a high threshold keeps the bloom on the light itself. */}
-            <Bloom
-              intensity={0.5}
-              luminanceThreshold={0.8}
-              luminanceSmoothing={0.28}
-              kernelSize={KernelSize.LARGE}
-              mipmapBlur
-            />
-            {/* Barely there. Enough to imply a real lens, not enough to
-                notice as an effect. */}
-            <ChromaticAberration offset={new Vector2(0.00012, 0.00018)} />
-            {/* Eased from 0.72. The vignette is computed on distance from
-                centre, so on a wide monitor the corners sit much deeper in it
-                than they did at the aspect ratio this was tuned at — and the
-                court sits in a corner for most of the closing beats. */}
-            <Vignette offset={0.34} darkness={0.42} eskil={false} />
-            {/* Matches the CSS grain on the DOM above, so the canvas and the
-                page look like one photograph rather than two layers. */}
-            <Noise premultiply opacity={0.03} blendFunction={BlendFunction.OVERLAY} />
-            {/* Must be last, and must exist at all: EffectComposer bypasses the
-                renderer's own tone mapping, so without this the scene is
-                displayed straight from linear and every value I graded against
-                the ACES curve lands somewhere else. */}
-            <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-          </EffectComposer>
-        )}
       </Canvas>
     </div>
   );

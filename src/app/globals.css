@@ -261,3 +261,22 @@
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   VIGNETTE
+   ---------------------------------------------------------------------------
+   Was a post-processing effect. Doing it in CSS costs one composited layer,
+   works identically on every device, and cannot take the whole canvas down with
+   it when a driver dislikes the render target it was drawn into.
+   --------------------------------------------------------------------------- */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 78% 82% at 50% 48%,
+    transparent 40%,
+    color-mix(in srgb, var(--brand-stage) 62%, transparent) 100%
+  );
+}
