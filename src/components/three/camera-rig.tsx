@@ -10,6 +10,8 @@ interface Shot {
   pos: [number, number, number];
   target: [number, number, number];
   fov: number;
+  /** Shot's X is an offset from the nailing tool rather than world space. */
+  followsNail?: boolean;
 }
 
 /**
@@ -34,7 +36,9 @@ const SHOTS: Record<(typeof BEATS)[number], Shot> = {
   // close it actually is. Height is what makes a close-up close.
   interlock: { pos: [1.3, 1.2, 1.1], target: [0, -0.069, 0], fov: 34 },
   // Low and along the framework, following the nailing pass.
-  nailing: { pos: [2.1, 0.95, 1.65], target: [-1.1, -0.06, 0], fov: 39 },
+  // Relative to the tool: the X of this shot is added to wherever the pass
+  // has reached, so the camera travels with the machine.
+  nailing: { pos: [1.5, 0.8, 1.35], target: [-0.6, -0.06, 0], fov: 39, followsNail: true },
   // Back out as plywood and teak arrive over the completed frame.
   decking: { pos: [7.6, 3.2, 6.1], target: [0, 0.05, 0], fov: 37 },
   // Looking up the hall as the rig strikes.
@@ -120,6 +124,15 @@ export function CameraRig() {
 
     desiredPos.lerpVectors(posA, posB, t);
     desiredTarget.lerpVectors(tgtA, tgtB, t);
+
+    // Blend in the tool's position for whichever end of this segment tracks it,
+    // so the camera arrives travelling with the machine rather than cutting to
+    // it.
+    const follow = (a.followsNail ? 1 - t : 0) + (b.followsNail ? t : 0);
+    if (follow > 0) {
+      desiredPos.x += sceneState.nailX * follow;
+      desiredTarget.x += sceneState.nailX * follow;
+    }
 
     // Pointer parallax scaled by how far the camera is from what it's looking
     // at — a fixed offset that reads as a gentle drift in a wide shot throws

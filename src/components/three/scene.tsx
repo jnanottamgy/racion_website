@@ -154,7 +154,7 @@ function RoomExposure() {
 
     scene.environmentIntensity = damp(
       scene.environmentIntensity ?? 0,
-      0.62 + lit * 0.55,
+      0.62 + lit * 0.22,
       5,
       dt,
     );

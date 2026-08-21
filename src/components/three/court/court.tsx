@@ -80,7 +80,7 @@ function CourtFinish() {
       new THREE.MeshPhysicalMaterial({
         transparent: true,
         opacity: 0,
-        roughness: 0.08,
+        roughness: 0.14,
         metalness: 0,
         clearcoat: 1,
         clearcoatRoughness: 0.06,
@@ -97,7 +97,7 @@ function CourtFinish() {
     [geometry, material],
   );
 
-  const group = useArrival(material, ASSEMBLY.markings, { drop: 0.2 });
+  const group = useArrival(material, ASSEMBLY.markings, { drop: 0.2, peak: 0.1 });
 
   return (
     <group ref={group}>

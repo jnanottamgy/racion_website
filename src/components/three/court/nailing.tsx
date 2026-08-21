@@ -37,7 +37,7 @@ function layFixings() {
 }
 
 export function NailingPass() {
-  const { fixings, x0 } = useMemo(layFixings, []);
+  const { fixings, cols, x0 } = useMemo(layFixings, []);
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const toolRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.PointLight>(null);
@@ -126,14 +126,13 @@ export function NailingPass() {
     bodyMaterial.opacity = damp(bodyMaterial.opacity, active, 7, dt);
     accentMaterial.opacity = damp(accentMaterial.opacity, active, 7, dt);
 
+    // The tool rides the column being set, mid-court, so it travels the length
+    // of the framework in one continuous move.
+    const columnX = x0 + pass * cols * FRAME.spacing;
+    sceneState.nailX = columnX;
+
     if (toolRef.current) {
-      // Follow the fixing being set, so the tool is always where the work is.
-      const index = Math.min(
-        fixings.length - 1,
-        Math.max(0, Math.round(fixings.length * pass) - 1),
-      );
-      const [x, z] = fixings[index] ?? [x0, 0];
-      toolRef.current.position.set(x, 0.1, z);
+      toolRef.current.position.set(columnX, 0.1, 0);
       toolRef.current.visible = bodyMaterial.opacity > 0.01;
     }
     if (glowRef.current) {

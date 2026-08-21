@@ -69,6 +69,8 @@ export interface SceneState {
 
   /** 0 → 1 travel of the pneumatic nailing pass along the framework. */
   nailing: number;
+  /** Where the nailing tool currently is along the court, in metres. */
+  nailX: number;
   /** 0 = RACEON's interlocked framework, 1 = parallel supports. */
   method: number;
   /** 0 → 1 luminaire ignition across the rig. */
@@ -104,6 +106,7 @@ export const sceneState: SceneState = {
   explode: 0,
   activeLayer: -1,
   nailing: 0,
+  nailX: 0,
   method: 0,
   lights: 0,
   lux: 0,
@@ -121,6 +124,7 @@ export function resetSceneState() {
     explode: 0,
     activeLayer: -1,
     nailing: 0,
+    nailX: 0,
     method: 0,
     lights: 0,
     lux: 0,

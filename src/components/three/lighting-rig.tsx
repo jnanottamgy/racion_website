@@ -86,6 +86,11 @@ const BEAM_VERTEX = /* glsl */ `
     vec3 apexWorld = (modelMatrix * vec4(apex, 1.0)).xyz;
     vProximity = smoothstep(1.5, 5.5, distance(cameraPosition, apexWorld));
 
+    // Light in air is only visible from inside the volume. Looking down on the
+    // rig from above shows the cones' interiors as grey blobs floating around
+    // the court, so the beams fade out as the camera rises past the fittings.
+    vProximity *= 1.0 - smoothstep(apexWorld.y - 1.0, apexWorld.y + 2.5, cameraPosition.y);
+
     gl_Position = projectionMatrix * viewMatrix * world;
   }
 `;
@@ -115,9 +120,9 @@ const BEAM_FRAGMENT = /* glsl */ `
     // silhouette draws a hard-edged triangle instead of a soft shaft. Sixteen
     // hard-edged triangles stacked additively is a whiteout.
     float facing = abs(dot(normalize(vNormalW), normalize(vViewW)));
-    float core = pow(facing, 2.4);
+    float core = pow(facing, 3.6);
 
-    float alpha = core * falloff * lit * uIntensity * vProximity * 0.22;
+    float alpha = core * falloff * lit * uIntensity * vProximity * 0.1;
     gl_FragColor = vec4(uColor, alpha);
   }
 `;
@@ -263,10 +268,10 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
     // Two real lights carry the whole rig. Sixteen shadow-casting lights would
     // be sixteen shadow-map passes a frame for a difference nobody can see.
     if (keyRef.current) {
-      keyRef.current.intensity = damp(keyRef.current.intensity, lights * 2.6, 5, dt);
+      keyRef.current.intensity = damp(keyRef.current.intensity, lights * 1.7, 5, dt);
     }
     if (fillRef.current) {
-      fillRef.current.intensity = damp(fillRef.current.intensity, lights * 14, 5, dt);
+      fillRef.current.intensity = damp(fillRef.current.intensity, lights * 7, 5, dt);
     }
   });
 

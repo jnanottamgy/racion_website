@@ -17,7 +17,11 @@ import { damp, ramp, sceneState, smoother } from "@/lib/scene-state";
 export function useArrival(
   material: THREE.Material | null,
   threshold: number,
-  { span = 0.12, drop = 0.5 }: { span?: number; drop?: number } = {},
+  {
+    span = 0.12,
+    drop = 0.5,
+    peak = 1,
+  }: { span?: number; drop?: number; peak?: number } = {},
 ) {
   const group = useRef<THREE.Group>(null);
 
@@ -27,7 +31,9 @@ export function useArrival(
 
     if (material && "opacity" in material) {
       const m = material as THREE.Material & { opacity: number };
-      m.opacity = damp(m.opacity, t, 9, dt);
+      // `peak` lets a layer settle below full opacity — the PU finish is a
+      // clear seal, not a coat of paint.
+      m.opacity = damp(m.opacity, t * peak, 9, dt);
       if (group.current) group.current.visible = m.opacity > 0.008;
     } else if (group.current) {
       group.current.visible = t > 0.002;

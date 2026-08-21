@@ -144,11 +144,18 @@ export function Plywood() {
 
     const rows = Math.ceil(DECK.width / SHEET_W);
     for (let r = 0; r < rows; r++) {
-      const z = -DECK.width / 2 + SHEET_W / 2 + r * SHEET_W;
+      const z = Math.min(
+        -DECK.width / 2 + SHEET_W / 2 + r * SHEET_W,
+        DECK.width / 2 - SHEET_W / 2,
+      );
       // Stagger alternate rows by half a sheet so the cross joints break bond.
-      let x = -DECK.length / 2 - (r % 2 ? SHEET_L / 2 : 0);
-      while (x < DECK.length / 2) {
-        const length = Math.min(SHEET_L, DECK.length / 2 - x);
+      // The stagger is applied by *trimming* the first sheet rather than
+      // starting it early — starting early leaves a saw-toothed edge hanging
+      // over the side of the deck, which is very obvious in a wide shot.
+      let x = -DECK.length / 2;
+      let next = r % 2 ? SHEET_L / 2 : SHEET_L;
+      while (x < DECK.length / 2 - 0.01) {
+        const length = Math.min(next, DECK.length / 2 - x);
         if (length > 0.05) {
           out.push({
             pos: [x + length / 2, z],
@@ -157,7 +164,8 @@ export function Plywood() {
             uv: [rnd() * 5, rnd() * 5],
           });
         }
-        x += SHEET_L;
+        x += length;
+        next = SHEET_L;
       }
     }
     return out;
