@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, Geist_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import { ScrollProvider } from "@/components/providers/scroll-provider";
+import { StructuredData } from "@/components/chrome/structured-data";
 import "./globals.css";
 
 /**
@@ -46,6 +47,16 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  alternates: { canonical: "/" },
+  keywords: [
+    "badminton court flooring",
+    "wooden badminton court",
+    "squash court construction",
+    "African teak sports flooring",
+    "sports lighting installation",
+    "Bangalore",
+    "Karnataka",
+  ],
 };
 
 export const viewport: Viewport = {
@@ -67,6 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <ScrollProvider>{children}</ScrollProvider>
+        <StructuredData />
         <div className="grain" aria-hidden="true" />
       </body>
     </html>
