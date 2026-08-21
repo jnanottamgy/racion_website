@@ -79,7 +79,7 @@ export default function CanvasRoot() {
           // The court is lit by warm fixtures against a violet room; without a
           // filmic curve the highlights on lacquered teak clip to white.
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.15,
+          toneMappingExposure: 1.4,
         }}
         camera={{ fov: 38, near: 0.02, far: 120, position: [14.5, 3, 11.5] }}
         onCreated={({ gl }) => {

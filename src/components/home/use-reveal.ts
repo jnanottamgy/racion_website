@@ -24,8 +24,13 @@ export function useReveal<T extends HTMLElement>(rootMargin = "-12% 0px -12% 0px
     if (!el) return;
 
     if (typeof IntersectionObserver === "undefined") {
-      setShown(true);
-      return;
+      // Deferred rather than set inline: the server renders the hidden state,
+      // so flipping it synchronously here would cascade a second render before
+      // the first has painted. It cannot be a useState initialiser either —
+      // IntersectionObserver is always undefined on the server, which would
+      // hydrate every reveal into the wrong state.
+      const id = requestAnimationFrame(() => setShown(true));
+      return () => cancelAnimationFrame(id);
     }
 
     const observer = new IntersectionObserver(

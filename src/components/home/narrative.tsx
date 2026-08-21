@@ -178,15 +178,17 @@ export function Narrative() {
           follows the actual site dimensions — not the ones on the drawing.
         </BeatBody>
         <div className="mt-10">
-          <Link
-            href="/configurator"
+          <a
+            href={site.contact.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 border border-accent px-7 py-4 text-sm tracking-wide text-accent-text transition-colors duration-300 hover:bg-accent hover:text-stage"
           >
-            Specify your court
+            Contact us
             <span className="transition-transform duration-300 group-hover:translate-x-1">
               &rarr;
             </span>
-          </Link>
+          </a>
         </div>
       </Beat>
 

@@ -36,6 +36,16 @@ export const site = {
     email: "raceonsports@gmail.com",
     phone: "+91 98453 99453",
     phoneHref: "+919845399453",
+    /**
+     * wa.me deep link. Opens WhatsApp Web on desktop and the app on mobile,
+     * with the first message already written — a contractor gets a usable
+     * enquiry instead of "hi".
+     */
+    whatsapp:
+      "https://wa.me/919845399453?text=" +
+      encodeURIComponent(
+        "Hi RACEON — I'd like to talk about a wooden badminton court.",
+      ),
     address: {
       line1: "#15, Meenakshi Koil Street",
       line2: "Shivajinagar",

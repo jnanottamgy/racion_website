@@ -28,7 +28,7 @@ function Slab() {
   const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#0a060d"),
+        color: new THREE.Color("#1c1626"),
         roughness: 0.95,
         metalness: 0,
       }),
@@ -75,7 +75,7 @@ function Hall() {
   const material = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
-        color: new THREE.Color("#282133"),
+        color: new THREE.Color("#3c3450"),
         roughness: 0.94,
         metalness: 0,
         // Seen from the inside.
@@ -114,7 +114,7 @@ function RoomEnvironment() {
     <Environment resolution={128} frames={1}>
       <mesh scale={60}>
         <sphereGeometry args={[1, 24, 16]} />
-        <meshBasicMaterial side={THREE.BackSide} color="#120a18" />
+        <meshBasicMaterial side={THREE.BackSide} color="#241832" />
       </mesh>
       {[-1, 1].map((side) => (
         <mesh
@@ -155,7 +155,7 @@ function StagingLight() {
     if (target.current) light.target = target.current;
     light.intensity = damp(
       light.intensity,
-      (1 - sceneState.lights) * 4.6,
+      (1 - sceneState.lights) * 9.5,
       4.5,
       Math.min(delta, 1 / 20),
     );
@@ -202,26 +202,28 @@ function RoomExposure() {
 
     scene.environmentIntensity = damp(
       scene.environmentIntensity ?? 0,
-      0.5 + lit * 0.8,
+      1.0 + lit * 1.2,
       5,
       dt,
     );
     if (ambient.current) {
-      ambient.current.intensity = damp(ambient.current.intensity, 0.3 + lit * 0.6, 5, dt);
+      ambient.current.intensity = damp(ambient.current.intensity, 0.62 + lit * 1.15, 5, dt);
     }
     if (violet.current) {
-      // The violet bounce is strongest *before* the rig strikes — it is what
-      // makes the unlit room feel like a RACEON room rather than a black void.
-      violet.current.intensity = damp(violet.current.intensity, 1.5 - lit * 0.85, 5, dt);
+      // The violet bounce is what makes the unlit room feel like a RACEON room
+      // rather than a black void — but it has to get out of the way once the
+      // fixtures strike. A lavender hall directly contradicts the "1,500 lux"
+      // readout sitting next to it.
+      violet.current.intensity = damp(violet.current.intensity, 1.9 - lit * 1.55, 5, dt);
     }
   });
 
   return (
     <>
-      <ambientLight ref={ambient} intensity={0.14} color="#e8dcff" />
+      <ambientLight ref={ambient} intensity={0.62} color="#e8dcff" />
       <hemisphereLight
         ref={violet}
-        intensity={1.5}
+        intensity={1.9}
         color="#8a4bab"
         groundColor="#1a0d24"
       />
