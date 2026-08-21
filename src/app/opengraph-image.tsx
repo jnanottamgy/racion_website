@@ -23,7 +23,11 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: 72,
+          // Satori has no auto-shrink: if a block grows past its share, the next
+          // one is overlapped rather than pushed. Explicit gaps and a headline
+          // sized to fit two lines keep the three bands apart.
+          gap: 40,
+          padding: 68,
           background:
             "radial-gradient(ellipse 90% 70% at 20% -10%, #2a1035 0%, #0c0710 62%)",
           color: "#f3efe9",
@@ -53,12 +57,12 @@ export default function OpengraphImage() {
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div
             style={{
-              fontSize: 104,
-              lineHeight: 1,
-              letterSpacing: -3,
+              fontSize: 88,
+              lineHeight: 1.04,
+              letterSpacing: -2.5,
               fontWeight: 700,
               display: "flex",
             }}
@@ -67,10 +71,10 @@ export default function OpengraphImage() {
           </div>
           <div
             style={{
-              fontSize: 30,
+              fontSize: 27,
               color: "#a8a0ac",
-              maxWidth: 880,
-              lineHeight: 1.4,
+              maxWidth: 940,
+              lineHeight: 1.42,
               display: "flex",
             }}
           >
@@ -123,7 +127,7 @@ function Stat({
       </div>
       <div
         style={{
-          fontSize: 64,
+          fontSize: 58,
           fontWeight: 700,
           color: accent ? "#8be034" : "#f3efe9",
           display: "flex",
