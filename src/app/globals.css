@@ -1,0 +1,192 @@
+@import "tailwindcss";
+@import "../styles/brand.css";
+
+/* ---------------------------------------------------------------------------
+   THEME — maps the brand layer onto Tailwind utilities.
+   `inline` keeps utilities pointing at the live custom properties, so brand
+   tokens stay swappable at runtime rather than being baked in at build time.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --color-stage:          var(--brand-stage);
+  --color-stage-raised:   var(--brand-stage-raised);
+  --color-stage-sunk:     var(--brand-stage-sunk);
+  --color-hairline:       var(--brand-hairline);
+
+  --color-bone:           var(--brand-bone);
+  --color-bone-dim:       var(--brand-bone-dim);
+  --color-bone-faint:     var(--brand-bone-faint);
+
+  --color-maple:          var(--brand-maple);
+  --color-maple-light:    var(--brand-maple-light);
+  --color-maple-deep:     var(--brand-maple-deep);
+  --color-maple-shadow:   var(--brand-maple-shadow);
+
+  --color-court:          var(--brand-court);
+  --color-accent:         var(--brand-accent);
+
+  --color-light-warm:     var(--brand-light-warm);
+  --color-light-neutral:  var(--brand-light-neutral);
+  --color-light-cool:     var(--brand-light-cool);
+
+  --font-sans: var(--brand-font-sans);
+  --font-mono: var(--brand-font-mono);
+
+  /* Fluid display scale. The jump between body and display is deliberately
+     extreme — restraint everywhere else buys one very loud voice.            */
+  --text-hero:    clamp(3.25rem, 11.5vw, 13rem);
+  --text-d1:      clamp(2.75rem, 7.5vw, 7.5rem);
+  --text-d2:      clamp(2.25rem, 5.2vw, 4.75rem);
+  --text-d3:      clamp(1.75rem, 3.4vw, 3rem);
+  --text-lead:    clamp(1.125rem, 1.6vw, 1.5rem);
+  --text-label:   0.6875rem;
+
+  --ease-expo:    var(--ease-out-expo);
+  --ease-glide:   var(--ease-glide);
+}
+
+/* ---------------------------------------------------------------------------
+   BASE
+   --------------------------------------------------------------------------- */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    /* Lenis drives scrolling; native smooth-scroll would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--brand-stage);
+    color: var(--brand-bone);
+    font-family: var(--brand-font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  /* Lenis owns the scroll container; without this the page can double-scroll. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+
+  ::selection {
+    background-color: var(--brand-accent);
+    color: var(--brand-accent-contrast);
+  }
+
+  /* A single, consistent focus treatment. Visible, on-brand, never removed. */
+  :focus-visible {
+    outline: 2px solid var(--brand-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius);
+  }
+
+  h1, h2, h3, h4 {
+    font-variation-settings: "wdth" var(--brand-display-width);
+    font-weight: var(--brand-display-weight);
+    letter-spacing: var(--brand-display-tracking);
+    line-height: 0.92;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img, video, canvas {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   UTILITIES
+   --------------------------------------------------------------------------- */
+@utility container-x {
+  padding-inline: var(--gutter);
+}
+
+/* Small caps technical label — spec sheets, layer codes, section numbers.
+   This is the typographic tic that makes the whole site read "engineered". */
+@utility label {
+  font-family: var(--brand-font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-bone-faint);
+  font-weight: 400;
+}
+
+/* Wide-set display type, used for anything above ~3rem. */
+@utility display {
+  font-variation-settings: "wdth" var(--brand-display-width);
+  font-weight: var(--brand-display-weight);
+  letter-spacing: var(--brand-display-tracking);
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+@utility hairline {
+  border-color: var(--brand-hairline);
+}
+
+/* ---------------------------------------------------------------------------
+   FILM GRAIN
+   ---------------------------------------------------------------------------
+   An SVG fractal-noise overlay across the whole viewport. It costs one
+   composited layer and does more for the "shot on film, not rendered in a
+   browser" feeling than any amount of post-processing in the canvas.
+   --------------------------------------------------------------------------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  will-change: transform;
+  animation: grain-shift 0.7s steps(1) infinite;
+}
+
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -3%); }
+  60%  { transform: translate(-2%, -2%); }
+  80%  { transform: translate(3%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ---------------------------------------------------------------------------
+   REDUCED MOTION
+   ---------------------------------------------------------------------------
+   Not a token gesture. The 3D narrative has a genuine static counterpart
+   (see ScrollProvider + the canvas fallback); here we simply stop everything
+   decorative from moving.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .grain {
+    animation: none;
+  }
+}

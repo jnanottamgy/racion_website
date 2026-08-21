@@ -1,0 +1,80 @@
+/* ---------------------------------------------------------------------------
+   RACION — BRAND TOKEN LAYER
+   ---------------------------------------------------------------------------
+   This is the ONLY file that changes when the brochure lands. Every colour,
+   type decision and material value in the site resolves through these
+   variables, so re-skinning the entire product to the real brand is a single
+   file edit — not a refactor.
+
+   Values marked PROVISIONAL are informed placeholders, replaced at P0.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* -- Stage ---------------------------------------------------------------
+     The site is staged like a photographed object: a near-black room where
+     the only colour comes from the wood and the light. Not pure #000 — pure
+     black kills the sense of depth and makes grain look like noise.          */
+  --brand-stage:          #0b0b0c;
+  --brand-stage-raised:   #131315;
+  --brand-stage-sunk:     #060607;
+  --brand-hairline:       #26262a;
+
+  /* -- Bone / type ---------------------------------------------------------
+     Warm off-white. Pure #fff against near-black is harsh at large sizes.    */
+  --brand-bone:           #f4f1ec;
+  --brand-bone-dim:       #a5a29c;
+  --brand-bone-faint:     #6b6864;
+
+  /* -- Maple ---------------------------------------------------------------
+     PROVISIONAL. Sampled from finished maple under 4000K sports lighting —
+     this is the hero material colour and drives the 3D wood shader too.      */
+  --brand-maple:          #c9925a;
+  --brand-maple-light:    #e0b183;
+  --brand-maple-deep:     #8a5a2b;
+  --brand-maple-shadow:   #4a2f16;
+
+  /* -- Court line green ----------------------------------------------------
+     PROVISIONAL. The classic badminton mat green, used sparingly as a
+     secondary. Real courts use this or a deep blue.                          */
+  --brand-court:          #1f5c47;
+
+  /* -- Accent --------------------------------------------------------------
+     PROVISIONAL — pulled from the logo at P0. Currently aliased to maple so
+     nothing looks broken before the brochure arrives.                        */
+  --brand-accent:         var(--brand-maple);
+  --brand-accent-contrast: var(--brand-stage);
+
+  /* -- Light ---------------------------------------------------------------
+     Sports luminaire colour temperature, shared by CSS glows and the 3D rig
+     so the page and the canvas are lit by the same fixtures.                 */
+  --brand-light-warm:     #ffd9a8;
+  --brand-light-neutral:  #fff4e2;
+  --brand-light-cool:     #dfeaff;
+
+  /* -- Type ---------------------------------------------------------------- */
+  --brand-font-sans: var(--font-archivo), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --brand-font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Display type is set wide and tight — architectural, not editorial.       */
+  --brand-display-width:    112;
+  --brand-display-weight:   500;
+  --brand-display-tracking: -0.035em;
+
+  /* -- Motion --------------------------------------------------------------
+     One easing vocabulary across CSS, Framer Motion and GSAP. Consistent
+     easing is most of what separates expensive motion from busy motion.      */
+  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-out-quart:  cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-glide:      cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --dur-fast:   180ms;
+  --dur-base:   420ms;
+  --dur-slow:   760ms;
+  --dur-cinema: 1400ms;
+
+  /* -- Structure ----------------------------------------------------------- */
+  --gutter: clamp(1.25rem, 4vw, 5rem);
+  --measure: 62ch;
+  --radius: 2px;   /* Near-square. Rounded corners read soft; this reads built. */
+}
