@@ -88,6 +88,57 @@ function RoomEnvironment() {
 }
 
 /**
+ * The light the court sits in before the rig exists.
+ *
+ * Beats 00–03 happen in an unlit hall, which is dramatic and — taken
+ * literally — means the hero image is a black rectangle. This is a single soft
+ * spot from high and off-axis: enough to model the teak and throw the court's
+ * own shadow, shaped as a pool rather than a wash so the court still reads as
+ * an object in a dark room. It hands over to the fixtures as they strike, so no
+ * frame is ever lit by both.
+ */
+function StagingLight() {
+  const ref = useRef<THREE.SpotLight>(null);
+  const target = useRef<THREE.Object3D>(null);
+
+  useFrame((_, delta) => {
+    const light = ref.current;
+    if (!light) return;
+    if (target.current) light.target = target.current;
+    light.intensity = damp(
+      light.intensity,
+      (1 - sceneState.lights) * 4.6,
+      4.5,
+      Math.min(delta, 1 / 20),
+    );
+  });
+
+  return (
+    <>
+      <object3D ref={target} position={[0, 0, 0]} />
+      <spotLight
+        ref={ref}
+        position={[7.5, 15, 9]}
+        angle={0.78}
+        penumbra={1}
+        // Physical falloff over a 17 m throw leaves almost nothing on the
+        // floor. This is a staged key light, not a real fitting — the real
+        // fittings are the 150 W rig, and those keep their inverse-square.
+        decay={0}
+        distance={0}
+        intensity={0}
+        color="#efe6ff"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0009}
+        shadow-camera-near={2}
+        shadow-camera-far={44}
+      />
+    </>
+  );
+}
+
+/**
  * Ambient level and environment intensity ride the ignition sequence, so the
  * whole room comes up with the fixtures rather than the court sitting in
  * pre-lit daylight while the lamps pretend to switch on.
@@ -103,27 +154,27 @@ function RoomExposure() {
 
     scene.environmentIntensity = damp(
       scene.environmentIntensity ?? 0,
-      0.12 + lit * 0.75,
+      0.62 + lit * 0.55,
       5,
       dt,
     );
     if (ambient.current) {
-      ambient.current.intensity = damp(ambient.current.intensity, 0.05 + lit * 0.28, 5, dt);
+      ambient.current.intensity = damp(ambient.current.intensity, 0.34 + lit * 0.22, 5, dt);
     }
     if (violet.current) {
       // The violet bounce is strongest *before* the rig strikes — it is what
       // makes the unlit room feel like a RACEON room rather than a black void.
-      violet.current.intensity = damp(violet.current.intensity, 0.5 - lit * 0.32, 5, dt);
+      violet.current.intensity = damp(violet.current.intensity, 1.5 - lit * 0.85, 5, dt);
     }
   });
 
   return (
     <>
-      <ambientLight ref={ambient} intensity={0.05} color="#e8dcff" />
+      <ambientLight ref={ambient} intensity={0.14} color="#e8dcff" />
       <hemisphereLight
         ref={violet}
-        intensity={0.5}
-        color="#7d3f9c"
+        intensity={1.5}
+        color="#8a4bab"
         groundColor="#1a0d24"
       />
     </>
@@ -147,6 +198,7 @@ export function Scene({ volumetric = true }: { volumetric?: boolean }) {
     <>
       <RoomEnvironment />
       <RoomExposure />
+      <StagingLight />
       <CameraRig />
       <Slab />
       <Court />

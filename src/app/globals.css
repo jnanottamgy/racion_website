@@ -201,3 +201,32 @@
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   REVEAL
+   ---------------------------------------------------------------------------
+   Driven by `useReveal`, not by a library. The transition lives in CSS so the
+   first paint is already in the hidden state — no flash of positioned content
+   before JavaScript arrives.
+   --------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out-expo),
+    transform var(--dur-slow) var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+[data-reveal="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

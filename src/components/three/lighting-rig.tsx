@@ -61,6 +61,7 @@ const BEAM_VERTEX = /* glsl */ `
   varying float vY;
   varying vec3 vNormalW;
   varying vec3 vViewW;
+  varying float vProximity;
 
   void main() {
     vIgnite = aIgnite;
@@ -68,14 +69,22 @@ const BEAM_VERTEX = /* glsl */ `
 
     vec4 local = vec4(position, 1.0);
     vec3 nrm = normal;
+    vec3 apex = vec3(0.0);
     #ifdef USE_INSTANCING
       local = instanceMatrix * local;
       nrm = mat3(instanceMatrix) * nrm;
+      apex = instanceMatrix[3].xyz;
     #endif
 
     vec4 world = modelMatrix * local;
     vNormalW = normalize(mat3(modelMatrix) * nrm);
     vViewW = normalize(cameraPosition - world.xyz);
+
+    // A beam the camera is standing inside fills the frame with flat white.
+    // Fading them out as the camera closes in is what stops beat 04 turning
+    // into fog.
+    vec3 apexWorld = (modelMatrix * vec4(apex, 1.0)).xyz;
+    vProximity = smoothstep(1.5, 5.5, distance(cameraPosition, apexWorld));
 
     gl_Position = projectionMatrix * viewMatrix * world;
   }
@@ -89,6 +98,7 @@ const BEAM_FRAGMENT = /* glsl */ `
   varying float vY;
   varying vec3 vNormalW;
   varying vec3 vViewW;
+  varying float vProximity;
 
   void main() {
     // Each fixture strikes when the sequence passes its own threshold, with a
@@ -96,18 +106,19 @@ const BEAM_FRAGMENT = /* glsl */ `
     float lit = smoothstep(vIgnite, vIgnite + 0.14, uProgress);
     if (lit <= 0.001) discard;
 
-    // Dense at the fitting, dissolving before it reaches the floor — light in
-    // air falls off, and a cone with a hard bottom edge reads as a cone.
-    float falloff = pow(1.0 - vY, 1.8);
+    // Dense at the fitting, gone before it reaches the floor.
+    float falloff = pow(1.0 - vY, 2.4);
 
-    // Grazing angles look through more of the beam, so the silhouette edge is
-    // brighter than the middle. This is what separates a volumetric from a
-    // translucent lampshade.
-    float rim = 1.0 - abs(dot(normalize(vNormalW), normalize(vViewW)));
-    rim = pow(clamp(rim, 0.0, 1.0), 1.4);
+    // Brightest where the cone faces the camera and fading to nothing at its
+    // silhouette. The intuition runs the other way — grazing angles do look
+    // through more medium — but a cone is a *surface*, and weighting its
+    // silhouette draws a hard-edged triangle instead of a soft shaft. Sixteen
+    // hard-edged triangles stacked additively is a whiteout.
+    float facing = abs(dot(normalize(vNormalW), normalize(vViewW)));
+    float core = pow(facing, 2.4);
 
-    float alpha = falloff * (0.18 + rim * 0.82) * lit * uIntensity;
-    gl_FragColor = vec4(uColor * (0.6 + rim * 0.6), alpha);
+    float alpha = core * falloff * lit * uIntensity * vProximity * 0.22;
+    gl_FragColor = vec4(uColor, alpha);
   }
 `;
 
@@ -135,7 +146,8 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
   const beamGeometry = useMemo(() => {
     // Open-ended cone from the lens down to a pool a little wider than the
     // court, which is roughly what a 150 W fixture at 7.6 m actually throws.
-    const g = new THREE.CylinderGeometry(0.28, 3.1, RIG.height, 18, 1, true);
+    // Narrow enough that adjacent fixtures don't overlap into a wall of light.
+    const g = new THREE.CylinderGeometry(0.2, 1.55, RIG.height, 20, 1, true);
     g.translate(0, -RIG.height / 2, 0);
     return g;
   }, []);

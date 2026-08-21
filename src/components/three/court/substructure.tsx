@@ -1,141 +1,87 @@
 "use client";
 
 import { useLayoutEffect, useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mulberry32 } from "@/lib/noise";
+import { ASSEMBLY, damp, ramp, sceneState, smoother } from "@/lib/scene-state";
 import { DECK } from "./dimensions";
+import { FRAME } from "./framework";
 import { TILE_METRES, useSurfaceMaterial } from "../materials/use-surface-material";
 
 const dummy = new THREE.Object3D();
 const tint = new THREE.Color();
 
-/** Runner and pad set-out for the pine box structure. */
-export const FRAME = {
-  /** Bottom runners span the length of the hall. */
-  lowerSpacingZ: 0.6,
-  /** Upper runners cross them, and the teak is nailed to these. */
-  upperSpacingX: 0.4,
-  runnerWidth: 0.05,
-  runnerHeight: 0.045,
-  /** 18 mm button-type pads, per the brochure. */
-  padThickness: 0.018,
-  padDiameter: 0.06,
-} as const;
-
 /**
- * Termite-treated pine, built into an interlocking box structure.
+ * Prepared base: concrete substrate under a 6-mil moisture-resistant sheet.
  *
- * Two crossed layers of runners, which is what "vertical connected to
- * horizontal" means on site — and the void between them is the air circulation
- * the brochure credits for handling environmental expansion. Modelling it as a
- * solid slab would have thrown away the one thing that layer is *for*.
+ * Always present — it's the thing everything else is built on, and stripping it
+ * away would leave the court floating.
  */
-export function PineFrame() {
-  const ref = useRef<THREE.InstancedMesh>(null);
-
-  const runners = useMemo(() => {
-    const rnd = mulberry32(0x91e5);
-    const out: { pos: [number, number, number]; scale: [number, number, number]; shade: number; uv: [number, number] }[] = [];
-
-    // Lower layer: runs along X, laid out across Z.
-    const lowerCount = Math.floor(DECK.width / FRAME.lowerSpacingZ);
-    for (let i = 0; i <= lowerCount; i++) {
-      const z = -DECK.width / 2 + i * FRAME.lowerSpacingZ;
-      out.push({
-        pos: [0, -FRAME.runnerHeight / 2, z],
-        scale: [DECK.length, FRAME.runnerHeight, FRAME.runnerWidth],
-        shade: 0.88 + rnd() * 0.24,
-        uv: [rnd() * 6, rnd() * 6],
-      });
-    }
-
-    // Upper layer: crosses them, running across Z. The teak nails into these.
-    const upperCount = Math.floor(DECK.length / FRAME.upperSpacingX);
-    for (let i = 0; i <= upperCount; i++) {
-      const x = -DECK.length / 2 + i * FRAME.upperSpacingX;
-      out.push({
-        pos: [x, FRAME.runnerHeight / 2, 0],
-        scale: [FRAME.runnerWidth, FRAME.runnerHeight, DECK.width],
-        shade: 0.88 + rnd() * 0.24,
-        uv: [rnd() * 6, rnd() * 6],
-      });
-    }
-    return out;
-  }, []);
-
-  const material = useSurfaceMaterial("pine", {
-    size: 512,
-    seed: 23,
-    perInstanceUv: true,
+export function BaseSlab() {
+  const material = useSurfaceMaterial("membrane", {
+    size: 256,
+    seed: 11,
+    overrides: { side: THREE.DoubleSide },
   });
-  const geometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
+  const geometry = useMemo(
+    () => new THREE.BoxGeometry(DECK.length, 0.08, DECK.width),
+    [],
+  );
   useLayoutEffect(() => () => geometry.dispose(), [geometry]);
 
   useLayoutEffect(() => {
-    const mesh = ref.current;
-    if (!mesh) return;
-    const uvOffset = new Float32Array(runners.length * 2);
-    const uvScale = new Float32Array(runners.length * 2);
+    // One 0.6 m tile stretched over 17 m of slab reads as a smear.
+    for (const m of [material.map, material.roughnessMap, material.normalMap]) {
+      if (!m) continue;
+      m.repeat.set(DECK.length / TILE_METRES / 3, DECK.width / TILE_METRES / 3);
+      m.needsUpdate = true;
+    }
+  }, [material]);
 
-    runners.forEach((r, i) => {
-      dummy.position.set(...r.pos);
-      dummy.scale.set(...r.scale);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
-      tint.setScalar(r.shade);
-      mesh.setColorAt(i, tint);
-      uvOffset[i * 2] = r.uv[0];
-      uvOffset[i * 2 + 1] = r.uv[1];
-      uvScale[i * 2] = Math.max(r.scale[0], r.scale[2]) / TILE_METRES;
-      uvScale[i * 2 + 1] = FRAME.runnerWidth / TILE_METRES;
-    });
-
-    mesh.geometry.setAttribute("aUvOffset", new THREE.InstancedBufferAttribute(uvOffset, 2));
-    mesh.geometry.setAttribute("aUvScale", new THREE.InstancedBufferAttribute(uvScale, 2));
-    mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-    mesh.computeBoundingSphere();
-  }, [runners]);
-
-  return (
-    <instancedMesh
-      ref={ref}
-      args={[geometry, material, runners.length]}
-      castShadow
-      receiveShadow
-      frustumCulled={false}
-    />
-  );
+  return <mesh geometry={geometry} material={material} receiveShadow />;
 }
 
 /**
- * Air Shox: 18 mm button-type pads on a grid.
- *
- * Set out at the runner intersections, which is where the load actually
- * arrives — the brochure's "optimized spacing ensures uniform load
- * distribution" made visible rather than asserted.
+ * Air Shox: 18 mm button-type pads, set out on the framework grid so every
+ * crossing of the timber lands on one.
  */
 export function ShockPads() {
   const ref = useRef<THREE.InstancedMesh>(null);
+  const group = useRef<THREE.Group>(null);
 
   const pads = useMemo(() => {
     const out: [number, number][] = [];
-    const cols = Math.floor(DECK.length / FRAME.upperSpacingX);
-    const rows = Math.floor(DECK.width / FRAME.lowerSpacingZ);
-    for (let c = 0; c <= cols; c++) {
-      for (let r = 0; r <= rows; r++) {
-        out.push([
-          -DECK.length / 2 + c * FRAME.upperSpacingX,
-          -DECK.width / 2 + r * FRAME.lowerSpacingZ,
-        ]);
+    const cols = Math.floor(DECK.length / FRAME.spacing);
+    const rows = Math.floor(DECK.width / FRAME.spacing);
+    const x0 = -((cols - 1) * FRAME.spacing) / 2;
+    const z0 = -((rows - 1) * FRAME.spacing) / 2;
+
+    for (let c = 0; c < cols; c++) {
+      for (let r = 0; r < rows; r++) {
+        out.push([x0 + c * FRAME.spacing, z0 + r * FRAME.spacing]);
       }
     }
     return out;
   }, []);
 
-  const material = useSurfaceMaterial("shockpad", { size: 256, seed: 5 });
+  const base = useSurfaceMaterial("shockpad", { size: 256, seed: 5 });
+  const material = useMemo(() => {
+    const m = base.clone();
+    m.transparent = true;
+    m.opacity = 0;
+    return m;
+  }, [base]);
+  useLayoutEffect(() => () => material.dispose(), [material]);
+
   const geometry = useMemo(
-    () => new THREE.CylinderGeometry(FRAME.padDiameter / 2, FRAME.padDiameter / 2 * 1.08, FRAME.padThickness, 12),
+    () =>
+      new THREE.CylinderGeometry(
+        FRAME.padDiameter / 2,
+        (FRAME.padDiameter / 2) * 1.12,
+        FRAME.padThickness,
+        14,
+      ),
     [],
   );
   useLayoutEffect(() => () => geometry.dispose(), [geometry]);
@@ -146,6 +92,7 @@ export function ShockPads() {
     pads.forEach(([x, z], i) => {
       dummy.position.set(x, 0, z);
       dummy.scale.setScalar(1);
+      dummy.rotation.set(0, 0, 0);
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
     });
@@ -153,47 +100,134 @@ export function ShockPads() {
     mesh.computeBoundingSphere();
   }, [pads]);
 
+  useFrame((_, delta) => {
+    const t = smoother(
+      ramp(sceneState.assembly, ASSEMBLY.shockPads, ASSEMBLY.shockPads + 0.1),
+    );
+    material.opacity = damp(material.opacity, t, 9, Math.min(delta, 1 / 20));
+    if (group.current) {
+      group.current.position.y = (1 - t) * 0.22;
+      group.current.visible = material.opacity > 0.008;
+    }
+  });
+
   return (
-    <instancedMesh
-      ref={ref}
-      args={[geometry, material, pads.length]}
-      castShadow
-      receiveShadow
-      frustumCulled={false}
-    />
+    <group ref={group}>
+      <instancedMesh
+        ref={ref}
+        args={[geometry, material, pads.length]}
+        castShadow
+        receiveShadow
+        frustumCulled={false}
+      />
+    </group>
   );
 }
 
-/** 6-mil vapour barrier over the slab. */
-export function VapourBarrier() {
-  const material = useSurfaceMaterial("membrane", {
-    size: 256,
-    seed: 11,
-    overrides: { transparent: true, opacity: 0.9, side: THREE.DoubleSide },
+/**
+ * Plywood underlayment.
+ *
+ * Modelled as real sheets rather than one continuous plane — a plywood deck is
+ * a field of 8×4 boards with staggered joints, and the joint lines are how
+ * anyone recognises it as plywood rather than as a slab of MDF.
+ */
+export function Plywood() {
+  const ref = useRef<THREE.InstancedMesh>(null);
+  const group = useRef<THREE.Group>(null);
+
+  const sheets = useMemo(() => {
+    const SHEET_L = 2.44;
+    const SHEET_W = 1.22;
+    const GAP = 0.004;
+    const rnd = mulberry32(0x9140);
+    const out: { pos: [number, number]; size: [number, number]; shade: number; uv: [number, number] }[] = [];
+
+    const rows = Math.ceil(DECK.width / SHEET_W);
+    for (let r = 0; r < rows; r++) {
+      const z = -DECK.width / 2 + SHEET_W / 2 + r * SHEET_W;
+      // Stagger alternate rows by half a sheet so the cross joints break bond.
+      let x = -DECK.length / 2 - (r % 2 ? SHEET_L / 2 : 0);
+      while (x < DECK.length / 2) {
+        const length = Math.min(SHEET_L, DECK.length / 2 - x);
+        if (length > 0.05) {
+          out.push({
+            pos: [x + length / 2, z],
+            size: [length - GAP, SHEET_W - GAP],
+            shade: 0.92 + rnd() * 0.16,
+            uv: [rnd() * 5, rnd() * 5],
+          });
+        }
+        x += SHEET_L;
+      }
+    }
+    return out;
+  }, []);
+
+  const base = useSurfaceMaterial("pine", {
+    size: 512,
+    seed: 41,
+    perInstanceUv: true,
   });
-  const geometry = useMemo(
-    () => new THREE.PlaneGeometry(DECK.length, DECK.width),
-    [],
-  );
+  const material = useMemo(() => {
+    const m = base.clone();
+    m.transparent = true;
+    m.opacity = 0;
+    m.onBeforeCompile = base.onBeforeCompile;
+    m.customProgramCacheKey = () => "pine-instanced-uv";
+    return m;
+  }, [base]);
+  useLayoutEffect(() => () => material.dispose(), [material]);
+
+  const geometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
   useLayoutEffect(() => () => geometry.dispose(), [geometry]);
 
   useLayoutEffect(() => {
-    // The membrane covers 17 m of floor; without repeating, one 0.6 m tile of
-    // creasing is stretched across the whole thing.
-    const maps = [material.map, material.roughnessMap, material.normalMap];
-    for (const m of maps) {
-      if (!m) continue;
-      m.repeat.set(DECK.length / TILE_METRES / 4, DECK.width / TILE_METRES / 4);
-      m.needsUpdate = true;
+    const mesh = ref.current;
+    if (!mesh) return;
+    const uvOffset = new Float32Array(sheets.length * 2);
+    const uvScale = new Float32Array(sheets.length * 2);
+
+    sheets.forEach((sheet, i) => {
+      dummy.position.set(sheet.pos[0], 0, sheet.pos[1]);
+      dummy.scale.set(sheet.size[0], 0.014, sheet.size[1]);
+      dummy.rotation.set(0, 0, 0);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+      tint.setScalar(sheet.shade);
+      mesh.setColorAt(i, tint);
+      uvOffset[i * 2] = sheet.uv[0];
+      uvOffset[i * 2 + 1] = sheet.uv[1];
+      uvScale[i * 2] = sheet.size[0] / TILE_METRES;
+      uvScale[i * 2 + 1] = sheet.size[1] / TILE_METRES;
+    });
+
+    mesh.geometry.setAttribute("aUvOffset", new THREE.InstancedBufferAttribute(uvOffset, 2));
+    mesh.geometry.setAttribute("aUvScale", new THREE.InstancedBufferAttribute(uvScale, 2));
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    mesh.computeBoundingSphere();
+  }, [sheets]);
+
+  useFrame((_, delta) => {
+    const t = smoother(
+      ramp(sceneState.assembly, ASSEMBLY.plywood, ASSEMBLY.plywood + 0.12),
+    );
+    material.opacity = damp(material.opacity, t, 9, Math.min(delta, 1 / 20));
+    if (group.current) {
+      group.current.position.y = (1 - t) * 0.5;
+      group.current.visible = material.opacity > 0.008;
     }
-  }, [material]);
+  });
 
   return (
-    <mesh
-      geometry={geometry}
-      material={material}
-      rotation={[-Math.PI / 2, 0, 0]}
-      receiveShadow
-    />
+    <group ref={group}>
+      <instancedMesh
+        ref={ref}
+        args={[geometry, material, sheets.length]}
+        castShadow
+        receiveShadow
+        frustumCulled={false}
+      />
+    </group>
   );
 }

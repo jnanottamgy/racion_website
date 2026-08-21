@@ -17,6 +17,7 @@ import {
   detectCapability,
   type Capability,
 } from "@/lib/capability";
+import { exposeDebug } from "@/lib/debug";
 
 interface ScrollContextValue {
   capability: Capability;
@@ -141,6 +142,25 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
       },
     }),
     [capability, ready],
+  );
+
+  // Lenis owns the scroll position and restores it on its own RAF, so a plain
+  // `window.scrollTo` from a test harness is quietly reverted a frame later.
+  // Exposing Lenis's own scrollTo is the only reliable way to drive the page
+  // from outside.
+  useEffect(
+    () =>
+      exposeDebug({
+        scrollTo: {
+          value: (y: number) =>
+            lenisRef.current
+              ? lenisRef.current.scrollTo(y, { immediate: true })
+              : window.scrollTo(0, y),
+          configurable: true,
+          writable: true,
+        },
+      }),
+    [ready],
   );
 
   return (

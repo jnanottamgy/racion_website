@@ -1,9 +1,12 @@
 "use client";
 
 import { useLayoutEffect, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { ASSEMBLY } from "@/lib/scene-state";
 import { COURT, COURT_LINES } from "./dimensions";
+import { useArrival } from "./use-arrival";
 
 /** Line paint sits a fraction above the boards so it never z-fights the deck. */
 const LINE_LIFT = 0.0015;
@@ -14,7 +17,7 @@ const LINE_LIFT = 0.0015;
  * Merged into a single geometry: twelve separate meshes would be twelve draw
  * calls for what is, visually, one object, and they always move together.
  */
-export function CourtLines({ opacity = 1 }: { opacity?: number }) {
+export function CourtLines() {
   const geometry = useMemo(() => {
     const parts = COURT_LINES.map((line) => {
       const g = new THREE.PlaneGeometry(line.lx, line.lz);
@@ -34,13 +37,13 @@ export function CourtLines({ opacity = 1 }: { opacity?: number }) {
         roughness: 0.42,
         metalness: 0,
         transparent: true,
-        opacity,
+        opacity: 0,
         // Paint under lacquer picks up a touch of the light in the room; without
         // this the lines go dead grey the moment the fixtures dim.
         emissive: new THREE.Color("#f3efe9"),
         emissiveIntensity: 0.06,
       }),
-    [opacity],
+    [],
   );
 
   useLayoutEffect(() => {
@@ -50,7 +53,13 @@ export function CourtLines({ opacity = 1 }: { opacity?: number }) {
     };
   }, [geometry, material]);
 
-  return <mesh geometry={geometry} material={material} receiveShadow />;
+  const group = useArrival(material, ASSEMBLY.markings, { drop: 0.14 });
+
+  return (
+    <group ref={group}>
+      <mesh geometry={geometry} material={material} receiveShadow />
+    </group>
+  );
 }
 
 /** Procedural net mesh — a fine grid with a solid tape along the top. */
@@ -63,10 +72,12 @@ function createNetTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext("2d")!;
 
   ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = "rgba(240,238,235,0.92)";
-  ctx.lineWidth = 1.15;
+  ctx.strokeStyle = "rgba(214,210,206,0.95)";
+  ctx.lineWidth = 1.6;
 
-  const cell = 8;
+  // Coarse enough that the weave survives mipmapping instead of moireing
+  // into a shimmer the moment the camera moves.
+  const cell = 22;
   ctx.beginPath();
   for (let x = 0; x <= W; x += cell) {
     ctx.moveTo(x + 0.5, 0);
@@ -85,9 +96,11 @@ function createNetTexture(): THREE.CanvasTexture {
 
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
+  texture.generateMipmaps = true;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
-  texture.repeat.set(14, 1);
+  texture.repeat.set(5, 1);
   texture.anisotropy = 8;
   return texture;
 }
@@ -99,7 +112,7 @@ function createNetTexture(): THREE.CanvasTexture {
  * the posts to 1.524 m at the centre — 26 millimetres, invisible as a number
  * and instantly recognisable as a shape to anyone who plays.
  */
-export function NetAssembly({ visible = true }: { visible?: boolean }) {
+export function NetAssembly() {
   const texture = useMemo(createNetTexture, []);
 
   const netGeometry = useMemo(() => {
@@ -127,11 +140,15 @@ export function NetAssembly({ visible = true }: { visible?: boolean }) {
         map: texture,
         alphaMap: texture,
         transparent: true,
-        alphaTest: 0.18,
+        alphaTest: 0.32,
+        // Resolves the cutout against the multisample buffer instead of
+        // producing a hard 1-bit edge that crawls whenever the camera moves.
+        alphaToCoverage: true,
+        opacity: 0,
         side: THREE.DoubleSide,
         roughness: 0.8,
         metalness: 0,
-        color: new THREE.Color("#e8e4dc"),
+        color: new THREE.Color("#221e29"),
       }),
     [texture],
   );
@@ -146,6 +163,8 @@ export function NetAssembly({ visible = true }: { visible?: boolean }) {
         color: new THREE.Color("#1a1620"),
         roughness: 0.34,
         metalness: 0.72,
+        transparent: true,
+        opacity: 0,
       }),
     [],
   );
@@ -160,8 +179,14 @@ export function NetAssembly({ visible = true }: { visible?: boolean }) {
     };
   }, [texture, netGeometry, netMaterial, postGeometry, postMaterial]);
 
+  // Poles and nets go in last, with the markings — the handover step.
+  const group = useArrival(netMaterial, ASSEMBLY.markings, { drop: 0.9, span: 0.09 });
+  useFrame(() => {
+    postMaterial.opacity = netMaterial.opacity;
+  });
+
   return (
-    <group visible={visible}>
+    <group ref={group}>
       <mesh geometry={netGeometry} material={netMaterial} castShadow />
       {[-COURT.halfWidth, COURT.halfWidth].map((z) => (
         <mesh

@@ -71,10 +71,10 @@ const RECIPES: Record<string, SurfaceRecipe> = {
     roughness: [0.62, 0.82],
     relief: 0.8,
   },
-  /** Button-type shock pad rubber — matte, slightly granular. */
+  /** Button-type shock pad rubber — near-black, matte, slightly granular. */
   shockpad: {
-    base: ["#174436", "#215c4a"],
-    detail: "#0f3227",
+    base: ["#131218", "#232129"],
+    detail: "#0b0a0e",
     grain: 0,
     grainFrequency: 0,
     grainWarp: 0,

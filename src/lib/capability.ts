@@ -64,8 +64,41 @@ interface NavigatorWithHints extends Navigator {
   connection?: { saveData?: boolean; effectiveType?: string };
 }
 
+/**
+ * QA override: `?render=full|lite|static`.
+ *
+ * The detection below is deliberately pessimistic, which makes it impossible to
+ * review the scene on a machine it decides to protect — a software renderer, a
+ * throttled laptop, a client on a locked-down office build. The override forces
+ * a tier for one page view. It is opt-in per URL, never persisted, and no part
+ * of the site links to it.
+ */
+function readOverride(): RenderTier | null {
+  try {
+    const value = new URLSearchParams(window.location.search).get("render");
+    return value === "full" || value === "lite" || value === "static"
+      ? value
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 export function detectCapability(): Capability {
   if (typeof window === "undefined") return DEFAULT_CAPABILITY;
+
+  const override = readOverride();
+  if (override) {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    return {
+      tier: override,
+      reducedMotion,
+      webgl: override !== "static",
+      dpr: override === "full" ? [1, 2] : [1, 1.4],
+    };
+  }
 
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",

@@ -70,7 +70,7 @@ export default function CanvasRoot() {
           // The court is lit by warm fixtures against a violet room; without a
           // filmic curve the highlights on lacquered teak clip to white.
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.05,
+          toneMappingExposure: 1.15,
         }}
         camera={{ fov: 38, near: 0.02, far: 120, position: [14.5, 3, 11.5] }}
         // Drops resolution before it drops frames if the device can't keep up.
@@ -79,19 +79,19 @@ export default function CanvasRoot() {
         <Scene volumetric={full} />
 
         {full && (
-          <EffectComposer multisampling={0} enableNormalPass={false}>
+          <EffectComposer multisampling={4} enableNormalPass={false}>
             {/* Only the fixtures and the sheen on the lacquer are above 1.0,
                 so a high threshold keeps the bloom on the light itself. */}
             <Bloom
-              intensity={0.62}
-              luminanceThreshold={0.72}
+              intensity={0.5}
+              luminanceThreshold={0.8}
               luminanceSmoothing={0.28}
               kernelSize={KernelSize.LARGE}
               mipmapBlur
             />
             {/* Barely there. Enough to imply a real lens, not enough to
                 notice as an effect. */}
-            <ChromaticAberration offset={new Vector2(0.0006, 0.0009)} />
+            <ChromaticAberration offset={new Vector2(0.00012, 0.00018)} />
             <Vignette offset={0.28} darkness={0.72} eskil={false} />
             {/* Matches the CSS grain on the DOM above, so the canvas and the
                 page look like one photograph rather than two layers. */}

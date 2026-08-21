@@ -3,7 +3,9 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { mulberry32 } from "@/lib/noise";
+import { ASSEMBLY } from "@/lib/scene-state";
 import { DECK, PLANK } from "./dimensions";
+import { useArrival } from "./use-arrival";
 import { TILE_METRES, useSurfaceMaterial } from "../materials/use-surface-material";
 
 const dummy = new THREE.Object3D();
@@ -78,7 +80,7 @@ export function Deck({ visible = true }: { visible?: boolean }) {
   const ref = useRef<THREE.InstancedMesh>(null);
   const planks = useMemo(layDeck, []);
 
-  const material = useSurfaceMaterial("teak", {
+  const base = useSurfaceMaterial("teak", {
     size: 1024,
     seed: 7,
     perInstanceUv: true,
@@ -88,6 +90,18 @@ export function Deck({ visible = true }: { visible?: boolean }) {
       envMapIntensity: 0.85,
     },
   });
+
+  const material = useMemo(() => {
+    const m = base.clone();
+    m.transparent = true;
+    m.opacity = 0;
+    m.onBeforeCompile = base.onBeforeCompile;
+    m.customProgramCacheKey = () => "teak-instanced-uv";
+    return m;
+  }, [base]);
+  useLayoutEffect(() => () => material.dispose(), [material]);
+
+  const group = useArrival(material, ASSEMBLY.teak, { drop: 0.62 });
 
   const geometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
   useLayoutEffect(() => () => geometry.dispose(), [geometry]);
@@ -137,14 +151,16 @@ export function Deck({ visible = true }: { visible?: boolean }) {
   }, [planks]);
 
   return (
-    <instancedMesh
-      ref={ref}
-      args={[geometry, material, planks.length]}
-      visible={visible}
-      castShadow
-      receiveShadow
-      frustumCulled={false}
-    />
+    <group ref={group}>
+      <instancedMesh
+        ref={ref}
+        args={[geometry, material, planks.length]}
+        visible={visible}
+        castShadow
+        receiveShadow
+        frustumCulled={false}
+      />
+    </group>
   );
 }
 

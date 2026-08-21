@@ -4,11 +4,14 @@ import { useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { buildUp } from "@/content/systems";
-import { damp, sceneState } from "@/lib/scene-state";
+import { ASSEMBLY, damp, sceneState } from "@/lib/scene-state";
 import { DECK, PLANK } from "./dimensions";
 import { Deck } from "./deck";
+import { PineFramework } from "./framework";
 import { CourtLines, NetAssembly } from "./markings";
-import { PineFrame, ShockPads, VapourBarrier } from "./substructure";
+import { NailingPass } from "./nailing";
+import { BaseSlab, Plywood, ShockPads } from "./substructure";
+import { useArrival } from "./use-arrival";
 
 /** Vertical separation between layers at full explode. */
 const EXPLODE_GAP = 0.62;
@@ -16,18 +19,15 @@ const EXPLODE_GAP = 0.62;
 /**
  * Assembled stack positions.
  *
- * Built top-down from a finished floor level of y = 0, so the court always
- * sits correctly on the ground no matter how the build-up changes. The layer
- * thicknesses come from `systems.ts`, which is also what the DOM callouts read
- * — the drawing and the spec sheet cannot drift apart because they are the
- * same data.
+ * Built top-down from a finished floor level of y = 0, so the court always sits
+ * correctly on the ground however the build-up changes. Thicknesses come from
+ * `systems.ts`, which is also what the DOM callouts read — the drawing and the
+ * spec sheet cannot drift apart because they are the same data.
  */
 function useStack() {
   return useMemo(() => {
-    const totalMm = buildUp.reduce((n, l) => n + l.modelMm, 0);
-    const total = totalMm / 1000;
-
-    let cursor = -total; // bottom of the whole build-up
+    const total = buildUp.reduce((n, l) => n + l.modelMm, 0) / 1000;
+    let cursor = -total;
     return buildUp.map((layer) => {
       const thickness = layer.modelMm / 1000;
       const centre = cursor + thickness / 2;
@@ -37,29 +37,29 @@ function useStack() {
   }, []);
 }
 
-interface LayerGroupProps {
-  index: number;
-  centre: number;
-  children: React.ReactNode;
-}
-
 /**
  * One layer of the build-up.
  *
- * Each layer lifts by `explode × index × gap`, so the bottom of the stack stays
- * put and the timber rises off it — the way a joiner would pull a mock-up
- * apart, rather than the way an exploded parts diagram scatters in all
- * directions.
+ * Lifts by `explode × index × gap`, so the bottom of the stack stays put and
+ * the timber rises off it — the way a joiner pulls a mock-up apart, rather than
+ * the way a parts diagram scatters in all directions.
  */
-function LayerGroup({ index, centre, children }: LayerGroupProps) {
+function LayerGroup({
+  index,
+  centre,
+  children,
+}: {
+  index: number;
+  centre: number;
+  children: React.ReactNode;
+}) {
   const ref = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
     const group = ref.current;
     if (!group) return;
-    const dt = Math.min(delta, 1 / 20);
     const target = centre + sceneState.explode * index * EXPLODE_GAP;
-    group.position.y = damp(group.position.y, target, 7, dt);
+    group.position.y = damp(group.position.y, target, 7, Math.min(delta, 1 / 20));
   });
 
   return (
@@ -79,7 +79,7 @@ function CourtFinish() {
     () =>
       new THREE.MeshPhysicalMaterial({
         transparent: true,
-        opacity: 0.16,
+        opacity: 0,
         roughness: 0.08,
         metalness: 0,
         clearcoat: 1,
@@ -97,18 +97,26 @@ function CourtFinish() {
     [geometry, material],
   );
 
+  const group = useArrival(material, ASSEMBLY.markings, { drop: 0.2 });
+
   return (
-    <mesh
-      geometry={geometry}
-      material={material}
-      rotation={[-Math.PI / 2, 0, 0]}
-      renderOrder={5}
-    />
+    <group ref={group}>
+      <mesh
+        geometry={geometry}
+        material={material}
+        rotation={[-Math.PI / 2, 0, 0]}
+        renderOrder={5}
+      />
+    </group>
   );
 }
 
 /**
- * The whole RACEON court: six layers, a net, and the markings.
+ * The RACEON court, assembling.
+ *
+ * Layer contents are keyed to the build-up codes in `systems.ts` rather than to
+ * array positions, so re-ordering or inserting a layer in the content file
+ * cannot silently put the plywood under the shock pads.
  */
 export function Court() {
   const stack = useStack();
@@ -117,17 +125,26 @@ export function Court() {
     <group>
       {stack.map((layer, i) => (
         <LayerGroup key={layer.code} index={i} centre={layer.centre}>
-          {layer.code === "L01" && <VapourBarrier />}
-          {layer.code === "L02" && <ShockPads />}
-          {layer.code === "L03" && <PineFrame />}
-          {/* The deck's planks are modelled about their own centre. */}
-          {layer.code === "L04" && (
+          {layer.code === "01" && <BaseSlab />}
+          {layer.code === "02" && <ShockPads />}
+          {layer.code === "03" && (
+            <>
+              <PineFramework />
+              <NailingPass />
+            </>
+          )}
+          {layer.code === "04" && <Plywood />}
+          {layer.code === "05" && (
             <group position={[0, -PLANK.thickness / 2 + layer.thickness / 2, 0]}>
               <Deck />
             </group>
           )}
-          {layer.code === "L05" && <CourtFinish />}
-          {layer.code === "L06" && <CourtLines />}
+          {layer.code === "06" && (
+            <>
+              <CourtFinish />
+              <CourtLines />
+            </>
+          )}
         </LayerGroup>
       ))}
 

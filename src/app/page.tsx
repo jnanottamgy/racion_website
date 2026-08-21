@@ -1,8 +1,17 @@
+import { CanvasMount } from "@/components/three/canvas-mount";
+import { Header } from "@/components/chrome/header";
+import { Footer } from "@/components/chrome/footer";
+import { Narrative } from "@/components/home/narrative";
+
 export default function Home() {
   return (
-    <main id="main" className="container-x py-40">
-      <p className="label">Foundation</p>
-      <h1 className="text-[length:var(--text-hero)] display mt-6">Racion</h1>
-    </main>
+    <>
+      <CanvasMount />
+      <Header />
+      <main id="main" className="relative">
+        <Narrative />
+      </main>
+      <Footer />
+    </>
   );
 }
