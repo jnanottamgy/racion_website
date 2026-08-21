@@ -108,6 +108,7 @@
 
   h1, h2, h3, h4 {
     font-family: var(--brand-font-display);
+    font-variation-settings: "wdth" var(--brand-display-width);
     font-weight: var(--brand-display-weight);
     letter-spacing: var(--brand-display-tracking);
     line-height: 0.92;
@@ -145,6 +146,7 @@
 /* Wide-set display type, used for anything above ~3rem. */
 @utility display {
   font-family: var(--brand-font-display);
+  font-variation-settings: "wdth" var(--brand-display-width);
   font-weight: var(--brand-display-weight);
   letter-spacing: var(--brand-display-tracking);
   line-height: 0.9;

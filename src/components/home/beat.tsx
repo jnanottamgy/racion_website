@@ -68,7 +68,7 @@ function Scrim({ side }: { side: "left" | "right" | "centre" | "full" }) {
     return (
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-stage/82 [mask-image:linear-gradient(to_bottom,transparent,black_14%,black_86%,transparent)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-stage/55 [mask-image:linear-gradient(to_bottom,transparent,black_14%,black_86%,transparent)]"
       />
     );
   }
@@ -85,7 +85,7 @@ function Scrim({ side }: { side: "left" | "right" | "centre" | "full" }) {
   return (
     <div
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-y-0 -z-10 ${size} ${position} from-stage via-stage/72 to-transparent [mask-image:linear-gradient(to_bottom,transparent,black_14%,black_86%,transparent)]`}
+      className={`pointer-events-none absolute inset-y-0 -z-10 ${size} ${position} from-stage via-stage/62 to-transparent [mask-image:linear-gradient(to_bottom,transparent,black_14%,black_86%,transparent)]`}
     />
   );
 }

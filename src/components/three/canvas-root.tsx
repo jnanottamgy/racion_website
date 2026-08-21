@@ -1,20 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   Bloom,
   ChromaticAberration,
   EffectComposer,
   Noise,
+  ToneMapping,
   Vignette,
 } from "@react-three/postprocessing";
-import { BlendFunction, KernelSize } from "postprocessing";
+import { BlendFunction, KernelSize, ToneMappingMode } from "postprocessing";
 import * as THREE from "three";
 import { Vector2 } from "three";
 import { useScroll } from "@/components/providers/scroll-provider";
 import { sceneState } from "@/lib/scene-state";
 import { Scene } from "./scene";
+import { StaticStage } from "./static-stage";
 
 /**
  * The single persistent WebGL canvas.
@@ -27,6 +29,7 @@ import { Scene } from "./scene";
  */
 export default function CanvasRoot() {
   const { capability, ready } = useScroll();
+  const [contextLost, setContextLost] = useState(false);
 
   // Pointer parallax is written straight into the mutable scene state rather
   // than React state — this fires at pointer rate and must never re-render.
@@ -52,6 +55,12 @@ export default function CanvasRoot() {
 
   if (!ready || capability.tier === "static") return null;
 
+  // A lost GPU context leaves a permanently black canvas with no way back.
+  // Handing over to the photographic stage turns the worst failure this page
+  // has — a blank screen where the whole story should be — into a page that
+  // still works.
+  if (contextLost) return <StaticStage />;
+
   const full = capability.tier === "full";
 
   return (
@@ -73,6 +82,16 @@ export default function CanvasRoot() {
           toneMappingExposure: 1.15,
         }}
         camera={{ fov: 38, near: 0.02, far: 120, position: [14.5, 3, 11.5] }}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener(
+            "webglcontextlost",
+            (event) => {
+              event.preventDefault();
+              setContextLost(true);
+            },
+            { once: true },
+          );
+        }}
         // Drops resolution before it drops frames if the device can't keep up.
         performance={{ min: 0.5, max: 1, debounce: 200 }}
       >
@@ -92,10 +111,19 @@ export default function CanvasRoot() {
             {/* Barely there. Enough to imply a real lens, not enough to
                 notice as an effect. */}
             <ChromaticAberration offset={new Vector2(0.00012, 0.00018)} />
-            <Vignette offset={0.28} darkness={0.72} eskil={false} />
+            {/* Eased from 0.72. The vignette is computed on distance from
+                centre, so on a wide monitor the corners sit much deeper in it
+                than they did at the aspect ratio this was tuned at — and the
+                court sits in a corner for most of the closing beats. */}
+            <Vignette offset={0.34} darkness={0.42} eskil={false} />
             {/* Matches the CSS grain on the DOM above, so the canvas and the
                 page look like one photograph rather than two layers. */}
-            <Noise premultiply opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
+            <Noise premultiply opacity={0.03} blendFunction={BlendFunction.OVERLAY} />
+            {/* Must be last, and must exist at all: EffectComposer bypasses the
+                renderer's own tone mapping, so without this the scene is
+                displayed straight from linear and every value I graded against
+                the ACES curve lands somewhere else. */}
+            <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
           </EffectComposer>
         )}
       </Canvas>

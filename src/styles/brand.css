@@ -82,16 +82,18 @@
   --brand-light-cool:     #e6efff;
 
   /* -- Type families -------------------------------------------------------
-     Bricolage Grotesque for display: variable optical size, tight apertures
-     and a genuine voice at 150px — modern without being a trend.
-     Instrument Sans for everything read rather than looked at.
-     Geist Mono for anything measured: lux, millimetres, court counts.         */
-  --brand-font-display: var(--font-bricolage), "Helvetica Neue", Arial, sans-serif;
-  --brand-font-sans:    var(--font-instrument), "Helvetica Neue", Arial, sans-serif;
+     Archivo for everything, at two widths. A grotesque in the Neue Haas line:
+     architectural, unfussy, and completely at home at 200px. Display runs wide
+     and tight; body sits at normal width. Geist Mono is kept for anything
+     measured — lux, millimetres, court counts.                                */
+  --brand-font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --brand-font-sans:    var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
   --brand-font-mono:    var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
+  /* Width axis, 62–125. Wide reads built; condensed reads cheap.              */
+  --brand-display-width:    113;
   --brand-display-weight:   600;
-  --brand-display-tracking: -0.03em;
+  --brand-display-tracking: -0.028em;
 
   /* -- Motion --------------------------------------------------------------
      One easing vocabulary across CSS, Motion and GSAP. Consistent easing is

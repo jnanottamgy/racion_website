@@ -1,26 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Instrument_Sans, Geist_Mono } from "next/font/google";
+import { Archivo, Geist_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import { ScrollProvider } from "@/components/providers/scroll-provider";
 import { StructuredData } from "@/components/chrome/structured-data";
 import "./globals.css";
 
 /**
- * Display. Variable optical size means the same face can be drawn for 150px
- * headlines and still hold together — the apertures tighten and the contrast
- * lifts as it scales, which is why it reads as designed rather than enlarged.
+ * One family for the whole site, display and body alike.
+ *
+ * Archivo is a grotesque in the Neue Haas line — no quirks, no personality
+ * tics, and it holds its shape from an 11px label to a 200px headline. The
+ * width axis is what lets one family do both jobs: display runs wide and tight
+ * for an architectural feel, body sits at normal width. Using one voice at two
+ * widths reads as far more deliberate than pairing two faces, and it is one
+ * font download instead of two.
  */
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  axes: ["opsz"],
-  display: "swap",
-});
-
-/** Everything read rather than looked at. */
-const instrument = Instrument_Sans({
-  variable: "--font-instrument",
-  subsets: ["latin"],
+  axes: ["wdth"],
   display: "swap",
 });
 
@@ -70,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${bricolage.variable} ${instrument.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <a
