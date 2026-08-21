@@ -21,15 +21,15 @@ import { BEATS, sceneState } from "@/lib/scene-state";
 
 /** Which plate carries each beat. Beats without one inherit the previous. */
 const PLATE_FOR_BEAT: Record<(typeof BEATS)[number], string> = {
-  hero: "court-teak-portrait",
-  base: "court-teak-wide",
-  framework: "court-teak-wide",
-  interlock: "court-teak-wide",
-  nailing: "court-teak-wide",
-  decking: "court-teak-portrait",
-  lighting: "lighting-installation",
-  court: "court-teak-portrait",
-  proof: "court-teak-wide",
+  hero: "court-hero",
+  base: "court-hero",
+  framework: "framework",
+  interlock: "framework",
+  nailing: "framework",
+  decking: "court-lit",
+  lighting: "lighting",
+  court: "court-lit",
+  proof: "court-lit",
 };
 
 const ORDER = [...new Set(Object.values(PLATE_FOR_BEAT))];
@@ -81,10 +81,10 @@ export function StaticStage() {
               sizes="100vw"
               placeholder="blur"
               blurDataURL={p.blurDataURL}
-              // The source frames are print-resolution, so they are deliberately
-              // never shown at full bleed sharpness — a soft, darkened backdrop
-              // is both the honest treatment and the flattering one.
-              className="scale-105 object-cover opacity-[0.42] blur-[1px]"
+              // These are 2000px renders of the same scene the canvas draws,
+              // so they can be shown sharp. The old brochure frames had to be
+              // blurred and dimmed to hide how little resolution they had.
+              className="scale-[1.02] object-cover opacity-[0.72]"
               priority={i === 0}
             />
           </div>
@@ -92,7 +92,7 @@ export function StaticStage() {
       })}
       {/* Carries the page's own colour across the photography so it belongs to
           the design rather than sitting behind it. */}
-      <div className="absolute inset-0 bg-stage/55" />
+      <div className="absolute inset-0 bg-stage/35" />
       <div className="absolute inset-0 bg-gradient-to-t from-stage via-transparent to-stage/85" />
     </div>
   );

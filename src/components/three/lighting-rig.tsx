@@ -89,7 +89,7 @@ const BEAM_VERTEX = /* glsl */ `
     // Light in air is only visible from inside the volume. Looking down on the
     // rig from above shows the cones' interiors as grey blobs floating around
     // the court, so the beams fade out as the camera rises past the fittings.
-    vProximity *= 1.0 - smoothstep(apexWorld.y - 1.0, apexWorld.y + 2.5, cameraPosition.y);
+    vProximity *= 1.0 - smoothstep(apexWorld.y - 2.5, apexWorld.y + 0.5, cameraPosition.y);
 
     gl_Position = projectionMatrix * viewMatrix * world;
   }
@@ -120,9 +120,9 @@ const BEAM_FRAGMENT = /* glsl */ `
     // silhouette draws a hard-edged triangle instead of a soft shaft. Sixteen
     // hard-edged triangles stacked additively is a whiteout.
     float facing = abs(dot(normalize(vNormalW), normalize(vViewW)));
-    float core = pow(facing, 3.6);
+    float core = pow(facing, 4.2);
 
-    float alpha = core * falloff * lit * uIntensity * vProximity * 0.1;
+    float alpha = core * falloff * lit * uIntensity * vProximity * 0.045;
     gl_FragColor = vec4(uColor, alpha);
   }
 `;
@@ -152,7 +152,7 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
     // Open-ended cone from the lens down to a pool a little wider than the
     // court, which is roughly what a 150 W fixture at 7.6 m actually throws.
     // Narrow enough that adjacent fixtures don't overlap into a wall of light.
-    const g = new THREE.CylinderGeometry(0.2, 1.55, RIG.height, 20, 1, true);
+    const g = new THREE.CylinderGeometry(0.16, 1.05, RIG.height, 20, 1, true);
     g.translate(0, -RIG.height / 2, 0);
     return g;
   }, []);
@@ -268,10 +268,10 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
     // Two real lights carry the whole rig. Sixteen shadow-casting lights would
     // be sixteen shadow-map passes a frame for a difference nobody can see.
     if (keyRef.current) {
-      keyRef.current.intensity = damp(keyRef.current.intensity, lights * 1.7, 5, dt);
+      keyRef.current.intensity = damp(keyRef.current.intensity, lights * 2.9, 5, dt);
     }
     if (fillRef.current) {
-      fillRef.current.intensity = damp(fillRef.current.intensity, lights * 7, 5, dt);
+      fillRef.current.intensity = damp(fillRef.current.intensity, lights * 16, 5, dt);
     }
   });
 

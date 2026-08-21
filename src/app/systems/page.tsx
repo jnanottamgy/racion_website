@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function SystemsPage() {
-  const hero = plate("court-teak-wide");
+  const hero = plate("framework");
 
   return (
     <PageShell

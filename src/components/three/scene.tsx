@@ -54,6 +54,54 @@ function Slab() {
 }
 
 /**
+ * The hall.
+ *
+ * Until this existed the court sat in an unbounded void, and the lighting beat —
+ * which points the camera upward at the fixtures — was four-fifths empty grey
+ * haze, because there was nothing above the rig for the light to land on. Six
+ * planes fix it: the beams now terminate against a ceiling, the walls catch the
+ * spill, and the fog gives the far end somewhere to dissolve into.
+ *
+ * Sized like a real single-court hall with run-off: 26 x 16 m on plan, 9.5 m to
+ * the underside of the ceiling, with RACEON's fixtures at 7.6 m below it.
+ */
+function Hall() {
+  const floorLevel = useMemo(
+    () => -buildUp.reduce((n, l) => n + l.modelMm, 0) / 1000,
+    [],
+  );
+
+  const geometry = useMemo(() => new THREE.BoxGeometry(26, 9.5, 16), []);
+  const material = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: new THREE.Color("#282133"),
+        roughness: 0.94,
+        metalness: 0,
+        // Seen from the inside.
+        side: THREE.BackSide,
+      }),
+    [],
+  );
+  useLayoutEffect(
+    () => () => {
+      geometry.dispose();
+      material.dispose();
+    },
+    [geometry, material],
+  );
+
+  return (
+    <mesh
+      geometry={geometry}
+      material={material}
+      position={[0, floorLevel + 9.5 / 2, 0]}
+      receiveShadow
+    />
+  );
+}
+
+/**
  * A procedural environment, baked once.
  *
  * A downloaded HDR would be a megabyte or two of network for something the
@@ -154,12 +202,12 @@ function RoomExposure() {
 
     scene.environmentIntensity = damp(
       scene.environmentIntensity ?? 0,
-      0.62 + lit * 0.22,
+      0.5 + lit * 0.8,
       5,
       dt,
     );
     if (ambient.current) {
-      ambient.current.intensity = damp(ambient.current.intensity, 0.34 + lit * 0.22, 5, dt);
+      ambient.current.intensity = damp(ambient.current.intensity, 0.3 + lit * 0.6, 5, dt);
     }
     if (violet.current) {
       // The violet bounce is strongest *before* the rig strikes — it is what
@@ -187,7 +235,7 @@ export function Scene({ volumetric = true }: { volumetric?: boolean }) {
   useLayoutEffect(() => {
     // Exponential fog dissolves the far end of the hall instead of ending it
     // at a hard edge, which is what sells depth in a scene with no walls.
-    scene.fog = new THREE.FogExp2(new THREE.Color("#0c0710"), 0.022);
+    scene.fog = new THREE.FogExp2(new THREE.Color("#0c0710"), 0.014);
     scene.background = null;
     return () => {
       scene.fog = null;
@@ -200,6 +248,7 @@ export function Scene({ volumetric = true }: { volumetric?: boolean }) {
       <RoomExposure />
       <StagingLight />
       <CameraRig />
+      <Hall />
       <Slab />
       <Court />
       <LightingRig volumetric={volumetric} />

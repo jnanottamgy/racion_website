@@ -56,7 +56,7 @@ function layDeck(): Plank[] {
         x: x + length / 2,
         z,
         length,
-        shade: 0.86 + rnd() * 0.28,
+        shade: 0.78 + rnd() * 0.44,
         uvOffsetU: rnd() * 8,
         uvOffsetV: rnd() * 8,
       });

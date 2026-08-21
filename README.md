@@ -51,7 +51,8 @@ src/
     home/                 The nine-beat narrative
     configurator/         Court planner and the to-scale plan drawing
 scripts/
-  grade-photography.mjs   Regenerates public/photography + content/photography.ts
+  build-plates.mjs        Turns rendered 3D plates into public/photography
+  grade-photography.mjs   Grades real site photography, for when originals arrive
 source-assets/            RACEON's original brochure PDFs
 ```
 
@@ -123,8 +124,12 @@ end up in front of architects.
 
 ## Open items
 
-- **Photography is print-resolution.** Largest source frame is 780 × 1321. Usable
-  at card and backdrop scale, not full-bleed. Originals would lift the whole site.
+- **Imagery is rendered, not photographed.** The brochure frames were
+  print-resolution (~780px) and fell apart at any useful size, so the image set
+  is now rendered from the site's own 3D scene at 2000px — sharp, no licensing
+  risk, and RACEON's actual build-up rather than a stock hall. Real
+  high-resolution site photography would still be better and can be graded in
+  with `scripts/grade-photography.mjs`.
 - One brochure image (an installation-in-progress shot) reads as stock or
   AI-generated rather than a RACEON site. It is not used.
 - Domain and the Resend sender are not yet configured.

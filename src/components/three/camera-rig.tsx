@@ -39,14 +39,26 @@ const SHOTS: Record<(typeof BEATS)[number], Shot> = {
   // Relative to the tool: the X of this shot is added to wherever the pass
   // has reached, so the camera travels with the machine.
   nailing: { pos: [1.5, 0.8, 1.35], target: [-0.6, -0.06, 0], fov: 39, followsNail: true },
+  // --- The closing arc ------------------------------------------------------
+  // These four shots stay on one side of the court and move monotonically out.
+  // The lighting shot used to sit at x = -9.8 between two shots at +7.6 and
+  // +14.6, so the camera whipped seventeen metres across the hall and
+  // twenty-four back, in consecutive segments, while the rig was igniting.
+  // Nothing was wrong with the easing — the shots themselves were the break.
+  // Now it is one move: pull back, drop and look up as the fixtures strike,
+  // then rise and keep pulling away.
+
   // Back out as plywood and teak arrive over the completed frame.
   decking: { pos: [7.6, 3.2, 6.1], target: [0, 0.05, 0], fov: 37 },
-  // Looking up the hall as the rig strikes.
-  lighting: { pos: [-9.8, 2.6, 6.6], target: [2.6, 3.4, 0], fov: 44 },
-  // The finished court, lit. The shot that goes on a hoarding.
-  court: { pos: [14.6, 9.4, 12.6], target: [0, 0.3, 0], fov: 34 },
-  // Pulled away and dimmed, so the numbers on the page carry the section.
-  proof: { pos: [17, 8.4, 14.5], target: [0, 0, 0], fov: 30 },
+  // Looks up at the rig by raising the *target*, not by dropping the camera.
+  // Moving the camera to floor level to get the angle put four-fifths of the
+  // frame on empty ceiling; tilting from the same arc keeps the court in shot
+  // and lets both fixture rows recede down the hall.
+  lighting: { pos: [10.8, 3.0, 6.8], target: [-1.5, 3.9, 0], fov: 46 },
+  // Rises to the finished court, lit. The shot that goes on a hoarding.
+  court: { pos: [12.8, 8.4, 12.2], target: [0, 0.3, 0], fov: 35 },
+  // Keeps pulling away, so the numbers on the page carry the section.
+  proof: { pos: [16.8, 9.6, 15.2], target: [0, 0, 0], fov: 31 },
 };
 
 const ORDER = BEATS.map((b) => SHOTS[b]);

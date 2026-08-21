@@ -15,7 +15,7 @@ const lightingCourts = projects
   .reduce((n, p) => n + p.courts, 0);
 
 export default function LightingPage() {
-  const hero = plate("lighting-installation");
+  const hero = plate("lighting");
 
   return (
     <PageShell

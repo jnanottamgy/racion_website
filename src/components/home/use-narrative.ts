@@ -27,8 +27,11 @@ const KEYS = {
   nailing:    [0,    0,    0,     0,    0.55, 1,    1,     1,     1],
   // The 150 W rig strikes only after the floor is finished.
   lights:     [0,    0,    0,     0,    0,    0,    1,     1,     1],
-  // Layers separate for the labelled build-up as the decking goes on.
-  explode:    [0,    0,    0,     0,    0,    0.28, 0,     0,     0],
+  // Flat. This was 0.28 at the decking beat: the floor lifted apart and slammed
+  // shut again inside two segments, right at the moment the narrative says it is
+  // finished. The assembly sequence already shows every layer arriving — a
+  // second, contradictory separation on top of it just read as broken.
+  explode:    [0,    0,    0,     0,    0,    0,    0,     0,     0],
 } as const;
 
 /** Illuminance the readout climbs to — competition level. */

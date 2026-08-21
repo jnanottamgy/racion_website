@@ -19,7 +19,7 @@ const sectors = [
 ] as const;
 
 export default function AboutPage() {
-  const hero = plate("court-teak-portrait");
+  const hero = plate("court-lit");
 
   return (
     <PageShell
