@@ -11,5 +11,6 @@ npm-debug.log*
 next-env.d.ts
 /coverage
 .turbo
-.shoot.mjs
-.probe*.mjs
+# Throwaway Playwright harnesses used to drive and screenshot the scene during
+# development. Useful, but not part of the deliverable.
+.*.mjs
