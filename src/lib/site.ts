@@ -1,6 +1,22 @@
 /**
  * Brand-level facts. Every value here comes from the RACEON company brochure.
  */
+/**
+ * Absolute base URL for canonical links, OG images and the sitemap.
+ *
+ * Resolved rather than hardcoded: until raceon.in exists, a hardcoded domain
+ * makes every share card point at a 404. Vercel supplies the production
+ * hostname at build time, and setting NEXT_PUBLIC_SITE_URL overrides both once
+ * the real domain is live.
+ */
+function resolveSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  return "https://raceon.in";
+}
+
 export const site = {
   name: "RACEON",
   legalName: "RACEON Sports Equipment and Accessories LLP",
@@ -13,7 +29,7 @@ export const site = {
   tagline: "Built from the frame up.",
   description:
     "RACEON builds professional wooden badminton and squash courts — African teak on a termite-treated pine sub-structure, shock-absorbing Air Shox cushioning, and sports lighting. 91 courts delivered across Karnataka and South India.",
-  url: "https://raceon.in",
+  url: resolveSiteUrl(),
   locale: "en_IN",
 
   contact: {
@@ -45,3 +61,4 @@ export const site = {
     { label: "About", href: "/about" },
   ],
 } as const;
+

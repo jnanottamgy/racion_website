@@ -47,7 +47,9 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
-  alternates: { canonical: "/" },
+  // No blanket canonical here. Declaring `canonical: "/"` on the root layout
+  // inherits down to every route, so each page tells search engines it is a
+  // duplicate of the homepage — actively worse than emitting none at all.
   keywords: [
     "badminton court flooring",
     "wooden badminton court",
