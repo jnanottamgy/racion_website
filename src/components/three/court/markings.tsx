@@ -113,7 +113,7 @@ function createNetTexture(): THREE.CanvasTexture {
  * and instantly recognisable as a shape to anyone who plays.
  */
 export function NetAssembly() {
-  const texture = useMemo(createNetTexture, []);
+  const texture = useMemo(() => createNetTexture(), []);
 
   const netGeometry = useMemo(() => {
     const segments = 48;

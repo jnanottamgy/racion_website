@@ -251,8 +251,8 @@ function useFadingPine(seedMaterial: THREE.MeshStandardMaterial) {
 }
 
 export function PineFramework() {
-  const { alongX, alongZ } = useMemo(buildInterlocked, []);
-  const parallel = useMemo(buildParallel, []);
+  const { alongX, alongZ } = useMemo(() => buildInterlocked(), []);
+  const parallel = useMemo(() => buildParallel(), []);
 
   const base = useSurfaceMaterial("pine", {
     size: 512,

@@ -37,7 +37,7 @@ function layFixings() {
 }
 
 export function NailingPass() {
-  const { fixings, cols, x0 } = useMemo(layFixings, []);
+  const { fixings, cols, x0 } = useMemo(() => layFixings(), []);
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const toolRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.PointLight>(null);

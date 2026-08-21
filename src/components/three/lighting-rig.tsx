@@ -132,7 +132,7 @@ const BEAM_FRAGMENT = /* glsl */ `
  * between them and the floor.
  */
 export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
-  const fixtures = useMemo(layRig, []);
+  const fixtures = useMemo(() => layRig(), []);
 
   const housingRef = useRef<THREE.InstancedMesh>(null);
   const lensRef = useRef<THREE.InstancedMesh>(null);

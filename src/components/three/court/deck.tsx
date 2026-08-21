@@ -78,7 +78,7 @@ function layDeck(): Plank[] {
  */
 export function Deck({ visible = true }: { visible?: boolean }) {
   const ref = useRef<THREE.InstancedMesh>(null);
-  const planks = useMemo(layDeck, []);
+  const planks = useMemo(() => layDeck(), []);
 
   const base = useSurfaceMaterial("teak", {
     size: 1024,
