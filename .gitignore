@@ -14,3 +14,6 @@ next-env.d.ts
 # Throwaway Playwright harnesses used to drive and screenshot the scene during
 # development. Useful, but not part of the deliverable.
 .*.mjs
+
+# TypeScript incremental build cache — regenerated on every build.
+*.tsbuildinfo

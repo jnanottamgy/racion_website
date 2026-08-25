@@ -28,7 +28,7 @@ export const site = {
    */
   tagline: "Built from the frame up.",
   description:
-    "RACEON builds professional wooden badminton and squash courts — African teak on a termite-treated pine sub-structure, shock-absorbing Air Shox cushioning, and sports lighting. 91 courts delivered across Karnataka and South India.",
+    "RACEON builds professional wooden badminton and squash courts — African teak and maple on an interlocked chemically treated pine framework, shock-absorbing Air Shox cushioning, and sports lighting. 91 courts delivered across Karnataka and South India.",
   url: resolveSiteUrl(),
   locale: "en_IN",
 
@@ -66,7 +66,9 @@ export const site = {
   nav: [
     { label: "Systems", href: "/systems" },
     { label: "Lighting", href: "/lighting" },
+    { label: "Tools", href: "/tools" },
     { label: "Projects", href: "/projects" },
+    { label: "Gallery", href: "/gallery" },
     { label: "Process", href: "/process" },
     { label: "About", href: "/about" },
   ],

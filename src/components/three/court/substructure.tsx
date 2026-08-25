@@ -3,17 +3,16 @@
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { mulberry32 } from "@/lib/noise";
+import { snap } from "./use-arrival";
 import { ASSEMBLY, damp, ramp, sceneState, smoother } from "@/lib/scene-state";
 import { DECK } from "./dimensions";
 import { FRAME } from "./framework";
 import { TILE_METRES, useSurfaceMaterial } from "../materials/use-surface-material";
 
 const dummy = new THREE.Object3D();
-const tint = new THREE.Color();
 
 /**
- * Prepared base: concrete substrate under a 6-mil moisture-resistant sheet.
+ * Prepared base: concrete substrate under a 3–5 mm moisture-resistant membrane.
  *
  * Always present — it's the thing everything else is built on, and stripping it
  * away would leave the court floating.
@@ -43,7 +42,7 @@ export function BaseSlab() {
 }
 
 /**
- * Air Shox: 18 mm button-type pads, set out on the framework grid so every
+ * Air Shox: 20–21 mm button-type pads, set out on the framework grid so every
  * crossing of the timber lands on one.
  */
 export function ShockPads() {
@@ -104,7 +103,11 @@ export function ShockPads() {
     const t = smoother(
       ramp(sceneState.assembly, ASSEMBLY.shockPads, ASSEMBLY.shockPads + 0.1),
     );
-    material.opacity = damp(material.opacity, t, 9, Math.min(delta, 1 / 20));
+    material.opacity = snap(
+      damp(material.opacity, t, 9, Math.min(delta, 1 / 10)),
+      t,
+    );
+    material.transparent = material.opacity < 0.999;
     if (group.current) {
       group.current.position.y = (1 - t) * 0.22;
       group.current.visible = material.opacity > 0.008;
@@ -124,118 +127,3 @@ export function ShockPads() {
   );
 }
 
-/**
- * Plywood underlayment.
- *
- * Modelled as real sheets rather than one continuous plane — a plywood deck is
- * a field of 8×4 boards with staggered joints, and the joint lines are how
- * anyone recognises it as plywood rather than as a slab of MDF.
- */
-export function Plywood() {
-  const ref = useRef<THREE.InstancedMesh>(null);
-  const group = useRef<THREE.Group>(null);
-
-  const sheets = useMemo(() => {
-    const SHEET_L = 2.44;
-    const SHEET_W = 1.22;
-    const GAP = 0.004;
-    const rnd = mulberry32(0x9140);
-    const out: { pos: [number, number]; size: [number, number]; shade: number; uv: [number, number] }[] = [];
-
-    const rows = Math.ceil(DECK.width / SHEET_W);
-    for (let r = 0; r < rows; r++) {
-      const z = Math.min(
-        -DECK.width / 2 + SHEET_W / 2 + r * SHEET_W,
-        DECK.width / 2 - SHEET_W / 2,
-      );
-      // Stagger alternate rows by half a sheet so the cross joints break bond.
-      // The stagger is applied by *trimming* the first sheet rather than
-      // starting it early — starting early leaves a saw-toothed edge hanging
-      // over the side of the deck, which is very obvious in a wide shot.
-      let x = -DECK.length / 2;
-      let next = r % 2 ? SHEET_L / 2 : SHEET_L;
-      while (x < DECK.length / 2 - 0.01) {
-        const length = Math.min(next, DECK.length / 2 - x);
-        if (length > 0.05) {
-          out.push({
-            pos: [x + length / 2, z],
-            size: [length - GAP, SHEET_W - GAP],
-            shade: 0.92 + rnd() * 0.16,
-            uv: [rnd() * 5, rnd() * 5],
-          });
-        }
-        x += length;
-        next = SHEET_L;
-      }
-    }
-    return out;
-  }, []);
-
-  const base = useSurfaceMaterial("pine", {
-    size: 512,
-    seed: 41,
-    perInstanceUv: true,
-  });
-  const material = useMemo(() => {
-    const m = base.clone();
-    m.transparent = true;
-    m.opacity = 0;
-    m.onBeforeCompile = base.onBeforeCompile;
-    m.customProgramCacheKey = () => "pine-instanced-uv";
-    return m;
-  }, [base]);
-  useLayoutEffect(() => () => material.dispose(), [material]);
-
-  const geometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
-  useLayoutEffect(() => () => geometry.dispose(), [geometry]);
-
-  useLayoutEffect(() => {
-    const mesh = ref.current;
-    if (!mesh) return;
-    const uvOffset = new Float32Array(sheets.length * 2);
-    const uvScale = new Float32Array(sheets.length * 2);
-
-    sheets.forEach((sheet, i) => {
-      dummy.position.set(sheet.pos[0], 0, sheet.pos[1]);
-      dummy.scale.set(sheet.size[0], 0.014, sheet.size[1]);
-      dummy.rotation.set(0, 0, 0);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
-      tint.setScalar(sheet.shade);
-      mesh.setColorAt(i, tint);
-      uvOffset[i * 2] = sheet.uv[0];
-      uvOffset[i * 2 + 1] = sheet.uv[1];
-      uvScale[i * 2] = sheet.size[0] / TILE_METRES;
-      uvScale[i * 2 + 1] = sheet.size[1] / TILE_METRES;
-    });
-
-    mesh.geometry.setAttribute("aUvOffset", new THREE.InstancedBufferAttribute(uvOffset, 2));
-    mesh.geometry.setAttribute("aUvScale", new THREE.InstancedBufferAttribute(uvScale, 2));
-    mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
-    mesh.computeBoundingSphere();
-  }, [sheets]);
-
-  useFrame((_, delta) => {
-    const t = smoother(
-      ramp(sceneState.assembly, ASSEMBLY.plywood, ASSEMBLY.plywood + 0.12),
-    );
-    material.opacity = damp(material.opacity, t, 9, Math.min(delta, 1 / 20));
-    if (group.current) {
-      group.current.position.y = (1 - t) * 0.5;
-      group.current.visible = material.opacity > 0.008;
-    }
-  });
-
-  return (
-    <group ref={group}>
-      <instancedMesh
-        ref={ref}
-        args={[geometry, material, sheets.length]}
-        castShadow
-        receiveShadow
-        frustumCulled={false}
-      />
-    </group>
-  );
-}

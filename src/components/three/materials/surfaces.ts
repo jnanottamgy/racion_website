@@ -56,20 +56,40 @@ const RECIPES: Record<string, SurfaceRecipe> = {
     relief: 0.6,
   },
   /**
-   * Termite-treated seasoned pine — the base structure. Pale, yellow, coarse
-   * figure. Only ever seen in the exploded view, so it is generated at half
-   * resolution.
+   * Chemically treated seasoned pine — the framework.
+   *
+   * Dark, not the pale yellow of untreated pine. RACEON's members come
+   * pressure-treated against termite and moisture, which drives the timber to a
+   * deep olive-brown and leaves the grain reading as tone rather than colour.
+   *
+   * Dark, but not black. The interlock beat exists to show the half laps, and
+   * timber that swallows all its own shadow shows nothing.
    */
   pine: {
-    base: ["#b18a55", "#e8d0a4"],
-    detail: "#8a6535",
-    grain: 0.85,
+    base: ["#4e3a26", "#7d5f3e"],
+    detail: "#332517",
+    grain: 0.9,
     grainFrequency: 3.2,
     grainWarp: 0.7,
     poreScale: 90,
-    poreDepth: 0.2,
-    roughness: [0.62, 0.82],
-    relief: 0.8,
+    poreDepth: 0.24,
+    roughness: [0.66, 0.86],
+    relief: 0.85,
+  },
+  /**
+   * Hard maple — the squash court surface. Pale, tight, almost creamy, and a
+   * completely different timber from the African teak used for badminton.
+   */
+  maple: {
+    base: ["#c9a271", "#f0dcbb"],
+    detail: "#a67c4c",
+    grain: 0.6,
+    grainFrequency: 7.5,
+    grainWarp: 0.2,
+    poreScale: 175,
+    poreDepth: 0.06,
+    roughness: [0.18, 0.34],
+    relief: 0.34,
   },
   /** Button-type shock pad rubber — near-black, matte, slightly granular. */
   shockpad: {
@@ -83,7 +103,14 @@ const RECIPES: Record<string, SurfaceRecipe> = {
     roughness: [0.72, 0.9],
     relief: 0.5,
   },
-  /** 6-mil vapour barrier sheeting — near-flat with faint creasing. */
+  /**
+   * 3–5 mm moisture-resistant membrane — near-flat with faint creasing.
+   *
+   * Matte. At 0.3–0.5 it was glossy enough to return the staging light as a
+   * mirror, and a 15 m spot reflected off a flat sheet is a blown white blob
+   * sitting on the floor of the framework beat looking like a rendering fault.
+   * A polythene-backed underlay does not do that.
+   */
   membrane: {
     base: ["#23202c", "#37323f"],
     detail: "#1a1822",
@@ -92,7 +119,7 @@ const RECIPES: Record<string, SurfaceRecipe> = {
     grainWarp: 1.6,
     poreScale: 40,
     poreDepth: 0.12,
-    roughness: [0.3, 0.5],
+    roughness: [0.62, 0.82],
     relief: 0.35,
   },
 };

@@ -20,7 +20,7 @@ export default function LightingPage() {
   return (
     <PageShell
       eyebrow="Lighting"
-      title={<>Bright enough to compete under. Never in a player&rsquo;s eye.</>}
+      title={<>Even light, and none of it in a player&rsquo;s eye.</>}
       lede="150W high-performance fixtures for glare-free, even illumination — complete with supports and fittings, positioned for professional court standards."
     >
       <Section>
@@ -51,6 +51,15 @@ export default function LightingPage() {
               <dt className="label">Per fitting</dt>
               <dd className="mt-2 font-mono text-[length:var(--text-d3)] text-accent-text">
                 150 W
+              </dd>
+            </div>
+            <div>
+              <dt className="label">At the surface</dt>
+              <dd className="mt-2 font-mono text-[length:var(--text-d3)] text-accent-text">
+                500–525
+                <span className="ml-2 text-xs tracking-[0.14em] text-bone-faint">
+                  LUX
+                </span>
               </dd>
             </div>
             <div>

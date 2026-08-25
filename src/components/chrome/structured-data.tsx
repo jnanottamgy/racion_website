@@ -38,6 +38,7 @@ export function StructuredData() {
       "Wooden badminton court flooring",
       "Squash court construction",
       "African teak sports flooring",
+      "Maple squash court flooring",
       "Interlocked pine timber framework",
       "Sports lighting installation",
     ],
@@ -49,7 +50,7 @@ export function StructuredData() {
           "@type": "Service",
           name: "Wooden badminton and squash court installation",
           description:
-            "Turnkey wooden court construction: prepared base, shock pads, interlocked pine framework, plywood underlayment, African teak and PU court finish.",
+            "Turnkey wooden court construction: prepared base, shock pads, interlocked pine framework, and African teak or maple laid directly onto it with a PU court finish.",
         },
       },
       {

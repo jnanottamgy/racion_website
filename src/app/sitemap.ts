@@ -6,6 +6,8 @@ const ROUTES = [
   { path: "/systems", priority: 0.9 },
   { path: "/lighting", priority: 0.8 },
   { path: "/projects", priority: 0.8 },
+  { path: "/gallery", priority: 0.8 },
+  { path: "/tools", priority: 0.7 },
   { path: "/configurator", priority: 0.8 },
   { path: "/process", priority: 0.6 },
   { path: "/about", priority: 0.6 },

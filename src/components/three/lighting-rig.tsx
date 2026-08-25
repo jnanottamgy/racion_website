@@ -122,7 +122,7 @@ const BEAM_FRAGMENT = /* glsl */ `
     float facing = abs(dot(normalize(vNormalW), normalize(vViewW)));
     float core = pow(facing, 4.2);
 
-    float alpha = core * falloff * lit * uIntensity * vProximity * 0.045;
+    float alpha = core * falloff * lit * uIntensity * vProximity * 0.07;
     gl_FragColor = vec4(uColor, alpha);
   }
 `;
@@ -208,9 +208,12 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
       dummy.updateMatrix();
       housingRef.current?.setMatrixAt(i, dummy.matrix);
 
-      // The lens faces down, tilted slightly inboard toward the court.
+      // The lens faces down at the court. Rotated -90 it faced the ceiling, and
+      // a single-sided plane pointing away from every camera in the narrative
+      // is a plane nobody ever sees: the beat where the rig strikes showed two
+      // rows of dead black housings.
       dummy.position.set(f.x, RIG.height - RIG.bodyDepth / 2 - 0.001, f.z);
-      dummy.rotation.set(-Math.PI / 2, 0, 0);
+      dummy.rotation.set(Math.PI / 2, 0, 0);
       dummy.updateMatrix();
       lensRef.current?.setMatrixAt(i, dummy.matrix);
 
@@ -252,16 +255,28 @@ export function LightingRig({ volumetric = true }: { volumetric?: boolean }) {
   ]);
 
   useFrame((_, delta) => {
-    const dt = Math.min(delta, 1 / 20);
+    // 10fps, matching the camera rig and the arrivals. Clamped tighter than
+    // the frame time, the ignition runs in slow motion on exactly the machines
+    // that take longest to render it — the rig was still half dark seconds
+    // after the beat that says it has struck.
+    const dt = Math.min(delta, 1 / 10);
     const lights = sceneState.lights;
 
     beamMaterial.uniforms.uProgress.value = lights;
-    beamMaterial.uniforms.uIntensity.value = damp(
+    const beamIntensity = damp(
       beamMaterial.uniforms.uIntensity.value,
       volumetric ? lights : 0,
       6,
       dt,
     );
+    beamMaterial.uniforms.uIntensity.value = beamIntensity;
+
+    // Take the beams out of the draw entirely once they carry nothing. They
+    // composite additively over the whole frame, so an intensity that has
+    // decayed to a thousandth still lays a soft wash across every shot before
+    // the rig strikes — which is most of the narrative, and which read as the
+    // framework being translucent.
+    if (beamRef.current) beamRef.current.visible = beamIntensity > 0.004;
 
     lensMaterial.opacity = lights;
 

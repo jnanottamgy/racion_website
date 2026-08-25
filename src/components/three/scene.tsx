@@ -1,11 +1,12 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import * as THREE from "three";
 import { buildUp } from "@/content/systems";
 import { damp, sceneState } from "@/lib/scene-state";
+import { exposeDebug } from "@/lib/debug";
 import { CameraRig } from "./camera-rig";
 import { Court } from "./court/court";
 import { DECK } from "./court/dimensions";
@@ -153,11 +154,16 @@ function StagingLight() {
     const light = ref.current;
     if (!light) return;
     if (target.current) light.target = target.current;
+    // Steps back as the work lamp comes up. Two keys at full strength is a
+    // wash, and a wash is what bleached the treated pine pale in the close-up:
+    // the staged light sits at fifty degrees and lands flat on every top face
+    // at once, so no amount of raking from the lamp could carve anything out of
+    // it. It hands the construction beats over and takes them back after.
     light.intensity = damp(
       light.intensity,
-      (1 - sceneState.lights) * 4.6,
+      (1 - sceneState.lights) * (4.6 - sceneState.work * 3.4),
       4.5,
-      Math.min(delta, 1 / 20),
+      Math.min(delta, 1 / 10),
     );
   });
 
@@ -187,6 +193,63 @@ function StagingLight() {
 }
 
 /**
+ * The installers' work lamp.
+ *
+ * Beats 01–04 are a construction site: the fixtures have not been hung yet, so
+ * the only light there would honestly be on the framework is the one the crew
+ * stood on the slab. That is also the light the interlock beat needs. The
+ * staging key sits at fifty degrees, which lands on the top of every member
+ * equally and leaves the half laps in the same tone as the timber around them —
+ * the notches are there and nobody can see them. This rakes in at twenty-five
+ * degrees from the far side instead, so each lap throws a shadow into the
+ * member it is notched into and the joint reads as a joint.
+ *
+ * Warm, because a site lamp is, and because it separates the construction beats
+ * from the cool staged light of the hero without touching either.
+ */
+function WorkLight() {
+  const ref = useRef<THREE.SpotLight>(null);
+  const target = useRef<THREE.Object3D>(null);
+
+  useFrame((_, delta) => {
+    const light = ref.current;
+    if (!light) return;
+    if (target.current) light.target = target.current;
+    light.intensity = damp(
+      light.intensity,
+      sceneState.work * 44,
+      4.5,
+      Math.min(delta, 1 / 10),
+    );
+  });
+
+  return (
+    <>
+      <object3D ref={target} position={[0.3, -0.02, 0]} />
+      <spotLight
+        ref={ref}
+        position={[-3.4, 1.55, 1.35]}
+        angle={0.62}
+        penumbra={0.85}
+        // A real lamp on a real stand, so it keeps its inverse-square — which
+        // is what makes the far end of the framework fall away into the hall
+        // instead of the whole floor coming up as one flat sheet.
+        decay={1.55}
+        distance={0}
+        intensity={0}
+        color="#ffd7a3"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0006}
+        shadow-normalBias={0.012}
+        shadow-camera-near={0.4}
+        shadow-camera-far={22}
+      />
+    </>
+  );
+}
+
+/**
  * Ambient level and environment intensity ride the ignition sequence, so the
  * whole room comes up with the fixtures rather than the court sitting in
  * pre-lit daylight while the lamps pretend to switch on.
@@ -197,12 +260,18 @@ function RoomExposure() {
   const violet = useRef<THREE.HemisphereLight>(null);
 
   useFrame((_, delta) => {
-    const dt = Math.min(delta, 1 / 20);
+    const dt = Math.min(delta, 1 / 10);
     const lit = sceneState.lights;
 
+    // The environment is a room with two bright fixture strips in it, so it has
+    // no business being half-strength before those fixtures have struck. At 0.5
+    // it was the brightest thing in every construction beat — bright enough to
+    // bleach the treated pine back to the pale untreated colour the whole pass
+    // was meant to get rid of, and to do it from a source that, in the story
+    // the scene is telling, is not switched on yet.
     scene.environmentIntensity = damp(
       scene.environmentIntensity ?? 0,
-      0.5 + lit * 0.8,
+      0.16 + lit * 1.14,
       5,
       dt,
     );
@@ -212,7 +281,7 @@ function RoomExposure() {
     if (violet.current) {
       // The violet bounce is what makes the unlit room feel like a RACEON room
       // rather than a black void — but it has to get out of the way once the
-      // fixtures strike. A lavender hall directly contradicts the "1,500 lux"
+      // fixtures strike. A lavender hall directly contradicts the lux
       // readout sitting next to it.
       violet.current.intensity = damp(violet.current.intensity, 1.5 - lit * 1.2, 5, dt);
     }
@@ -234,6 +303,45 @@ function RoomExposure() {
 export function Scene({ volumetric = true }: { volumetric?: boolean }) {
   const scene = useThree((s) => s.scene);
 
+  /**
+   * Every drawn mesh, with the material state that decides how it composites.
+   *
+   * A screenshot cannot tell a translucent member from a shadow falling across
+   * an opaque one, and both look like a bug. This says which it is.
+   */
+  useEffect(
+    () =>
+      exposeDebug({
+        layers: {
+          get: () => {
+            const rows: Record<string, unknown>[] = [];
+            scene.traverse((o) => {
+              const mesh = o as THREE.Mesh;
+              if (!mesh.isMesh || !mesh.visible) return;
+              const mats = Array.isArray(mesh.material)
+                ? mesh.material
+                : [mesh.material];
+              mats.forEach((m) => {
+                const std = m as THREE.MeshStandardMaterial;
+                rows.push({
+                  type: mesh.type,
+                  name: mesh.name || std.type,
+                  transparent: std.transparent,
+                  opacity: +std.opacity.toFixed(3),
+                  blending: std.blending,
+                  depthWrite: std.depthWrite,
+                  renderOrder: mesh.renderOrder,
+                });
+              });
+            });
+            return rows;
+          },
+          configurable: true,
+        },
+      }),
+    [scene],
+  );
+
   useLayoutEffect(() => {
     // Exponential fog dissolves the far end of the hall instead of ending it
     // at a hard edge, which is what sells depth in a scene with no walls.
@@ -249,6 +357,7 @@ export function Scene({ volumetric = true }: { volumetric?: boolean }) {
       <RoomEnvironment />
       <RoomExposure />
       <StagingLight />
+      <WorkLight />
       <CameraRig />
       <Hall />
       <Slab />

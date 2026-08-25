@@ -54,8 +54,11 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
+    // Clears the stored route directly rather than going through `setOpen`,
+    // which is rebuilt on every navigation and would resubscribe the listener
+    // for nothing.
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") setOpenedOn(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -72,7 +75,7 @@ export function Header() {
       <div className="container-x flex h-[4.5rem] items-center justify-between gap-8">
         <Logo variant="lockup" height={34} />
 
-        <nav className="hidden items-center gap-9 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {site.nav.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
@@ -107,7 +110,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex h-10 w-10 items-center justify-center border border-hairline-bright text-bone transition-colors hover:border-accent md:hidden"
+            className="flex h-10 w-10 items-center justify-center border border-hairline-bright text-bone transition-colors hover:border-accent lg:hidden"
           >
             <span className="relative block h-3 w-4">
               <span
@@ -128,7 +131,7 @@ export function Header() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-hairline bg-stage/95 backdrop-blur-xl md:hidden"
+        className="border-t border-hairline bg-stage/95 backdrop-blur-xl lg:hidden"
       >
         <nav className="container-x flex flex-col py-4">
           {site.nav.map((item) => (

@@ -7,7 +7,7 @@ import { plate } from "@/content/photography";
 export const metadata: Metadata = {
   title: "Wooden Court Systems",
   description:
-    "The RACEON build-up: prepared base, Air Shox cushioning, an interlocked pine framework, plywood underlayment, African teak and a PU court finish.",
+    "The RACEON build-up: prepared base, Air Shox cushioning, an interlocked pine framework, and African teak or maple laid straight onto it.",
 };
 
 export default function SystemsPage() {
@@ -17,8 +17,8 @@ export default function SystemsPage() {
   return (
     <PageShell
       eyebrow="Systems"
-      title={<>Six layers. Only one of them is the floor.</>}
-      lede="Badminton and squash courts in African teak, built from the slab up. Everything under the teak is what decides whether the court is still flat in ten years."
+      title={<>Five layers. Only one of them is the floor.</>}
+      lede="Badminton courts in African teak, squash courts in maple, built from the slab up. Everything under the boards is what decides whether the court is still flat in ten years."
     >
       <Section>
         <Image

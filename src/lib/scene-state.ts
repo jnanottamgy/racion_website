@@ -44,9 +44,9 @@ export const ASSEMBLY = {
   shockPads: 0.06,
   frameAlongX: 0.18,
   frameAlongZ: 0.34,
-  plywood: 0.58,
-  teak: 0.72,
-  markings: 0.9,
+  /** The boards land straight on the framework — RACEON use no plywood. */
+  boards: 0.62,
+  markings: 0.86,
 } as const;
 
 export interface SceneState {
@@ -75,7 +75,18 @@ export interface SceneState {
   method: number;
   /** 0 → 1 luminaire ignition across the rig. */
   lights: number;
-  /** Illuminance readout, animated 0 → 1500. */
+  /**
+   * 0 → 1 presence of the installers' portable work lamp.
+   *
+   * The construction beats happen in a hall whose rig has not been hung yet, so
+   * the only honest light on the framework is the one the crew brings. It is
+   * also the only light low enough to rake across the half laps — a key at
+   * fifty degrees puts the notches in the same tone as the members and the
+   * interlock stops reading, which is the whole point of that beat. It fades
+   * out as the boards go down and the fixtures take over.
+   */
+  work: number;
+  /** Illuminance readout, animated up to the installed level. */
   lux: number;
 
   /** Normalised pointer, -1 → 1 on both axes. Drives parallax, never camera. */
@@ -109,6 +120,7 @@ export const sceneState: SceneState = {
   nailX: 0,
   method: 0,
   lights: 0,
+  work: 0,
   lux: 0,
   pointer: { x: 0, y: 0 },
   velocity: 0,
@@ -127,6 +139,7 @@ export function resetSceneState() {
     nailX: 0,
     method: 0,
     lights: 0,
+    work: 0,
     lux: 0,
     velocity: 0,
   });

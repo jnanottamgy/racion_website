@@ -101,7 +101,7 @@ export function Deck({ visible = true }: { visible?: boolean }) {
   }, [base]);
   useLayoutEffect(() => () => material.dispose(), [material]);
 
-  const group = useArrival(material, ASSEMBLY.teak, { drop: 0.62 });
+  const group = useArrival(material, ASSEMBLY.boards, { drop: 0.62 });
 
   const geometry = useMemo(() => new THREE.BoxGeometry(1, 1, 1), []);
   useLayoutEffect(() => () => geometry.dispose(), [geometry]);

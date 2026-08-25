@@ -31,8 +31,8 @@ export default function AboutPage() {
         <div className="grid gap-14 lg:grid-cols-[1fr_0.8fr]">
           <div className="space-y-7 text-[length:var(--text-lead)] leading-[1.55] text-bone-dim">
             <p>
-              RACEON works with termite-treated pine, African teak flooring and
-              advanced shock-absorption systems to build courts that meet
+              RACEON works with chemically treated pine, African teak and maple
+              flooring, and advanced shock-absorption systems to build courts that meet
               professional playing standards while ensuring safety, durability
               and performance.
             </p>

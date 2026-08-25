@@ -10,7 +10,7 @@ import { Deck } from "./deck";
 import { PineFramework } from "./framework";
 import { CourtLines, NetAssembly } from "./markings";
 import { NailingPass } from "./nailing";
-import { BaseSlab, Plywood, ShockPads } from "./substructure";
+import { BaseSlab, ShockPads } from "./substructure";
 import { useArrival } from "./use-arrival";
 
 /** Vertical separation between layers at full explode. */
@@ -59,7 +59,7 @@ function LayerGroup({
     const group = ref.current;
     if (!group) return;
     const target = centre + sceneState.explode * index * EXPLODE_GAP;
-    group.position.y = damp(group.position.y, target, 7, Math.min(delta, 1 / 20));
+    group.position.y = damp(group.position.y, target, 7, Math.min(delta, 1 / 10));
   });
 
   return (
@@ -116,7 +116,7 @@ function CourtFinish() {
  *
  * Layer contents are keyed to the build-up codes in `systems.ts` rather than to
  * array positions, so re-ordering or inserting a layer in the content file
- * cannot silently put the plywood under the shock pads.
+ * cannot silently put the boards under the shock pads.
  */
 export function Court() {
   const stack = useStack();
@@ -133,13 +133,12 @@ export function Court() {
               <NailingPass />
             </>
           )}
-          {layer.code === "04" && <Plywood />}
-          {layer.code === "05" && (
+          {layer.code === "04" && (
             <group position={[0, -PLANK.thickness / 2 + layer.thickness / 2, 0]}>
               <Deck />
             </group>
           )}
-          {layer.code === "06" && (
+          {layer.code === "05" && (
             <>
               <CourtFinish />
               <CourtLines />

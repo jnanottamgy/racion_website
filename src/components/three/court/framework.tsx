@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { mulberry32 } from "@/lib/noise";
 import { ASSEMBLY, damp, ramp, sceneState, smoother } from "@/lib/scene-state";
 import { DECK } from "./dimensions";
+import { snap } from "./use-arrival";
 import { TILE_METRES, useSurfaceMaterial } from "../materials/use-surface-material";
 
 /**
@@ -20,8 +21,8 @@ export const FRAME = {
   spacing: 0.55,
   memberWidth: 0.05,
   memberHeight: 0.06,
-  /** 18 mm button-type pads, per the brochure. */
-  padThickness: 0.018,
+  /** 20–21 mm button-type pads. */
+  padThickness: 0.021,
   padDiameter: 0.07,
 } as const;
 
@@ -250,6 +251,25 @@ function useFadingPine(seedMaterial: THREE.MeshStandardMaterial) {
   }, [seedMaterial]);
 }
 
+/**
+ * Fade the member in, then stop being transparent.
+ *
+ * Timber that stays on the transparent queue after it has finished arriving is
+ * the reason the interlock close-up read as glass: an `InstancedMesh` has no
+ * per-instance sort, so the blend order inside it is buffer order, and every
+ * member behind a near one bled straight through it. Two hundred crossings of
+ * framework looked like a wireframe of itself — which is precisely the "pieces
+ * floating on top of each other" impression this beat exists to kill.
+ *
+ * Once a layer is opaque it belongs in the opaque queue, where the depth buffer
+ * sorts it exactly and for free.
+ */
+function settle(material: THREE.Material & { opacity: number }, target: number, dt: number) {
+  material.opacity = snap(damp(material.opacity, target, 9, dt), target);
+  material.transparent = material.opacity < 0.999;
+  return material.opacity;
+}
+
 export function PineFramework() {
   const { alongX, alongZ } = useMemo(() => buildInterlocked(), []);
   const parallel = useMemo(() => buildParallel(), []);
@@ -278,15 +298,15 @@ export function PineFramework() {
   const groupP = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
-    const dt = Math.min(delta, 1 / 20);
+    const dt = Math.min(delta, 1 / 10);
     const { assembly, method } = sceneState;
 
     const arriveX = smoother(ramp(assembly, ASSEMBLY.frameAlongX, ASSEMBLY.frameAlongX + 0.13));
     const arriveZ = smoother(ramp(assembly, ASSEMBLY.frameAlongZ, ASSEMBLY.frameAlongZ + 0.15));
 
-    matX.opacity = damp(matX.opacity, arriveX * (1 - method), 9, dt);
-    matZ.opacity = damp(matZ.opacity, arriveZ * (1 - method), 9, dt);
-    matP.opacity = damp(matP.opacity, method * Math.max(arriveX, arriveZ), 9, dt);
+    settle(matX, arriveX * (1 - method), dt);
+    settle(matZ, arriveZ * (1 - method), dt);
+    settle(matP, method * Math.max(arriveX, arriveZ), dt);
 
     // The drop. The second direction falls further, so it visibly seats into
     // the notches the first direction left for it.

@@ -24,9 +24,12 @@
   /* -- The room ------------------------------------------------------------
      Violet-black. #0c0710 next to #0c0c0c looks like nothing on its own and
      like a completely different brand across a full screen.                  */
-  --brand-stage:          #0c0710;
-  --brand-stage-raised:   #150c1b;
-  --brand-stage-sunk:     #070409;
+  /* Warmed very slightly off pure violet. The framework is dark chemically
+     treated pine, near-black olive-brown, and against a cold violet ground it
+     read as a silhouette rather than as timber. */
+  --brand-stage:          #0d0810;
+  --brand-stage-raised:   #171020;
+  --brand-stage-sunk:     #08050b;
   --brand-hairline:       #2a2130;
   --brand-hairline-bright:#3d3145;
 

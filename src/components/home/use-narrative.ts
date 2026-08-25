@@ -21,12 +21,25 @@ import { useScroll } from "@/components/providers/scroll-provider";
  */
 const KEYS = {
   // The court arrives finished, strips itself back to the slab, and rebuilds.
-  assembly:   [1,    0,    0.31,  0.5,  0.5,  1,    1,     1,     1],
+  //
+  // 0.42 rather than 0.31 at the framework beat. The copy there is "then the
+  // same again, perpendicular to it", and at 0.31 the second direction had not
+  // started — the frame showed a set of parallel battens, which is the
+  // arrangement the next beat exists to contrast RACEON against. 0.42 catches
+  // the cross members halfway down into their notches.
+  assembly:   [1,    0,    0.42,  0.5,  0.5,  1,    1,     1,     1],
   // Mid-pass when its own beat is on screen — a pass that has already finished
   // by the time you read about it has nothing to show.
   nailing:    [0,    0,    0,     0,    0.55, 1,    1,     1,     1],
   // The 150 W rig strikes only after the floor is finished.
   lights:     [0,    0,    0,     0,    0,    0,    1,     1,     1],
+  // The crew's work lamp — the light that exists on a site before the rig is
+  // hung. It comes up for the interlock, which is a close-up taken from inside
+  // the framework and the one shot that needs a low rake to show the laps, and
+  // is barely there either side of it. On across all three construction beats
+  // it lit the whole pool at once: the framework beat came up pale, which is
+  // the exact look this pass exists to get rid of.
+  work:       [0,    0,    0.2,   1,    0.55, 0,    0,     0,     0],
   // Flat. This was 0.28 at the decking beat: the floor lifted apart and slammed
   // shut again inside two segments, right at the moment the narrative says it is
   // finished. The assembly sequence already shows every layer arriving — a
@@ -34,8 +47,8 @@ const KEYS = {
   explode:    [0,    0,    0,     0,    0,    0,    0,     0,     0],
 } as const;
 
-/** Illuminance the readout climbs to — competition level. */
-const PEAK_LUX = 1500;
+/** Illuminance RACEON's installations actually deliver at the surface. */
+const PEAK_LUX = 525;
 
 export function useNarrative(containerId: string) {
   const { harnessReady, capability } = useScroll();
@@ -92,6 +105,8 @@ export function useNarrative(containerId: string) {
       sceneState.assembly = keyframe(p, beatStops, [...KEYS.assembly]);
       sceneState.nailing = keyframe(p, beatStops, [...KEYS.nailing]);
       sceneState.explode = keyframe(p, beatStops, [...KEYS.explode]);
+
+      sceneState.work = keyframe(p, beatStops, [...KEYS.work]);
 
       const lights = keyframe(p, beatStops, [...KEYS.lights]);
       sceneState.lights = lights;

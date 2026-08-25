@@ -31,10 +31,23 @@ const SHOTS: Record<(typeof BEATS)[number], Shot> = {
   // Over the grid as the first direction of pine lands.
   framework: { pos: [3.5, 2.9, 3.0], target: [0, -0.07, 0], fov: 36 },
   // Pushed in on the crossings, where the half laps seat into one another.
+  //
   // Steep rather than shallow: near the floor at a shallow angle the camera
   // sees nine metres of receding grid, which reads as a wide shot no matter how
   // close it actually is. Height is what makes a close-up close.
-  interlock: { pos: [1.3, 1.2, 1.1], target: [0, -0.069, 0], fov: 34 },
+  //
+  // 1.3, 1.2, 1.1 still read as a wide: two metres out at thirty-four degrees
+  // of declination puts four crossings across the frame and the rest of the
+  // court behind them, and a 50 mm notch at that distance is a few pixels of
+  // tone change.
+  //
+  // Fifty-three degrees is the angle that works. Below it the ground plane runs
+  // away to the horizon and most of the frame is distant grid however close the
+  // camera gets — the whole reason the previous two attempts read as wides. At
+  // fifty-three the frame lands on a metre and a half of floor, three crossings
+  // across and two deep, and the 30 mm step where one member dives under the
+  // other is thirty pixels rather than three.
+  interlock: { pos: [0.52, 0.86, 0.44], target: [0, -0.03, 0], fov: 36 },
   // Low and along the framework, following the nailing pass.
   // Relative to the tool: the X of this shot is added to wherever the pass
   // has reached, so the camera travels with the machine.
@@ -48,7 +61,7 @@ const SHOTS: Record<(typeof BEATS)[number], Shot> = {
   // Now it is one move: pull back, drop and look up as the fixtures strike,
   // then rise and keep pulling away.
 
-  // Back out as plywood and teak arrive over the completed frame.
+  // Back out as the boards arrive over the completed frame.
   decking: { pos: [7.6, 3.2, 6.1], target: [0, 0.05, 0], fov: 37 },
   // Looks up at the rig by raising the *target*, not by dropping the camera.
   // Moving the camera to floor level to get the angle put four-fifths of the
@@ -89,6 +102,24 @@ function useDebugSurface(camera: THREE.PerspectiveCamera) {
           configurable: true,
         },
         state: { get: () => ({ ...sceneState }), configurable: true },
+        /**
+         * Where a world point lands on screen, in CSS pixels.
+         *
+         * Screenshots answer "does this look right" and nothing else. Framing
+         * questions — is the camera where the shot says, is a 550 mm bay
+         * actually filling a third of the frame — need a number, and reading
+         * one off a picture is how an afternoon disappears.
+         */
+        project: {
+          value: (x: number, y: number, z: number) => {
+            const v = new THREE.Vector3(x, y, z).project(camera);
+            return [
+              Math.round(((v.x + 1) / 2) * window.innerWidth),
+              Math.round(((1 - v.y) / 2) * window.innerHeight),
+            ];
+          },
+          configurable: true,
+        },
         stops: { get: () => [...beatStops], configurable: true },
       }),
     [camera],

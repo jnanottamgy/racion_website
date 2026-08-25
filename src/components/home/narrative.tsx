@@ -59,10 +59,10 @@ export function Narrative() {
       <Beat id="base" index="01" label="The base" side="right">
         <BeatTitle>Everything starts on the slab.</BeatTitle>
         <BeatBody>
-          The concrete substrate is prepared and sealed under a 6-mil
-          moisture-resistant sheet. Then 18&nbsp;mm button-type shock pads go
-          down for vibration absorption — the layer a player&rsquo;s knees feel
-          and never think about.
+          The concrete substrate is prepared and sealed under a 3–5&nbsp;mm
+          moisture-resistant membrane. Then 20–21&nbsp;mm button-type shock pads
+          go down for vibration absorption — the layer a player&rsquo;s knees
+          feel and never think about.
         </BeatBody>
       </Beat>
 
@@ -74,8 +74,9 @@ export function Narrative() {
           both ways.
         </BeatTitle>
         <BeatBody>
-          Termite-treated seasoned pine goes down in the first direction. Then
-          the same again, perpendicular to it.
+          Chemically treated seasoned pine goes down in the first direction —
+          dark, dense, and proofed against termite and moisture. Then the same
+          again, perpendicular to it.
         </BeatBody>
         <BeatBody>
           Almost everything that makes a RACEON court a RACEON court happens
@@ -115,16 +116,19 @@ export function Narrative() {
       {/* ---------------------------------------------------------------- 05 */}
       <Beat id="decking" index="05" label="The deck" side="left">
         <BeatTitle>
-          Plywood,
+          Straight onto
           <br />
-          then teak.
+          the frame.
         </BeatTitle>
         <BeatBody>
-          Plywood underlayment goes over the completed framework, adding
-          stability and uniformity to the surface. Then 20–21&nbsp;mm African
-          teak, tongue and groove, blind-nailed through the tongue so nothing
-          shows on the face — precision-sanded flat and sealed under
-          water-based polyurethane.
+          No plywood, no underlayment. 20–21&nbsp;mm African teak — maple on a
+          squash court — goes tongue and groove directly onto the completed
+          framework, blind-nailed through the tongue so nothing shows on the
+          face.
+        </BeatBody>
+        <BeatBody>
+          Then industrial sanding and finish, sealed under water-based
+          polyurethane.
         </BeatBody>
 
         <ol className="mt-12 divide-y divide-hairline border-y hairline border-hairline">
@@ -148,9 +152,9 @@ export function Narrative() {
       {/* ---------------------------------------------------------------- 06 */}
       <Beat id="lighting" index="06" label="The light" side="left">
         <BeatTitle>
-          Bright enough to compete under.
+          Even light, and none of
           <br />
-          Never in a player&rsquo;s eye.
+          it in a player&rsquo;s eye.
         </BeatTitle>
         <BeatBody>
           The fixtures run outboard of the sidelines, parallel to the length of
@@ -165,7 +169,7 @@ export function Narrative() {
             format={(v) => Math.round(v).toLocaleString("en-IN")}
             className="font-mono text-[length:var(--text-d3)] tabular-nums text-accent-text"
           />
-          <span className="label">lux at the surface</span>
+          <span className="label">lux at the surface · 500–525 installed</span>
         </div>
       </Beat>
 
@@ -173,7 +177,7 @@ export function Narrative() {
       <Beat id="handover" index="07" label="Handover" side="right">
         <BeatTitle>Match-ready, then measured.</BeatTitle>
         <BeatBody>
-          Poles and nets installed, markings set out to international
+          Freestanding poles and nets set out, markings to international
           dimensions. Final measurements are taken after completion and billing
           follows the actual site dimensions — not the ones on the drawing.
         </BeatBody>

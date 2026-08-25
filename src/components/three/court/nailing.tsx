@@ -107,10 +107,10 @@ export function NailingPass() {
   }, [fixings]);
 
   useFrame((_, delta) => {
-    const dt = Math.min(delta, 1 / 20);
+    const dt = Math.min(delta, 1 / 10);
 
     // The pass only exists once the framework is complete, and it stays put
-    // afterwards — the fixings don't vanish when the plywood goes on.
+    // afterwards — the fixings don't vanish when the boards go on.
     const framed = smoother(ramp(sceneState.assembly, 0.42, 0.5));
     const pass = sceneState.nailing;
 
