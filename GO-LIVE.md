@@ -74,6 +74,65 @@ gets password-protected preview deployments and proper analytics.
 
 ---
 
+## Hosting somewhere other than Vercel
+
+Every route on this site prerenders. There are no API routes, no server
+actions, nothing request-dependent — the build output is twelve static routes
+and nothing else. So it does not need Vercel, or any Node server at all.
+
+```bash
+STATIC_EXPORT=true pnpm build     # writes ./out — plain HTML, CSS, JS, images
+```
+
+That produces about 6 MB of files that any static host will serve. The flag is
+opt-in so that a Vercel or Node deployment keeps `next/image` resizing each
+photograph per viewport; exported, it cannot, and every device gets the full
+file. On the gallery that is the difference between roughly 150 KB and a few
+hundred on a phone. Real, but not a reason to stay.
+
+### Recommended: Cloudflare Pages
+
+Free, and — unlike Vercel's Hobby plan — its free tier permits commercial use,
+which is the actual reason to move. It also has more points of presence in
+India than any alternative, which matters when the buyers are in Bangalore.
+
+Connect the GitHub repo and set:
+
+| Setting | Value |
+|---|---|
+| Framework preset | Next.js (Static HTML Export) |
+| Build command | `STATIC_EXPORT=true pnpm build` |
+| Build output directory | `out` |
+| Environment variables | `NEXT_PUBLIC_SITE_URL`, `NODE_VERSION=22` |
+
+`NODE_VERSION` matters: Next 16 needs Node 20 or newer and the default is
+older. Add `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` here too once Search Console
+gives it.
+
+Then add `raceon.co.in` under the project's Custom Domains. If the domain's
+nameservers are moved to Cloudflare — free, and it also gives you DNS
+management — the domain attaches in one click with no records to copy.
+
+**Netlify** works identically: same build command, same output directory, and
+its free tier also permits commercial use. **GitHub Pages** works too and
+involves no third party beyond GitHub, but it has no Indian edge presence and
+serves noticeably slower there.
+
+### The one thing that breaks silently
+
+Next writes the generated share card to `/opengraph-image` with **no file
+extension**. A static host guesses `application/octet-stream`, and WhatsApp,
+LinkedIn and Facebook all refuse to render a preview for anything that is not
+an image type — so every shared link would appear as a bare URL. On a site
+whose every call to action opens WhatsApp, that is the first thing a prospect
+would see fail.
+
+`public/_headers` in this repo fixes it, and is copied into the export
+automatically. Cloudflare Pages and Netlify both read it. Nothing to configure;
+just do not delete it.
+
+---
+
 ## 2. Google Search Console
 
 This is how Google finds the site in days rather than weeks.

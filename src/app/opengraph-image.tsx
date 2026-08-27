@@ -7,6 +7,16 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 /**
+ * Rendered once at build time, never per request.
+ *
+ * The card has no request-dependent input — the numbers come from the project
+ * array — so there is nothing to gain from generating it per visit. Declaring
+ * that explicitly is also what lets the whole site export as static files,
+ * which is what makes it hostable anywhere rather than only on a Node server.
+ */
+export const dynamic = "force-static";
+
+/**
  * Share card.
  *
  * Rendered at build time rather than shipped as a static PNG so the court count

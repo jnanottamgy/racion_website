@@ -1,0 +1,19 @@
+# Serve the generated share card as an image.
+#
+# Next writes it to /opengraph-image with no file extension, so a static host
+# guesses application/octet-stream — and WhatsApp, LinkedIn and Facebook all
+# refuse to render a preview for anything that is not an image type. Since
+# every CTA on this site opens WhatsApp, a share card that does not render is
+# the first thing a prospect would see fail.
+#
+# Read by Cloudflare Pages and Netlify. Vercel ignores it and gets the type
+# right on its own.
+/opengraph-image
+  Content-Type: image/png
+  Cache-Control: public, max-age=31536000, immutable
+
+/brand/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/photography/*
+  Cache-Control: public, max-age=31536000, immutable

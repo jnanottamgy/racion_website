@@ -12,6 +12,9 @@ const ROUTES = [
   { path: "/about", priority: 0.6 },
 ];
 
+/** The route list is a constant, so this is a build-time file. */
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return ROUTES.map(({ path, priority }) => ({
     url: `${site.url}${path}`,

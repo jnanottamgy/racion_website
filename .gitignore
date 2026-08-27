@@ -17,3 +17,6 @@ next-env.d.ts
 
 # TypeScript incremental build cache — regenerated on every build.
 *.tsbuildinfo
+
+# Static export output.
+/out/
