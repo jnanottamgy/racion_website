@@ -50,7 +50,7 @@ export default function ToolsPage() {
               {layer && (
                 <Link
                   href="/systems"
-                  className="block border-l border-hairline-bright pl-6 transition-colors hover:border-accent lg:col-span-3"
+                  className="block border-l border-hairline-bright pl-6 transition-colors hover:border-accent lg:order-1 lg:col-span-3"
                 >
                   <p className="label text-bone-faint">Fixes layer</p>
                   <p className="display mt-3 text-[length:var(--text-d3)] leading-none text-accent-text">
@@ -62,7 +62,11 @@ export default function ToolsPage() {
                 </Link>
               )}
 
-              <div className={shot ? "lg:col-span-5" : "lg:col-span-9"}>
+              <div
+                className={`${shot ? "lg:col-span-5" : "lg:col-span-9"} ${
+                  flip ? "lg:order-3" : "lg:order-2"
+                }`}
+              >
                 <h2 className="display text-[length:var(--text-d2)] text-bone">
                   {tool.name}
                 </h2>
@@ -97,7 +101,7 @@ export default function ToolsPage() {
               </div>
 
               {shot && (
-                <div className={`lg:col-span-4 ${flip ? "lg:order-first" : ""}`}>
+                <div className={`lg:col-span-4 ${flip ? "lg:order-2" : "lg:order-3"}`}>
                   <Image
                     src={shot.src}
                     alt={shot.alt}

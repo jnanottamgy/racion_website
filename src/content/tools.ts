@@ -24,9 +24,10 @@ export interface Tool {
   /** Observable facts only. */
   points: string[];
   /**
-   * Plate name in `photography.ts`. Undefined until RACEON's photograph of the
-   * machine has been through `scripts/grade-photography.mjs`; the entry renders
-   * as a full-width spec row until then rather than leaving a hole in the page.
+   * Plate name in `photography.ts`. RACEON's own photograph of the machine,
+   * squared and graded by `scripts/grade-photography.mjs`. Optional so a tool
+   * added before its photograph still renders as a full-width spec row rather
+   * than leaving a hole in the page.
    */
   image?: string;
 }
@@ -42,6 +43,7 @@ export const tools: Tool[] = [
       "Every pad fixed by the same method",
       "The absorbing layer is fastened, not just laid",
     ],
+    image: "tool-shock-pad-nailer",
   },
   {
     slug: "framework-coil-nailer",
@@ -53,6 +55,7 @@ export const tools: Tool[] = [
       "Both directions of the grid fixed the same way",
       "Every connection in the framework made by the same method",
     ],
+    image: "tool-framework-coil-nailer",
   },
   {
     slug: "flooring-cleat-nailer",
@@ -64,6 +67,7 @@ export const tools: Tool[] = [
       "Stand-up frame, worked from standing height",
       "Nothing shows on the finished face",
     ],
+    image: "tool-flooring-cleat-nailer",
   },
 ];
 
