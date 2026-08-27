@@ -19,15 +19,36 @@ import { BEATS, sceneState } from "@/lib/scene-state";
  * event on the machines least able to afford one.
  */
 
-/** Which plate carries each beat. Beats without one inherit the previous. */
+/**
+ * Which plate carries each beat. Beats without one inherit the previous.
+ *
+ * RACEON's own site photography, now that there is enough of it: the framework
+ * beats show their actual framework going down rather than a detail of a
+ * finished floor, and the lighting beat shows the fixture rows it is describing.
+ * This is the path a reduced-motion, no-WebGL or software-rendered visitor
+ * takes, so it carries the whole argument on its own.
+ *
+ * Landscape sources only. The layers are full-bleed `object-cover`, and a
+ * portrait frame at 16:9 loses most of its subject off the top and bottom.
+ *
+ * Seven unique frames for nine beats, deliberately. Every layer sits in the
+ * viewport, so each one is a full-size image fetched whether or not it is the
+ * one showing — and the devices that land here are the ones least able to
+ * afford that. Beats that share a subject share a plate.
+ */
 const PLATE_FOR_BEAT: Record<(typeof BEATS)[number], string> = {
+  // The two ends keep the staged frames. A hero is doing a different job from
+  // a construction photograph: it wants atmosphere, and a real hall shot under
+  // its own cold fluorescents is busy behind a headline and pulls the whole
+  // page blue. The middle is where documentary wins, and it is the middle that
+  // was being carried by a detail of a finished floor.
   hero: "court-hero",
-  base: "framework",
-  framework: "framework",
-  interlock: "framework",
+  base: "site-framework-going-down",
+  framework: "site-framework-run",
+  interlock: "site-framework-run",
   nailing: "installation",
-  decking: "teak-detail",
-  lighting: "lighting",
+  decking: "site-deck-laid",
+  lighting: "site-hall-lighting",
   court: "court-lit",
   proof: "court-lit",
 };
