@@ -22,7 +22,7 @@ export const photography = [
     "alt": "Finished African teak badminton court in a darkened hall, lit by a single pool of light",
     "width": 1240,
     "height": 826,
-    "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoQAAsAA4BaJQBOgCG/tfsCAAD++FGkwG9Jov6qLH6jR+LFYHcn/gOZnym8VV3tmEQlG5gAAAA="
+    "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoQAAsAA4BaJQBOgCG/tfsCAAD++FGkwG9Jov6qLH6jR+LFYHcn/gOZnymzHLXOlcLeKAAA"
   },
   {
     "name": "court-lit",
@@ -30,7 +30,7 @@ export const photography = [
     "alt": "Finished African teak badminton court under full sports lighting",
     "width": 1240,
     "height": 826,
-    "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAAAQAgCdASoQAAsAA4BaJbACdAEO//3R4TgAAP7xhAec7wJ5GfmH/XwI+WFJzMES90R6/0+zhKQIGcc6CAAAAA=="
+    "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoQAAsAA4BaJbACdAEO/+j4IAD+8YQHnOLUw5k22RWBQD0MByva4GVvuNog5Zdi1dPVfYAA"
   },
   {
     "name": "framework",
@@ -38,7 +38,7 @@ export const photography = [
     "alt": "Interlocked pine timber framework, notched at every crossing, on shock pads over a concrete slab",
     "width": 1240,
     "height": 826,
-    "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAAAQAgCdASoQAAsAA4BaJYwCdAD0i361+9IAAP7tB+58E8WYyHtRh65howlvnyLn/YBYAA=="
+    "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAAAQAgCdASoQAAsAA4BaJYwCdAD0jBQBrOAAAP7tB+6wBI42u6GxilCdSec9QBFz/sAsAA=="
   },
   {
     "name": "lighting",
@@ -46,7 +46,7 @@ export const photography = [
     "alt": "Two rows of linear fixtures running outboard of the sidelines down a badminton hall",
     "width": 1240,
     "height": 826,
-    "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADwAQCdASoQAAsAA4BaJYgCdAEN3MGwWAAA/vK5h7ZMUkT48+tKAV0YqvWuZ9YBeAAAAA=="
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADwAQCdASoQAAsAA4BaJYgCdAEOuqV08AAA/vK5h7ZJoPAfvJuus7Gj7ojmfWAXgAA="
   },
   {
     "name": "teak-detail",
@@ -54,7 +54,7 @@ export const photography = [
     "alt": "Close detail of polished African teak boards and a painted court line",
     "width": 1240,
     "height": 826,
-    "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACwAQCdASoQAAsAA4BaJbACdADr7OAAAP7s+t2H0ua8eLw25MxoPDaBOdzS5+vueTge5fi7cP0F2hAA"
+    "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACQAQCdASoQAAsAA4BaJbACdABhywAA/uz63ajliPivHN1+M0CV3e0Cc7mlz9fc8nA7M+Ltw/QXaEAA"
   },
   {
     "name": "installation",
@@ -62,7 +62,7 @@ export const photography = [
     "alt": "Teak flooring being blind-nailed with a pneumatic nailer over the pine framework",
     "width": 1240,
     "height": 826,
-    "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADwAQCdASoQAAsAA4BaJbACdADc9ql0SAAA/u0MC3z1e7IdOzvzW4W1oYMrSoabqd2/uxx4kwB0GlnjANgAAA=="
+    "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAQAgCdASoQAAsAA4BaJbACdADdLAoHOLcAAP7s3hsDkjclSv7oVKc2UhfwtLzTf3Y48SYA6DSzxgGwAAA="
   },
   {
     "name": "tool-shock-pad-nailer",
@@ -70,7 +70,7 @@ export const photography = [
     "alt": "Pneumatic straight-magazine nailer, air line coupled, used to fix the shock pad rubber to the pine",
     "width": 880,
     "height": 880,
-    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoQABAAA4BaJZwAAcIEHhfAAP46kg94FKvTV6hnLGcNEMhCsf55lpYZo467b9bcA3oAAA=="
+    "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAADQAQCdASoQABAAA4BaJZwAAgWEdSkHAAD+OpIKMH3q52nDtYkVtQneGjZvSNt7Dwz4AA=="
   },
   {
     "name": "tool-framework-coil-nailer",
@@ -78,7 +78,7 @@ export const photography = [
     "alt": "Pneumatic coil nailer with its coil magazine on the side, used to fix the interlocked pine framework",
     "width": 1052,
     "height": 1052,
-    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoQABAAA4BaJQBOgBh2jzayzgAA/sGW2g51qCSU5tHYdgf9gn1TXjH40U7I0Vb7dHS35YYTNAdEgAAA"
+    "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoQABAAA4BaJQBOgBj57wlzHsAA/tHZS7E0vBYvyoag4MdSFwu9Xm+TbSrqrxyvRG1+v+Jr5khNAAAA"
   },
   {
     "name": "tool-flooring-cleat-nailer",
@@ -86,7 +86,127 @@ export const photography = [
     "alt": "Stand-up hardwood flooring cleat nailer, its angled shoe set to register on a board tongue",
     "width": 643,
     "height": 643,
-    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAABwAQCdASoQABAAA4BaJZQAAT/4OgD+qX3jnwMfJJ98mkvl6iZuP7Eouc6p9PYQ4AA="
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAABwAQCdASoQABAAA4BaJZQAAT/4OgD+qX3j0kdRTnbOISRjECvPSrXQEFz/p7CHAAA="
+  },
+  {
+    "name": "site-timber-delivery",
+    "src": "/photography/site-timber-delivery.webp",
+    "alt": "Bundles of sawn teak stacked in a finished room, waiting to be laid",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACwAQCdASoQAAwAA4BaJZwAAuaR06EAAP2bpD6Hak5EK4SAAaW9KY/6sMBRd44AAAA="
+  },
+  {
+    "name": "site-framework-going-down",
+    "src": "/photography/site-framework-going-down.webp",
+    "alt": "Pine members being set out across a hall floor, timber stacked alongside",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADQAQCdASoQAAwAA4BaJZwCdADydN98AAD+72d20jNbAI16dgoQQwz9fuqkgAAA"
+  },
+  {
+    "name": "site-framework-run",
+    "src": "/photography/site-framework-run.webp",
+    "alt": "The framework running the length of a hall, boards following behind it",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoQAAwAA4BaJZwAAu17t0H6wAD+7FfVUQC+TmauvDS0YZAmtdO726jgAAA="
+  },
+  {
+    "name": "site-deck-partial",
+    "src": "/photography/site-deck-partial.webp",
+    "alt": "Deck part laid in a dark-clad hall with clerestory windows above",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADQAQCdASoQAAwAA4BaJZQAApKyg5aqAAD+0Lk1L89HvXpzM6PQVcnW+T1IDwAA"
+  },
+  {
+    "name": "site-deck-laid",
+    "src": "/photography/site-deck-laid.webp",
+    "alt": "A hall fully decked in teak, before sanding and finish",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAAAQAgCdASoQAAwAA4BaJZwAAucLILY1SLMAAP70KGBD8pDj2aWcbBsNbcwAAA=="
+  },
+  {
+    "name": "site-squash-court",
+    "src": "/photography/site-squash-court.webp",
+    "alt": "Finished squash court in maple, red lines to the front wall",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAACQAQCdASoQAAwAA4BaJZQAAhJBtUAA/tHW5GXJBlM/4L0mArRrXtMU/gKZ7cFAAAA="
+  },
+  {
+    "name": "site-finished-room",
+    "src": "/photography/site-finished-room.webp",
+    "alt": "Finished timber floor running out to the doorway of a smaller room",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAACwAQCdASoQAAwAA4BaJQBOgBti2EoAAP7SSGGvMPjdB6DQBQIqVWEOtpsBUpOu7PhHlPJp7TP6AAAA"
+  },
+  {
+    "name": "site-finished-daylight",
+    "src": "/photography/site-finished-daylight.webp",
+    "alt": "A finished floor under daylight from a full wall of windows",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAAAQAgCdASoQAAwAA4BaJZQCdAEPDG94WTgAAP7lIKMWB0sJbDU/Hgbx1qGgoAAA"
+  },
+  {
+    "name": "site-finished-gloss",
+    "src": "/photography/site-finished-gloss.webp",
+    "alt": "The finish reading the ceiling line back across a completed floor",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoQAAwAA4BaJQBdgBtl+LehAAD+8WLc0SXt88pIFfB/fkfvupaDymZzqAA="
+  },
+  {
+    "name": "site-court-lines",
+    "src": "/photography/site-court-lines.webp",
+    "alt": "Markings set out on a completed teak court, fixtures lit above",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAAAQAgCdASoQAAwAA4BaJYwCdAD0RwFdxAwAAP71zTuRb3K8WmRZfAzShPdbo6wkngNTAAAA"
+  },
+  {
+    "name": "site-court-nets",
+    "src": "/photography/site-court-nets.webp",
+    "alt": "Nets up on a finished court, a blue-clad hall around it",
+    "width": 1240,
+    "height": 930,
+    "blurDataURL": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADwAQCdASoQAAwAA4BaJQBOgCG3jZOblQAA/vM5OVJM7GUkmQsDza9EY0f/h1WWX9OFAQAA"
+  },
+  {
+    "name": "site-hall-lighting",
+    "src": "/photography/site-hall-lighting.webp",
+    "alt": "Two fixture rows running the length of a steel-framed hall",
+    "width": 1240,
+    "height": 697,
+    "blurDataURL": "data:image/webp;base64,UklGRjYAAABXRUJQVlA4ICoAAADQAQCdASoQAAkAA4BaJZwAAxZf5XEC6AD+8Ri/r0I06Ap12C3CLj8AAAA="
+  },
+  {
+    "name": "site-lighting-fitout",
+    "src": "/photography/site-lighting-fitout.webp",
+    "alt": "Fixtures in a fitted-out ceiling, access still up",
+    "width": 1240,
+    "height": 697,
+    "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAACQAQCdASoQAAkAA4BaJZwAAuabfFAA/tHvx0D63TsB4ydUmy/GcCAA"
+  },
+  {
+    "name": "site-mat-detail",
+    "src": "/photography/site-mat-detail.webp",
+    "alt": "A tournament mat rolled over a finished court",
+    "width": 1200,
+    "height": 1600,
+    "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASoQABUAPu1iqk4ppaQiMAgBMB2JQBhQA8Krb/ljEotIAAD+gHvJikOFUf/7yA6PGwy8OPmR6i6097UcAAA="
+  },
+  {
+    "name": "site-match-play",
+    "src": "/photography/site-match-play.webp",
+    "alt": "Match play under a full installation",
+    "width": 1200,
+    "height": 1600,
+    "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADQAwCdASoQABUAPu1krU2ppaSiMAgBMB2JYwAAYfZ6/LHB47pC5AAA/uP+JPNqhyJrLm3PLr03ra38w5lTNkhfCzTf0l0uQtJyYOAA"
   }
 ] as const satisfies readonly Plate[];
 

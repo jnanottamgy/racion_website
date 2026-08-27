@@ -75,22 +75,6 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="/configurator"
-                  className="text-bone-dim transition-colors hover:text-accent-text"
-                >
-                  Configurator
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-bone-dim transition-colors hover:text-accent-text"
-                >
-                  Contact
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

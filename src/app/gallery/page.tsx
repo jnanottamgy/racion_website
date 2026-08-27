@@ -1,62 +1,61 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { PageShell, Section } from "@/components/chrome/page-shell";
-import { gallery } from "@/content/gallery";
-import { plate } from "@/content/photography";
-import { totalCourts } from "@/content/projects";
+import { PageShell } from "@/components/chrome/page-shell";
+import { GalleryFigure } from "@/components/gallery/gallery-figure";
+import { chapters, galleryCount } from "@/content/gallery";
+import { totalCourts, totalSites } from "@/content/projects";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description: `Finished courts, framework and installation work from RACEON — ${totalCourts} courts delivered across Karnataka and South India.`,
+  description: `Timber arriving, the interlocked pine framework going down, decking, finish, lighting and courts in play — ${galleryCount} photographs from RACEON's ${totalCourts} courts across ${totalSites} sites.`,
 };
 
 export default function GalleryPage() {
   return (
     <PageShell
       eyebrow="Gallery"
-      title={<>The work, up close.</>}
-      lede="Finished floors, the framework underneath them, and the machines that put them down."
+      title={
+        <>
+          A court, from
+          <br />
+          timber to match point.
+        </>
+      }
+      lede="Photographs from RACEON's own sites, in the order the work actually happens — sawn teak stacked on a floor, the framework going down over it, and the hall that ends up getting used."
     >
-      <Section>
-        <ul className="grid gap-6 md:grid-cols-2">
-          {gallery.map((item, i) => {
-            const p = plate(item.plate);
-            // The first pair run full width on their own row; the rest pair up.
-            const wide = i < 2;
-            return (
-              <li
-                key={item.plate}
-                className={wide ? "md:col-span-2" : undefined}
-              >
-                <figure className="group">
-                  <div className="overflow-hidden border border-hairline">
-                    <Image
-                      src={p.src}
-                      alt={p.alt}
-                      width={p.width}
-                      height={p.height}
-                      placeholder="blur"
-                      blurDataURL={p.blurDataURL}
-                      sizes={
-                        wide
-                          ? "(min-width: 1280px) 1240px, 100vw"
-                          : "(min-width: 768px) 620px, 100vw"
-                      }
-                      className="w-full transition-transform duration-[900ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.02]"
-                    />
-                  </div>
-                  <figcaption className="mt-3 flex items-baseline justify-between gap-4">
-                    <span className="text-sm text-bone-dim">{item.caption}</span>
-                    {item.project && (
-                      <span className="label shrink-0">{item.project}</span>
-                    )}
-                  </figcaption>
-                </figure>
-              </li>
-            );
-          })}
-        </ul>
-      </Section>
+      {chapters.map((chapter) => (
+        <section
+          key={chapter.id}
+          id={chapter.id}
+          className="container-x border-b border-hairline py-20"
+        >
+          <header className="grid gap-x-14 gap-y-6 lg:grid-cols-12 lg:items-end">
+            {/*
+              Index above the title, not beside it. Set in its own column the
+              number left the heading starting a third of the way across the
+              page with nothing in front of it, which reads as a mistake rather
+              than as a margin.
+            */}
+            <div className="lg:col-span-6">
+              <p className="label flex items-center gap-3">
+                <span className="text-accent-text">{chapter.index}</span>
+                <span className="h-px w-8 bg-hairline-bright" />
+              </p>
+              <h2 className="display mt-5 text-[length:var(--text-d3)] text-bone">
+                {chapter.title}
+              </h2>
+            </div>
+            <p className="max-w-[46ch] text-sm leading-relaxed text-bone-dim lg:col-span-5 lg:col-start-8">
+              {chapter.lede}
+            </p>
+          </header>
+
+          <div className="mt-14 grid grid-cols-12 gap-x-8 gap-y-14 lg:items-start">
+            {chapter.items.map((item, i) => (
+              <GalleryFigure key={item.plate} item={item} index={i} />
+            ))}
+          </div>
+        </section>
+      ))}
     </PageShell>
   );
 }

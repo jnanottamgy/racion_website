@@ -25,7 +25,7 @@ interface ScrollContextValue {
   harnessReady: boolean;
   /** Programmatic scroll that respects Lenis when it's driving. */
   scrollTo: (target: string | number | HTMLElement, offset?: number) => void;
-  /** Freeze scrolling — used by the configurator and the mobile menu. */
+  /** Freeze scrolling — used by the mobile menu. */
   setLocked: (locked: boolean) => void;
 }
 

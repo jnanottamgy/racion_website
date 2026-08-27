@@ -26,8 +26,12 @@ import path from "node:path";
 
 const SRC = process.argv[2];
 const TOOLS_SRC = process.argv[3] ?? SRC;
+const GALLERY_SRC = process.argv[4] ?? SRC;
+const DIRS = { tools: TOOLS_SRC, gallery: GALLERY_SRC };
 if (!SRC) {
-  console.error("usage: node scripts/grade-photography.mjs <court-dir> [tools-dir]");
+  console.error(
+    "usage: node scripts/grade-photography.mjs <court-dir> [tools-dir] [gallery-dir]",
+  );
   process.exit(1);
 }
 
@@ -110,17 +114,169 @@ const PLATES = [
     crop: { left: 19, top: 0, size: 643 },
     grade: { contrast: 1.14, lift: -22, saturation: 0.8, vignette: 0.3 },
   },
+
+  // --- The sites --------------------------------------------------------
+  // RACEON's own project archive, in build order: timber arriving, the
+  // framework going down, the deck, the finish, the lighting, and courts in
+  // play. Shot on phones over several years in halls lit every possible way,
+  // which is what `autoLift` is for.
+  {
+    file: "g14-01.jpeg",
+    name: "site-timber-delivery",
+    alt: "Bundles of sawn teak stacked in a finished room, waiting to be laid",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g15-01.jpeg",
+    name: "site-framework-going-down",
+    alt: "Pine members being set out across a hall floor, timber stacked alongside",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g06-01.jpeg",
+    name: "site-framework-run",
+    alt: "The framework running the length of a hall, boards following behind it",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g03-01.jpeg",
+    name: "site-deck-partial",
+    alt: "Deck part laid in a dark-clad hall with clerestory windows above",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g07-01.jpeg",
+    name: "site-deck-laid",
+    alt: "A hall fully decked in teak, before sanding and finish",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g11-01.jpeg",
+    name: "site-squash-court",
+    alt: "Finished squash court in maple, red lines to the front wall",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g08-01.jpeg",
+    name: "site-finished-room",
+    alt: "Finished timber floor running out to the doorway of a smaller room",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g09-01.jpeg",
+    name: "site-finished-daylight",
+    alt: "A finished floor under daylight from a full wall of windows",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g10-01.jpeg",
+    name: "site-finished-gloss",
+    alt: "The finish reading the ceiling line back across a completed floor",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g05-01.jpeg",
+    name: "site-court-lines",
+    alt: "Markings set out on a completed teak court, fixtures lit above",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g13-01.jpeg",
+    name: "site-court-nets",
+    alt: "Nets up on a finished court, a blue-clad hall around it",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g01-01.jpeg",
+    name: "site-hall-lighting",
+    alt: "Two fixture rows running the length of a steel-framed hall",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g02-01.jpeg",
+    name: "site-lighting-fitout",
+    alt: "Fixtures in a fitted-out ceiling, access still up",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g04-01.jpeg",
+    name: "site-mat-detail",
+    alt: "A tournament mat rolled over a finished court",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
+  {
+    file: "g12-01.jpeg",
+    name: "site-match-play",
+    alt: "Match play under a full installation",
+    from: "gallery",
+    grade: { contrast: 1.07, autoLift: 112, saturation: 0.9, vignette: 0.18 },
+  },
 ];
 
-/** Carries the frame edges toward the page background. */
+/**
+ * Carries the frame edges toward the page background.
+ *
+ * The shape is the one this has always had: from the middle of the frame
+ * outward, the overlay travels from white at full opacity — which multiplies to
+ * nothing — to the page colour at `strength`. What has changed is that it no
+ * longer starts with a corner in it.
+ *
+ * Two stops interpolate in a straight line, so the curve has a kink exactly
+ * where the darkening begins. On anything textured that is invisible; on a
+ * white ceiling or a plain hall wall it draws a hard ring across the frame, and
+ * the site photography is full of both. These stops ease away from zero over
+ * the first fifth and rejoin the original line well before the edge, so the
+ * frames already signed off keep the grade they were signed off with.
+ */
+const VIGNETTE_START = 0.5;
+const EASE_TO = 0.62;
+
+function vignetteMix(r) {
+  if (r <= 0.4) return 0;
+  const linear = (r - VIGNETTE_START) / (1 - VIGNETTE_START);
+  if (r >= EASE_TO) return linear;
+  // Quadratic out of zero, meeting the straight line at EASE_TO.
+  const at = (EASE_TO - VIGNETTE_START) / (1 - VIGNETTE_START);
+  const t = (r - 0.4) / (EASE_TO - 0.4);
+  return at * t * t;
+}
+
 function vignette(w, h, strength) {
+  const [sr, sg, sb] = [
+    parseInt(STAGE.slice(1, 3), 16),
+    parseInt(STAGE.slice(3, 5), 16),
+    parseInt(STAGE.slice(5, 7), 16),
+  ];
+
+  const stops = [0, 0.4, 0.46, 0.52, 0.58, 0.62, 0.72, 0.82, 0.91, 1]
+    .map((r) => {
+      const u = vignetteMix(r);
+      const mix = (channel) => Math.round(255 + (channel - 255) * u);
+      const opacity = 1 + (strength - 1) * u;
+      return `<stop offset="${(r * 100).toFixed(1)}%" stop-color="rgb(${mix(
+        sr,
+      )},${mix(sg)},${mix(sb)})" stop-opacity="${opacity.toFixed(4)}"/>`;
+    })
+    .join("");
+
   return Buffer.from(
     `<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
        <defs>
-         <radialGradient id="v" cx="50%" cy="48%" r="78%">
-           <stop offset="50%" stop-color="#ffffff" stop-opacity="1"/>
-           <stop offset="100%" stop-color="${STAGE}" stop-opacity="${strength}"/>
-         </radialGradient>
+         <radialGradient id="v" cx="50%" cy="48%" r="78%">${stops}</radialGradient>
        </defs>
        <rect width="${w}" height="${h}" fill="url(#v)"/>
      </svg>`,
@@ -131,7 +287,7 @@ await mkdir(OUT, { recursive: true });
 const manifest = [];
 
 for (const plate of PLATES) {
-  const input = path.join(plate.from === "tools" ? TOOLS_SRC : SRC, plate.file);
+  const input = path.join(DIRS[plate.from] ?? SRC, plate.file);
   const { width: sw = 0, height: sh = 0 } = await sharp(input).metadata();
   const g = plate.grade;
 
@@ -159,10 +315,35 @@ for (const plate of PLATES) {
     });
   }
 
+  // Site photography arrives at whatever exposure the phone chose: a hall with
+  // a white ceiling and one with black cladding come in two stops apart, and a
+  // page of them graded by one fixed number is a page that flickers as you
+  // scroll it. `autoLift` measures each frame and solves for the offset that
+  // lands its mean where the page wants it, so the set is even without anyone
+  // dialling fifteen images by hand.
+  const lift = await (async () => {
+    if (g.autoLift === undefined) return g.lift;
+    const measure = sharp(input);
+    if (plate.crop) {
+      measure.extract({
+        left: plate.crop.left,
+        top: plate.crop.top,
+        width: plate.crop.size,
+        height: plate.crop.size,
+      });
+    }
+    const { channels } = await measure.stats();
+    const [r, gr, b] = channels;
+    const mean = 0.2126 * r.mean + 0.7152 * gr.mean + 0.0722 * b.mean;
+    return Math.round(
+      Math.max(-70, Math.min(14, g.autoLift - mean * g.contrast)),
+    );
+  })();
+
   const outfile = path.join(OUT, `${plate.name}.webp`);
   await pipeline
     // No resize at all. Any resampling costs detail the site cannot get back.
-    .linear(g.contrast, g.lift)
+    .linear(g.contrast, lift)
     .modulate({ saturation: g.saturation })
     .composite([{ input: vignette(w, h, g.vignette), blend: "multiply" }])
     .webp({ quality: 88, effort: 6 })
@@ -183,7 +364,7 @@ for (const plate of PLATES) {
     blurDataURL: `data:image/webp;base64,${placeholder.toString("base64")}`,
   });
 
-  console.log(`${plate.name.padEnd(14)} ${w}x${h}`);
+  console.log(`${plate.name.padEnd(28)} ${w}x${h}  lift ${lift}`);
 }
 
 await writeFile(

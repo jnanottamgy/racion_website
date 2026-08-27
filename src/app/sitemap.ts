@@ -8,10 +8,8 @@ const ROUTES = [
   { path: "/projects", priority: 0.8 },
   { path: "/gallery", priority: 0.8 },
   { path: "/tools", priority: 0.7 },
-  { path: "/configurator", priority: 0.8 },
   { path: "/process", priority: 0.6 },
   { path: "/about", priority: 0.6 },
-  { path: "/contact", priority: 0.7 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
