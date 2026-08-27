@@ -15,18 +15,26 @@ and the bare domain 308-redirecting to it. Both currently read
 *Invalid Configuration*, which means Vercel is not yet seeing its records at the
 registrar. Nothing is wrong with the site; the domain simply is not pointed yet.
 
-At the registrar the domain was bought from, add two records:
+At the registrar the domain was bought from, add exactly these two records —
+read off this project's own DNS panel in Vercel:
 
 | Type | Name | Value |
 |---|---|---|
-| A | `@` | `76.76.21.21` |
-| CNAME | `www` | the value Vercel shows |
+| A | `@` | `216.198.79.1` |
+| CNAME | `www` | `05b3afeec8e28465.vercel-dns-017.com.` |
 
-**Take both values from the "View DNS configuration" dropdown next to each
-domain in Vercel, not from here.** The apex A record is stable, but Vercel
-issues different CNAME targets to different projects — its own documentation
-shows `cname.vercel-dns.com` in one place and `cname.vercel-dns-0.com` in
-another. The dropdown shows the one this project was actually assigned.
+Two things about those values.
+
+They are **not** the ones most guides give. Vercel is expanding its IP range
+and now recommends `216.198.79.1` over the older `76.76.21.21`; both still
+work, but use the recommended one. And the CNAME target is **specific to this
+project** — that hash is not a value anyone can look up, which is why it has to
+come off the panel rather than out of documentation.
+
+The CNAME ends in a dot. That is a fully-qualified name and is correct as
+written; some registrars want it exactly like that, others strip the dot
+themselves, and a few reject it. If the registrar complains, drop the trailing
+dot and save again.
 
 Then wait for DNS to propagate — usually minutes, up to a few hours — and press
 **Refresh** on each domain. Both should turn green, and Vercel issues the TLS
@@ -55,6 +63,14 @@ this variable to match. Either is fine; they just have to agree.)
 **Also make the domain primary** so `racion-website-zrzb.vercel.app` redirects
 to it. Left as-is the site is live at two addresses, competing with itself for
 the same brand name.
+
+### One thing to sort out before this is a client site
+
+The Vercel account is on the **Hobby** plan, which Vercel's terms restrict to
+non-commercial use. A contractor's business website is commercial use, and
+accounts found in breach get suspended — which would take the site down without
+warning. Moving to Pro before handover is the safe call, and it is also what
+gets password-protected preview deployments and proper analytics.
 
 ---
 
