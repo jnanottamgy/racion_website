@@ -136,7 +136,7 @@ export function NailingPass() {
       toolRef.current.visible = bodyMaterial.opacity > 0.01;
     }
     if (glowRef.current) {
-      glowRef.current.intensity = damp(glowRef.current.intensity, active * 2.2, 8, dt);
+      glowRef.current.intensity = damp(glowRef.current.intensity, active * 0.9, 8, dt);
     }
   });
 
@@ -163,11 +163,20 @@ export function NailingPass() {
         <mesh material={accentMaterial} position={[0, 0.055, 0.051]}>
           <boxGeometry args={[0.1, 0.012, 0.004]} />
         </mesh>
+        {/*
+          The machine's own lamp, and a lamp is what it should look like.
+          Casting the brand green at 1.6 m threw a wide lurid pool across the
+          membrane and up the framework — a colour no work light emits, sitting
+          on the one beat that is about a real machine doing real work. The
+          green stays where it belongs, on the strip on the tool's body. What
+          it throws is a small warm pool tight enough to read as coming from
+          the machine rather than from the art direction.
+        */}
         <pointLight
           ref={glowRef}
-          color="#8be034"
+          color="#ffd9a8"
           intensity={0}
-          distance={1.6}
+          distance={0.72}
           decay={2}
           position={[0, 0.09, 0]}
         />
