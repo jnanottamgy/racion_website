@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { PageShell } from "@/components/chrome/page-shell";
@@ -9,14 +10,16 @@ import { process as steps } from "@/content/systems";
 import { tools } from "@/content/tools";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Process",
   description: `Survey to handover on one contract: how RACEON builds a wooden badminton or squash court in five phases and ${steps.length} steps, from set-out through the interlocked pine framework to a final measurement of the court as built.`,
-};
+  path: "/process",
+});
 
 export default function ProcessPage() {
   return (
     <PageShell
+      path="/process"
       eyebrow="Process"
       title={
         <>

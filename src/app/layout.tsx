@@ -44,7 +44,35 @@ export const metadata: Metadata = {
     description: site.description,
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    // Google's own crawler gets the fuller set: no snippet or preview limits,
+    // so it can show the full description and a large image on a brand search.
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  /**
+   * Search Console and Bing verification.
+   *
+   * Read from the environment rather than committed, so RACEON can verify
+   * ownership by setting a variable in Vercel instead of waiting on a code
+   * change — and so the tokens are not in a public repository. Nothing is
+   * emitted until they are set.
+   */
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
+  },
   // No blanket canonical here. Declaring `canonical: "/"` on the root layout
   // inherits down to every route, so each page tells search engines it is a
   // duplicate of the homepage — actively worse than emitting none at all.

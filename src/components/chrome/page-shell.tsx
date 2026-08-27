@@ -1,6 +1,42 @@
 import type { ReactNode } from "react";
+import { site } from "@/lib/site";
 import { Footer } from "./footer";
 import { Header } from "./header";
+
+/**
+ * Breadcrumb trail for search results.
+ *
+ * Two levels is the whole hierarchy here, and that is the point: it tells a
+ * search engine these pages belong to the site rather than floating loose, and
+ * it is what turns a bare URL in a result into "raceon.in › Systems".
+ */
+function BreadcrumbSchema({ name, path }: { name: string; path: string }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: site.name,
+        item: site.url,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name,
+        item: `${site.url}${path}`,
+      },
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
 
 /**
  * Layout for every page that isn't the homepage.
@@ -12,15 +48,19 @@ export function PageShell({
   eyebrow,
   title,
   lede,
+  path,
   children,
 }: {
   eyebrow: string;
   title: ReactNode;
   lede?: ReactNode;
+  /** Route path, leading slash. Emits the breadcrumb trail when supplied. */
+  path?: string;
   children: ReactNode;
 }) {
   return (
     <>
+      {path && <BreadcrumbSchema name={eyebrow} path={path} />}
       <Header />
       {/* The homepage sits in a lit room; without this the inner pages read as
           a different, flatter site. One soft violet wash is enough to keep them

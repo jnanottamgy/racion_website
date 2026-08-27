@@ -1,3 +1,5 @@
+import { totalCourts, totalSites } from "@/content/projects";
+
 /**
  * Brand-level facts. Every value here comes from the RACEON company brochure.
  */
@@ -27,10 +29,33 @@ export const site = {
    * thing RACEON actually does differently.
    */
   tagline: "Built from the frame up.",
-  description:
-    "RACEON builds professional wooden badminton and squash courts — African teak and maple on an interlocked chemically treated pine framework, shock-absorbing Air Shox cushioning, and sports lighting. 91 courts delivered across Karnataka and South India.",
+  /**
+   * The meta description, and the one sentence a search result shows under the
+   * title. Counts are derived — written out, they went stale the moment two
+   * more sites were added and every page inherited the wrong number.
+   */
+  description: `RACEON builds professional wooden badminton and squash courts — African teak and maple on an interlocked chemically treated pine framework, shock-absorbing Air Shox cushioning, and sports lighting. ${totalCourts} courts delivered across ${totalSites} sites in Karnataka and South India.`,
   url: resolveSiteUrl(),
   locale: "en_IN",
+
+  /**
+   * Profiles Google can use to bind this domain to the business, emitted as
+   * `sameAs`. A branded search is won by making one entity out of the website,
+   * the Google Business Profile and the social accounts; unlinked, they compete.
+   *
+   * Empty until RACEON supply the real URLs. Nothing is emitted for an empty
+   * list — a `sameAs` pointing at a guessed handle is worse than none.
+   */
+  social: [] as string[],
+
+  /**
+   * Exact coordinates of the office, for `LocalBusiness.geo`.
+   *
+   * Null until someone reads them off the real pin. A street address geocodes
+   * on its own; a wrong lat/long puts the business somewhere it isn't, and
+   * that is a worse answer than no answer.
+   */
+  geo: null as { lat: number; lng: number } | null,
 
   contact: {
     email: "raceonsports@gmail.com",
@@ -58,8 +83,8 @@ export const site = {
 
   /** Headline proof. Derived from the project schedule in `projects.ts`. */
   stats: {
-    courts: 91,
-    sites: 29,
+    courts: totalCourts,
+    sites: totalSites,
     yearsPhrase: "Karnataka & South India",
   },
 

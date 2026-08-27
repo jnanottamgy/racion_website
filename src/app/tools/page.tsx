@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Link from "next/link";
 import { PageShell, Section } from "@/components/chrome/page-shell";
@@ -6,15 +7,16 @@ import { plate } from "@/content/photography";
 import { layerFor, tools } from "@/content/tools";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Tools",
-  description:
-    "The machines RACEON install with: a nailer for the shock pads, a coil nailer for the interlocked pine framework, and a flooring cleat nailer that blind-nails the teak through the tongue.",
-};
+  description: "The machines RACEON install with: a nailer for the shock pads, a coil nailer for the interlocked pine framework, and a flooring cleat nailer that blind-nails the teak through the tongue.",
+  path: "/tools",
+});
 
 export default function ToolsPage() {
   return (
     <PageShell
+      path="/tools"
       eyebrow="Tools"
       title={
         <>

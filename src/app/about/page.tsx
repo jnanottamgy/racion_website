@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Image from "next/image";
 import { PageShell, Section } from "@/components/chrome/page-shell";
@@ -6,10 +7,11 @@ import { plate } from "@/content/photography";
 import { projects, totalCourts, totalSites } from "@/content/projects";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: `${site.legalName} — a specialized sports infrastructure company delivering wooden sports flooring and complete badminton and squash court solutions.`,
-};
+  path: "/about",
+});
 
 const sectors = [
   { label: "Education", match: "education" },
@@ -23,6 +25,7 @@ export default function AboutPage() {
 
   return (
     <PageShell
+      path="/about"
       eyebrow="About"
       title={<>A sports infrastructure company, not a flooring supplier.</>}
       lede={`${site.legalName} delivers high-quality wooden sports flooring and complete badminton and squash court solutions — base structure, teak flooring, lighting, poles and nets.`}

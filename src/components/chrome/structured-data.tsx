@@ -2,38 +2,53 @@ import { projects, totalCourts, totalSites } from "@/content/projects";
 import { site } from "@/lib/site";
 
 /**
- * LocalBusiness schema.
+ * The graph a search engine reads this business out of.
  *
- * RACEON is a Bangalore contractor whose buyers search by city and by
- * standard — "badminton court flooring Bangalore", "wooden badminton court
- * contractor Karnataka". Naming the service area and the catalogue explicitly
- * is what gets the business into those results; none of the competitor sites
- * in this category do it.
+ * Three linked nodes rather than one blob, because they answer different
+ * questions. `Organization` is the entity — the thing a Knowledge Panel is
+ * built around when someone searches the brand name, and the node that carries
+ * the logo and the profiles. `LocalBusiness` is the same entity as a place
+ * that can be visited and phoned, which is what a "near me" search matches.
+ * `WebSite` binds the name to this domain, so the brand and the address are one
+ * result instead of two competing ones.
+ *
+ * They are `@id`-linked into a single graph. Emitted as three separate scripts
+ * they would read as three unrelated businesses that happen to share a name.
  */
 export function StructuredData() {
   const { address, email, phone } = site.contact;
 
+  const postalAddress = {
+    "@type": "PostalAddress",
+    streetAddress: `${address.line1}, ${address.line2}`,
+    addressLocality: address.city,
+    postalCode: address.postcode,
+    addressRegion: address.region,
+    addressCountry: "IN",
+  };
+
+  const organisationId = `${site.url}/#organisation`;
   const areas = [...new Set(projects.map((p) => p.location))];
 
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `${site.url}/#organisation`,
+  const organisation = {
+    "@type": "Organization",
+    "@id": organisationId,
     name: site.name,
     legalName: site.legalName,
+    alternateName: [site.legalName, "RACEON Sports"],
     description: site.description,
     url: site.url,
     email,
     telephone: phone,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: `${address.line1}, ${address.line2}`,
-      addressLocality: address.city,
-      postalCode: address.postcode,
-      addressRegion: address.region,
-      addressCountry: "IN",
+    address: postalAddress,
+    // The logo is what a Knowledge Panel shows. Without it Google picks
+    // something off the page, and it usually picks badly.
+    logo: {
+      "@type": "ImageObject",
+      url: `${site.url}/brand/raceon-lockup.svg`,
+      caption: site.legalName,
     },
-    areaServed: areas.map((name) => ({ "@type": "Place", name })),
+    slogan: site.tagline,
     knowsAbout: [
       "Wooden badminton court flooring",
       "Squash court construction",
@@ -42,7 +57,34 @@ export function StructuredData() {
       "Interlocked pine timber framework",
       "Sports lighting installation",
     ],
-    slogan: site.tagline,
+    // Only when RACEON have supplied real profile URLs. A `sameAs` pointing at
+    // a guessed handle is worse than an absent one — it binds the brand to an
+    // account that isn't theirs.
+    ...(site.social.length > 0 ? { sameAs: site.social } : {}),
+  };
+
+  const localBusiness = {
+    "@type": "LocalBusiness",
+    "@id": `${site.url}/#local`,
+    parentOrganization: { "@id": organisationId },
+    name: site.legalName,
+    description: site.description,
+    url: site.url,
+    email,
+    telephone: phone,
+    address: postalAddress,
+    image: `${site.url}/photography/court-lit.webp`,
+    priceRange: "$$$",
+    areaServed: areas.map((name) => ({ "@type": "Place", name })),
+    ...(site.geo
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: site.geo.lat,
+            longitude: site.geo.lng,
+          },
+        }
+      : {}),
     makesOffer: [
       {
         "@type": "Offer",
@@ -65,13 +107,24 @@ export function StructuredData() {
     ],
     // Delivered work, stated as a fact rather than a review score.
     additionalProperty: [
-      {
-        "@type": "PropertyValue",
-        name: "Courts delivered",
-        value: totalCourts,
-      },
+      { "@type": "PropertyValue", name: "Courts delivered", value: totalCourts },
       { "@type": "PropertyValue", name: "Sites delivered", value: totalSites },
     ],
+  };
+
+  const website = {
+    "@type": "WebSite",
+    "@id": `${site.url}/#website`,
+    url: site.url,
+    name: site.name,
+    description: site.description,
+    publisher: { "@id": organisationId },
+    inLanguage: "en-IN",
+  };
+
+  const data = {
+    "@context": "https://schema.org",
+    "@graph": [organisation, localBusiness, website],
   };
 
   return (

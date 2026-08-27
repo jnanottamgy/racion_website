@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { PageShell } from "@/components/chrome/page-shell";
 import { GalleryFigure } from "@/components/gallery/gallery-figure";
 import { chapters, galleryCount } from "@/content/gallery";
 import { totalCourts, totalSites } from "@/content/projects";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Gallery",
   description: `Timber arriving, the interlocked pine framework going down, decking, finish, lighting and courts in play — ${galleryCount} photographs from RACEON's ${totalCourts} courts across ${totalSites} sites.`,
-};
+  path: "/gallery",
+});
 
 export default function GalleryPage() {
   return (
     <PageShell
+      path="/gallery"
       eyebrow="Gallery"
       title={
         <>

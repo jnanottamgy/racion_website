@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import { PageShell, Section } from "@/components/chrome/page-shell";
 import { plate } from "@/content/photography";
 import { projects } from "@/content/projects";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Sports Lighting",
-  description:
-    "150W high-performance fixtures for glare-free, even illumination, complete with supports and fittings — installed by RACEON across courts in Karnataka and South India.",
-};
+  description: "150W high-performance fixtures for glare-free, even illumination, complete with supports and fittings — installed by RACEON across courts in Karnataka and South India.",
+  path: "/lighting",
+});
 
 const lightingCourts = projects
   .filter((p) => p.scope === "lighting" || p.scope === "court-lighting")
@@ -19,6 +20,7 @@ export default function LightingPage() {
 
   return (
     <PageShell
+      path="/lighting"
       eyebrow="Lighting"
       title={<>Even light, and none of it in a player&rsquo;s eye.</>}
       lede="150W high-performance fixtures for glare-free, even illumination — complete with supports and fittings, positioned for professional court standards."

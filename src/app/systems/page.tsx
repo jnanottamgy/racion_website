@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import { PageShell, Section } from "@/components/chrome/page-shell";
 import { buildUp, capabilities, frameworkComparison } from "@/content/systems";
 import { plate } from "@/content/photography";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Wooden Court Systems",
-  description:
-    "The RACEON build-up: prepared base, Air Shox cushioning, an interlocked pine framework, and African teak or maple laid straight onto it.",
-};
+  description: "The RACEON build-up: prepared base, Air Shox cushioning, an interlocked pine framework, and African teak or maple laid straight onto it.",
+  path: "/systems",
+});
 
 export default function SystemsPage() {
   const hero = plate("framework");
@@ -16,6 +17,7 @@ export default function SystemsPage() {
 
   return (
     <PageShell
+      path="/systems"
       eyebrow="Systems"
       title={<>Five layers. Only one of them is the floor.</>}
       lede="Badminton courts in African teak, squash courts in maple, built from the slab up. Everything under the boards is what decides whether the court is still flat in ten years."
