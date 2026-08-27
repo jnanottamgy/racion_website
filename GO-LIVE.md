@@ -8,25 +8,53 @@ done. The rest is off-site, and no amount of code substitutes for it.
 
 ---
 
-## 1. Point the domain at the deployment
+## 1. Finish the DNS
 
-In Vercel → Project → Settings → Domains, add the domain (`raceon.in`, or
-whichever is bought) and follow the DNS records it gives you.
+The domain is **raceon.co.in**, added in Vercel with `www` serving production
+and the bare domain 308-redirecting to it. Both currently read
+*Invalid Configuration*, which means Vercel is not yet seeing its records at the
+registrar. Nothing is wrong with the site; the domain simply is not pointed yet.
 
-Then set **one environment variable**, in Settings → Environment Variables:
+At the registrar the domain was bought from, add two records:
+
+| Type | Name | Value |
+|---|---|---|
+| A | `@` | `76.76.21.21` |
+| CNAME | `www` | the value Vercel shows |
+
+**Take both values from the "View DNS configuration" dropdown next to each
+domain in Vercel, not from here.** The apex A record is stable, but Vercel
+issues different CNAME targets to different projects — its own documentation
+shows `cname.vercel-dns.com` in one place and `cname.vercel-dns-0.com` in
+another. The dropdown shows the one this project was actually assigned.
+
+Then wait for DNS to propagate — usually minutes, up to a few hours — and press
+**Refresh** on each domain. Both should turn green, and Vercel issues the TLS
+certificate on its own once they do.
+
+If the registrar offers to delegate nameservers to Vercel instead, that also
+works and is less to maintain, but only if nothing else (email especially) is
+already running on that domain's DNS.
+
+### Then set one environment variable
+
+Settings → Environment Variables:
 
 ```
-NEXT_PUBLIC_SITE_URL = https://raceon.in
+NEXT_PUBLIC_SITE_URL = https://www.raceon.co.in
 ```
 
-Everything that needs an absolute address reads it from there: the canonical
-link on every page, the sitemap, `robots.txt`, the share-card image URLs and
-the structured data. Set it once and redeploy; nothing else needs editing.
+The canonical link on every page, the sitemap, `robots.txt`, the share-card
+image URLs and the structured data all read from it. Set it once and redeploy.
 
-**Also set the Vercel URL to redirect.** In the same Domains panel, mark the
-real domain as primary so `racion-website-zrzb.vercel.app` 308-redirects to it.
-Left as-is, the site is live at two addresses and they compete with each other
-for the same brand name.
+The `www` host, not the bare domain — that is the one serving production, and a
+canonical has to name the URL that answers rather than the one that forwards.
+(If the bare domain is preferred, flip which is primary in Vercel and change
+this variable to match. Either is fine; they just have to agree.)
+
+**Also make the domain primary** so `racion-website-zrzb.vercel.app` redirects
+to it. Left as-is the site is live at two addresses, competing with itself for
+the same brand name.
 
 ---
 
@@ -39,7 +67,7 @@ This is how Google finds the site in days rather than weeks.
 3. In Vercel, set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to that value and
    redeploy. The tag appears in the page head automatically.
 4. Back in Search Console, click Verify.
-5. Submit `https://raceon.in/sitemap.xml` under **Sitemaps**.
+5. Submit `https://www.raceon.co.in/sitemap.xml` under **Sitemaps**.
 6. Use **URL Inspection** on the homepage and click *Request indexing*.
 
 (Bing works the same way via `NEXT_PUBLIC_BING_SITE_VERIFICATION`. Worth ten
@@ -64,7 +92,7 @@ character — Google treats a mismatch as two different businesses:
 | Name | RACEON Sports Equipment and Accessories LLP |
 | Address | #15, Meenakshi Koil Street, Shivajinagar, Bangalore 560051, Karnataka |
 | Phone | +91 98453 99453 |
-| Website | https://raceon.in |
+| Website | https://www.raceon.co.in |
 | Category | Sports flooring contractor (or Flooring contractor) |
 
 Then add photos — the gallery images are already graded and sized for it — and
@@ -101,7 +129,7 @@ a wrong one puts the business on the wrong street.
   list), and `WebSite` (binding the name to the domain). Emitted as three
   unlinked blobs they would read as three businesses sharing a name.
 - **Breadcrumb markup** on every inner page, so results read
-  `raceon.in › Systems` rather than a bare URL.
+  `raceon.co.in › Systems` rather than a bare URL.
 - **`sitemap.xml`** listing all eight routes, regenerated at build time.
 - **`robots.txt`** allowing everything and naming the sitemap.
 - **Titles** that carry the brand: `Systems — RACEON`, and

@@ -8,7 +8,7 @@ import { Header } from "./header";
  *
  * Two levels is the whole hierarchy here, and that is the point: it tells a
  * search engine these pages belong to the site rather than floating loose, and
- * it is what turns a bare URL in a result into "raceon.in › Systems".
+ * it is what turns a bare URL in a result into "raceon.co.in › Systems".
  */
 function BreadcrumbSchema({ name, path }: { name: string; path: string }) {
   const data = {

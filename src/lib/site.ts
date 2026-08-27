@@ -6,17 +6,22 @@ import { totalCourts, totalSites } from "@/content/projects";
 /**
  * Absolute base URL for canonical links, OG images and the sitemap.
  *
- * Resolved rather than hardcoded: until raceon.in exists, a hardcoded domain
- * makes every share card point at a 404. Vercel supplies the production
- * hostname at build time, and setting NEXT_PUBLIC_SITE_URL overrides both once
- * the real domain is live.
+ * Resolved rather than hardcoded, in three steps: an explicit
+ * NEXT_PUBLIC_SITE_URL wins, then the hostname Vercel supplies for the
+ * production deployment, then the domain below.
+ *
+ * The fallback is the *www* host because that is the one serving production —
+ * the bare raceon.co.in 308-redirects to it. A canonical has to name the URL
+ * that answers, not the one that forwards; pointing every page at a redirect
+ * makes a search engine take an extra hop to find out where the content really
+ * lives, on every page of the site.
  */
 function resolveSiteUrl(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
   if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
     return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
   }
-  return "https://raceon.in";
+  return "https://www.raceon.co.in";
 }
 
 export const site = {
