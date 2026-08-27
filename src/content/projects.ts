@@ -45,6 +45,10 @@ export const projects: Project[] = [
   { slug: "sp-office-tumkur", name: "SP Office", location: "Tumakuru", courts: 1, scope: "court", sector: "government" },
   { slug: "railways-bangalore", name: "Railways", location: "Bangalore", courts: 1, scope: "court", sector: "government" },
   { slug: "lingasur-raichur", name: "Lingasur Auditorium", location: "Raichur", courts: 1, scope: "court" },
+  // Behind the ITC factory. The founder gave the site and the court count and
+  // did not name a scope, so this takes the default — a wooden court
+  // installation — rather than one invented for it.
+  { slug: "jeevanahalli-ground", name: "Jeevanahalli Ground", location: "Bangalore", courts: 2, scope: "court" },
 
   // --- Wooden court installation with lighting ---------------------------
   { slug: "feather-smash-arena", name: "Feather Smash Arena", location: "Bangalore", courts: 8, scope: "court-lighting", sector: "commercial" },
@@ -57,6 +61,7 @@ export const projects: Project[] = [
   { slug: "karnataka-badminton-association", name: "Karnataka Badminton Association", location: "Bangalore", courts: 10, scope: "lighting", sector: "association" },
   { slug: "karnataka-police-academy", name: "Karnataka Police Academy", location: "Mysore", courts: 8, scope: "lighting", sector: "government" },
   { slug: "bagalkot", name: "Bagalkot", location: "Bagalkot", courts: 2, scope: "lighting" },
+  { slug: "abhishek-yeligar-academy", name: "Abhishek Yeligar Academy", location: "Dharwad", courts: 6, scope: "lighting", sector: "commercial" },
   { slug: "dharwad-forest", name: "Dharwad Forest Department", location: "Dharwad", courts: 1, scope: "lighting", sector: "government" },
 
   // --- Government & institutional ----------------------------------------
