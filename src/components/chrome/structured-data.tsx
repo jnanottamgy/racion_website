@@ -57,10 +57,6 @@ export function StructuredData() {
       "Interlocked pine timber framework",
       "Sports lighting installation",
     ],
-    // Only when RACEON have supplied real profile URLs. A `sameAs` pointing at
-    // a guessed handle is worse than an absent one — it binds the brand to an
-    // account that isn't theirs.
-    ...(site.social.length > 0 ? { sameAs: site.social } : {}),
   };
 
   const localBusiness = {
@@ -76,15 +72,6 @@ export function StructuredData() {
     image: `${site.url}/photography/court-lit.webp`,
     priceRange: "$$$",
     areaServed: areas.map((name) => ({ "@type": "Place", name })),
-    ...(site.geo
-      ? {
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: site.geo.lat,
-            longitude: site.geo.lng,
-          },
-        }
-      : {}),
     makesOffer: [
       {
         "@type": "Offer",

@@ -73,23 +73,21 @@ Reviews on the profile move a local ranking more than anything on the site.
 
 ---
 
-## 4. Send the social profiles
+## 4. Later: link the social profiles
 
-The site can tell Google that a set of social accounts and this website are the
-same business. That binding is what merges them into one result instead of
-several competing ones.
+Optional, and nothing is waiting on it — the markup is complete and correct
+without it.
 
-Send whatever exists — Instagram, Facebook, LinkedIn, YouTube, JustDial,
-IndiaMART — and they go into `site.social` in `src/lib/site.ts`, which emits
-them as `sameAs` in the structured data.
+Once RACEON have social accounts worth pointing at (Instagram, Facebook,
+LinkedIn, YouTube, JustDial, IndiaMART), send the URLs and they get added as
+`sameAs` on the `Organization` node. That tells Google the accounts and this
+website are one business rather than several competing ones, which is worth
+having but only once the accounts actually exist.
 
-**Nothing is emitted while that list is empty, deliberately.** A `sameAs`
-pointing at a guessed handle binds the brand to an account that isn't RACEON's,
-which is worse than saying nothing.
-
-The same applies to `site.geo`: read the exact latitude and longitude off the
-Business Profile pin once it exists and put them there. A wrong coordinate puts
-the business somewhere it isn't.
+The same goes for exact coordinates: once the Business Profile pin is placed,
+its latitude and longitude can be added to `LocalBusiness`. Until then the
+street address geocodes on its own, which is why no coordinate is published —
+a wrong one puts the business on the wrong street.
 
 ---
 
@@ -112,6 +110,8 @@ the business somewhere it isn't.
   full-size image rather than a thumbnail.
 - **Share cards**: a generated 1200×630 OpenGraph image, plus per-page titles
   and descriptions for WhatsApp, LinkedIn and X.
+- **Nothing empty is published.** Every field in the structured data carries a
+  real value; anything without one is absent rather than blank.
 - **Counts derived, never written out.** The description says
   "99 courts across 31 sites" because it reads the project list. Adding a
   project updates the meta description, the homepage, the footer and the

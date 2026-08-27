@@ -38,24 +38,6 @@ export const site = {
   url: resolveSiteUrl(),
   locale: "en_IN",
 
-  /**
-   * Profiles Google can use to bind this domain to the business, emitted as
-   * `sameAs`. A branded search is won by making one entity out of the website,
-   * the Google Business Profile and the social accounts; unlinked, they compete.
-   *
-   * Empty until RACEON supply the real URLs. Nothing is emitted for an empty
-   * list — a `sameAs` pointing at a guessed handle is worse than none.
-   */
-  social: [] as string[],
-
-  /**
-   * Exact coordinates of the office, for `LocalBusiness.geo`.
-   *
-   * Null until someone reads them off the real pin. A street address geocodes
-   * on its own; a wrong lat/long puts the business somewhere it isn't, and
-   * that is a worse answer than no answer.
-   */
-  geo: null as { lat: number; lng: number } | null,
 
   contact: {
     email: "raceonsports@gmail.com",
