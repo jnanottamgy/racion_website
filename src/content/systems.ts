@@ -142,6 +142,7 @@ export const frameworkComparison = {
 export const capabilities = [
   {
     slug: "wooden-courts",
+    href: "/badminton-court-flooring",
     title: "Wooden Courts",
     lede: "Badminton courts in African teak, squash courts in maple — built from the frame up.",
     points: [
@@ -152,6 +153,7 @@ export const capabilities = [
   },
   {
     slug: "lighting",
+    href: "/lighting",
     title: "Sports Lighting",
     lede: "150W fixtures positioned so the shuttle never disappears into a glare.",
     points: [
@@ -162,6 +164,7 @@ export const capabilities = [
   },
   {
     slug: "turnkey",
+    href: "/process",
     title: "Turnkey Delivery",
     lede: "Flooring, lighting, poles and nets from one contractor, on one contract.",
     points: [

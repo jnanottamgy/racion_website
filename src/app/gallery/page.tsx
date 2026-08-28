@@ -6,7 +6,7 @@ import { chapters, galleryCount } from "@/content/gallery";
 import { totalCourts, totalSites } from "@/content/projects";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Gallery",
+  title: "Wooden Badminton Court Photos",
   description: `Timber arriving, the interlocked pine framework going down, decking, finish, lighting and courts in play — ${galleryCount} photographs from RACEON's ${totalCourts} courts across ${totalSites} sites.`,
   path: "/gallery",
 });
@@ -15,7 +15,8 @@ export default function GalleryPage() {
   return (
     <PageShell
       path="/gallery"
-      eyebrow="Gallery"
+      crumb="Gallery"
+      eyebrow="Wooden badminton court photographs"
       title={
         <>
           A court, from

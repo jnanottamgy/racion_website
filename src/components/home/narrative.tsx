@@ -34,8 +34,9 @@ export function Narrative() {
           </h1>
           <div className="mt-10 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <p className="max-w-[46ch] text-[length:var(--text-lead)] leading-[1.55] text-bone-dim">
-              African teak badminton and squash courts on an interlocked pine
-              framework — flooring, lighting, poles and nets on one contract.
+              Wooden badminton court flooring in African teak, squash courts in
+              maple, on an interlocked pine framework — flooring, lighting,
+              poles and nets on one contract, out of Bangalore.
             </p>
             <dl className="flex gap-10 font-mono text-xs uppercase tracking-[0.14em] text-bone-faint">
               <div>
@@ -121,10 +122,22 @@ export function Narrative() {
           the frame.
         </BeatTitle>
         <BeatBody>
-          No plywood, no underlayment. 20–21&nbsp;mm African teak — maple on a
-          squash court — goes tongue and groove directly onto the completed
-          framework, blind-nailed through the tongue so nothing shows on the
-          face.
+          No plywood, no underlayment. 20–21&nbsp;mm{" "}
+          <Link
+            href="/badminton-court-flooring"
+            className="text-accent-text underline-offset-4 hover:underline"
+          >
+            African teak
+          </Link>{" "}
+          &mdash;{" "}
+          <Link
+            href="/squash-court-flooring"
+            className="text-accent-text underline-offset-4 hover:underline"
+          >
+            maple on a squash court
+          </Link>{" "}
+          &mdash; goes tongue and groove directly onto the completed framework,
+          blind-nailed through the tongue so nothing shows on the face.
         </BeatBody>
         <BeatBody>
           Then industrial sanding and finish, sealed under water-based
@@ -226,12 +239,27 @@ export function Narrative() {
           </ul>
         </div>
 
-        <div className="mt-14">
+        {/* The three links a visitor who has read this far actually wants, and
+            the three a search engine most needs pointed at from the homepage —
+            written out as what is at the other end rather than as "read more". */}
+        <div className="mt-14 flex flex-wrap gap-x-10 gap-y-4">
           <Link
             href="/projects"
             className="label transition-colors hover:text-accent-text"
           >
             All {totalSites} projects &rarr;
+          </Link>
+          <Link
+            href="/badminton-court-flooring"
+            className="label transition-colors hover:text-accent-text"
+          >
+            Wooden badminton court flooring &rarr;
+          </Link>
+          <Link
+            href="/squash-court-flooring"
+            className="label transition-colors hover:text-accent-text"
+          >
+            Maple squash court flooring &rarr;
           </Link>
         </div>
       </Beat>

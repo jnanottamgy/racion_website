@@ -1,10 +1,14 @@
 # Going live
 
-What the site already does, and the four things only RACEON can do.
+What the site already does, and the things only RACEON can do.
 
-Ranking first for the company's own name is mostly a matter of not confusing
-Google about which website belongs to the business. The code side of that is
-done. The rest is off-site, and no amount of code substitutes for it.
+There are two different searches to win. One is for **RACEON** — mostly a matter
+of not confusing Google about which website belongs to the business. The other
+is for what RACEON sells, by people who have never heard the name; that one is
+section 4, and it is the one worth the most.
+
+The code side of both is done. The rest is off-site, and no amount of code
+substitutes for it.
 
 ---
 
@@ -176,7 +180,88 @@ Reviews on the profile move a local ranking more than anything on the site.
 
 ---
 
-## 4. Later: link the social profiles
+## 4. Ranking for the words buyers use
+
+Everything above is about a search for **RACEON**. This is the other half: the
+searches from people who do not know the name yet, which is most of them.
+
+> wooden flooring for badminton courts · badminton court flooring cost ·
+> badminton court laying company in bangalore · wooden badminton court
+> construction · squash court flooring · maple squash flooring ·
+> badminton court lighting installation
+
+### What the site now does about it
+
+Until now every page was titled in the brand's voice. *Systems*. *Process*.
+*Gallery*. Beautiful, and invisible to a search for "wooden flooring for
+badminton courts", because none of those words appeared in a title, a heading
+or a first paragraph anywhere on the site.
+
+- **Two service pages** that did not exist before —
+  `/badminton-court-flooring` and `/squash-court-flooring`. They are the pages
+  a stranger should land on: what is included, what is under the floor, the
+  towns it has been built in, the questions people ask, and a way to message
+  RACEON. Both lead the header nav.
+- **Every page retitled** around the question it actually answers.
+  `Systems — RACEON` became `Wooden Court Flooring Specification — RACEON`;
+  `Process` became `How a Wooden Badminton Court Is Built`; `About` became
+  `Badminton Court Flooring Contractor in Bangalore`. The homepage keeps the
+  brand first — `RACEON — Wooden Badminton Court Flooring in Bangalore` — so it
+  still wins its own name.
+- **Headings that say what the page is.** The small line above each headline is
+  now part of the `h1` and carries the phrase; the display line underneath keeps
+  the voice. No hidden text, nothing stuffed — one heading doing both jobs.
+- **Fourteen questions answered on the page**, marked up as `FAQPage`, which is
+  what Google expands underneath a result. Every answer is built from what
+  RACEON supplied. There is no price per square foot and no programme duration
+  on this site, because neither was given, and inventing either would put a
+  number in front of a buyer that a site engineer then has to defend.
+- **`Service` structured data** on both service pages, linked to the same
+  business as the rest of the graph, listing the real scope and the real
+  service area.
+- **Internal links written as what is at the other end** — the footer says
+  "Wooden badminton court flooring", not "Badminton". Link text is one of the
+  strongest signals for what a page is about, and it appears on all twelve
+  pages.
+- **A places section** built from the project schedule: Bangalore 44 courts,
+  Dharwad 7, Mandya 6, Udupi 6, and so on. Real work in real towns, counted off
+  the same list as everything else. No page is invented for a town with nothing
+  in it — those are doorway pages and Google demotes them.
+
+### What the site cannot do on its own
+
+Be straight about this, because it is where the result actually comes from.
+On-page work makes a page *eligible* to rank. What decides whether it does, for
+a commercial query in Bangalore, is mostly off the website:
+
+1. **The Google Business Profile, again.** For "badminton court flooring near
+   me" or "…in bangalore", the map pack sits above every ordinary result, and
+   only a Business Profile can appear in it. Fill in every service, add the
+   gallery photographs, and post to it occasionally. This is the single highest
+   return of anything on this page.
+2. **Reviews.** Ask the academies, colleges and associations on the project
+   list. Ten detailed reviews mentioning "badminton court flooring" move a
+   local ranking further than any change to this site would.
+3. **Directory listings** — JustDial, IndiaMART, Sulekha, TradeIndia. Indian
+   commercial search runs through these more than most markets. Use the name,
+   address and phone number **exactly** as they appear in the footer here;
+   a mismatched address across listings is read as two different businesses and
+   splits the signal between them.
+4. **Links.** A client's website mentioning who built their court is worth more
+   than a hundred directory entries. Ask, on handover, while everyone is pleased
+   with the floor.
+5. **Time.** Nothing here ranks in a fortnight. A new domain earns trust over
+   months, and the long specific searches — "maple squash court flooring
+   bangalore" — land first, well before the short competitive ones.
+
+Then watch it: Search Console's **Performance** tab shows the exact phrases the
+site is being shown for and where it sits for each. After a month or two, that
+report is a better guide to the next page worth writing than any guess made
+now.
+
+---
+
+## 5. Later: link the social profiles
 
 Optional, and nothing is waiting on it — the markup is complete and correct
 without it.
@@ -205,10 +290,12 @@ a wrong one puts the business on the wrong street.
   unlinked blobs they would read as three businesses sharing a name.
 - **Breadcrumb markup** on every inner page, so results read
   `raceon.co.in › Systems` rather than a bare URL.
-- **`sitemap.xml`** listing all eight routes, regenerated at build time.
+- **`sitemap.xml`** listing every route, regenerated at build time and
+  ordered by what each page is worth to the business.
 - **`robots.txt`** allowing everything and naming the sitemap.
-- **Titles** that carry the brand: `Systems — RACEON`, and
-  `RACEON — Built from the frame up.` on the homepage.
+- **Titles that carry the brand *and* the search**:
+  `Wooden Court Flooring Specification — RACEON`, and
+  `RACEON — Wooden Badminton Court Flooring in Bangalore` on the homepage.
 - **`max-image-preview: large`** for Googlebot, so a brand search can show a
   full-size image rather than a thumbnail.
 - **Share cards**: a generated 1200×630 OpenGraph image, plus per-page titles
@@ -217,5 +304,7 @@ a wrong one puts the business on the wrong street.
   real value; anything without one is absent rather than blank.
 - **Counts derived, never written out.** The description says
   "99 courts across 31 sites" because it reads the project list. Adding a
-  project updates the meta description, the homepage, the footer and the
-  structured data at once.
+  project updates the meta description, the homepage, the footer, the places
+  section, the FAQ answers and the structured data at once.
+- **Two service pages, `Service` and `FAQPage` markup**, and every page titled
+  around the query it answers — see section 4.

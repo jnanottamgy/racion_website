@@ -83,3 +83,40 @@ export const flagshipProjects = [
   "pes-college-mandya",
   "vidyaranyapura",
 ] as const;
+
+/** One town or city, with everything RACEON has delivered in it. */
+export interface Locality {
+  location: string;
+  courts: number;
+  sites: number;
+}
+
+/**
+ * The project schedule collapsed to places, largest first.
+ *
+ * Somebody searching for a court builder searches with a place in it —
+ * "badminton court flooring bangalore", not "badminton court flooring". This is
+ * the only honest way to answer that: the towns RACEON has actually worked in,
+ * counted off the same list the rest of the site counts off. No page is
+ * invented for a town with nothing behind it.
+ */
+export const byLocality: Locality[] = Object.values(
+  projects.reduce<Record<string, Locality>>((acc, p) => {
+    const row = (acc[p.location] ??= { location: p.location, courts: 0, sites: 0 });
+    row.courts += p.courts;
+    row.sites += 1;
+    return acc;
+  }, {}),
+).sort((a, b) => b.courts - a.courts || a.location.localeCompare(b.location));
+
+/** Courts delivered under a given scope. */
+export function courtsWithScope(...scopes: Scope[]) {
+  return projects
+    .filter((p) => scopes.includes(p.scope))
+    .reduce((n, p) => n + p.courts, 0);
+}
+
+/** The largest single site, which is what "multi-court" means in practice. */
+export const largestSite = projects.reduce((a, b) =>
+  b.courts > a.courts ? b : a,
+);

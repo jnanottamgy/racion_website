@@ -5,7 +5,7 @@ import { ProjectIndex } from "@/components/projects/project-index";
 import { totalCourts, totalSites } from "@/content/projects";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Projects",
+  title: "Badminton Court Projects in Karnataka",
   description: `${totalCourts} courts across ${totalSites} sites — academies, colleges, associations, government departments and private arenas across Karnataka and South India.`,
   path: "/projects",
 });
@@ -14,7 +14,8 @@ export default function ProjectsPage() {
   return (
     <PageShell
       path="/projects"
-      eyebrow="Projects"
+      crumb="Projects"
+      eyebrow="Badminton courts built across Karnataka & South India"
       title={
         <>
           {totalCourts} courts.

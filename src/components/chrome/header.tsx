@@ -75,7 +75,9 @@ export function Header() {
       <div className="container-x flex h-[4.5rem] items-center justify-between gap-8">
         <Logo variant="lockup" height={34} />
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        {/* Nine links across a bar at 1024px is tight; the type steps down a
+            notch and the gaps close until there is room for it at xl. */}
+        <nav className="hidden items-center gap-4 lg:flex xl:gap-7">
           {site.nav.map((item) => {
             const active = pathname.startsWith(item.href);
             return (
@@ -83,7 +85,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`text-sm transition-colors duration-300 ${
+                className={`whitespace-nowrap text-[0.8125rem] transition-colors duration-300 xl:text-sm ${
                   active ? "text-accent-text" : "text-bone-dim hover:text-bone"
                 }`}
               >

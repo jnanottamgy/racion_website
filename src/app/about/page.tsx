@@ -8,8 +8,8 @@ import { projects, totalCourts, totalSites } from "@/content/projects";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About",
-  description: `${site.legalName} — a specialized sports infrastructure company delivering wooden sports flooring and complete badminton and squash court solutions.`,
+  title: "Badminton Court Flooring Contractor in Bangalore",
+  description: `Badminton court flooring contractor in Shivajinagar, Bangalore. ${site.legalName} builds wooden badminton and squash courts, base to lighting — ${totalCourts} courts across ${totalSites} sites for academies, colleges, associations and government departments.`,
   path: "/about",
 });
 
@@ -26,7 +26,8 @@ export default function AboutPage() {
   return (
     <PageShell
       path="/about"
-      eyebrow="About"
+      crumb="About"
+      eyebrow="Badminton court flooring contractor, Bangalore"
       title={<>A sports infrastructure company, not a flooring supplier.</>}
       lede={`${site.legalName} delivers high-quality wooden sports flooring and complete badminton and squash court solutions — base structure, teak flooring, lighting, poles and nets.`}
     >

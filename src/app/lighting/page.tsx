@@ -6,7 +6,7 @@ import { plate } from "@/content/photography";
 import { projects } from "@/content/projects";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Sports Lighting",
+  title: "Badminton Court Lighting Installation",
   description: "150W high-performance fixtures for glare-free, even illumination, complete with supports and fittings — installed by RACEON across courts in Karnataka and South India.",
   path: "/lighting",
 });
@@ -21,7 +21,8 @@ export default function LightingPage() {
   return (
     <PageShell
       path="/lighting"
-      eyebrow="Lighting"
+      crumb="Lighting"
+      eyebrow="Badminton court lighting installation"
       title={<>Even light, and none of it in a player&rsquo;s eye.</>}
       lede="150W high-performance fixtures for glare-free, even illumination — complete with supports and fittings, positioned for professional court standards."
     >

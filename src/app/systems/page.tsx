@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import Image from "next/image";
+import Link from "next/link";
 import { PageShell, Section } from "@/components/chrome/page-shell";
 import { buildUp, capabilities, frameworkComparison } from "@/content/systems";
 import { plate } from "@/content/photography";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Wooden Court Systems",
-  description: "The RACEON build-up: prepared base, Air Shox cushioning, an interlocked pine framework, and African teak or maple laid straight onto it.",
+  title: "Wooden Court Flooring Specification",
+  description:
+    "The build-up under a RACEON badminton or squash court, layer by layer: sealed concrete base, 3–5 mm moisture-resistant membrane, 20–21 mm button-type shock pads, an interlocked chemically treated pine framework, and 20–21 mm African teak or maple laid straight onto it. No plywood.",
   path: "/systems",
 });
 
@@ -18,7 +20,8 @@ export default function SystemsPage() {
   return (
     <PageShell
       path="/systems"
-      eyebrow="Systems"
+      crumb="Systems"
+      eyebrow="Wooden court flooring build-up, layer by layer"
       title={<>Five layers. Only one of them is the floor.</>}
       lede="Badminton courts in African teak, squash courts in maple, built from the slab up. Everything under the boards is what decides whether the court is still flat in ten years."
     >
@@ -142,7 +145,12 @@ export default function SystemsPage() {
             {capabilities.map((c) => (
               <li key={c.slug}>
                 <h3 className="text-[length:var(--text-d3)] text-bone">
-                  {c.title}
+                  <Link
+                    href={c.href}
+                    className="transition-colors hover:text-accent-text"
+                  >
+                    {c.title}
+                  </Link>
                 </h3>
                 <p className="mt-3 max-w-[42ch] text-bone-dim">{c.lede}</p>
                 <ul className="mt-4 space-y-1.5">

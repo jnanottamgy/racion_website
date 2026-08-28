@@ -31,8 +31,17 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  /**
+   * The homepage title is the one piece of text on this site that has to do
+   * two jobs at once: win the brand search, and say what the business does to
+   * somebody who has never heard the name. Brand first so a search for
+   * "raceon" matches on the first word, then the thing people actually type
+   * when they do not know who to call. The tagline still opens the page and
+   * still carries the share card; it was the wrong thing to spend a search
+   * result on.
+   */
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: `${site.name} — Wooden Badminton Court Flooring in Bangalore`,
     template: `%s — ${site.name}`,
   },
   description: site.description,
@@ -76,12 +85,25 @@ export const metadata: Metadata = {
   // No blanket canonical here. Declaring `canonical: "/"` on the root layout
   // inherits down to every route, so each page tells search engines it is a
   // duplicate of the homepage — actively worse than emitting none at all.
+  /**
+   * Google has ignored this tag since 2009 and says so publicly. It stays
+   * because Bing and a handful of Indian directory crawlers still read it, it
+   * costs nothing, and it is a useful place to keep the target list honest —
+   * every phrase here is one an actual page on this site is written to answer.
+   * Nothing aspirational goes in it.
+   */
   keywords: [
+    "wooden flooring for badminton courts",
     "badminton court flooring",
-    "wooden badminton court",
-    "squash court construction",
+    "badminton court construction",
+    "badminton court laying company",
+    "wooden badminton court flooring Bangalore",
+    "badminton court flooring contractors",
     "African teak sports flooring",
-    "sports lighting installation",
+    "squash court flooring",
+    "maple squash court flooring",
+    "sports wooden flooring",
+    "badminton court lighting installation",
     "Bangalore",
     "Karnataka",
   ],

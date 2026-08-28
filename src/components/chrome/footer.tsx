@@ -9,7 +9,7 @@ export function Footer() {
   return (
     <footer className="relative z-10 border-t border-hairline bg-stage-sunk">
       <div className="container-x py-20">
-        <div className="grid gap-14 lg:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1.1fr_1fr]">
           <div>
             <Logo height={44} />
             <p className="mt-7 max-w-[34ch] text-sm leading-relaxed text-bone-faint">
@@ -62,21 +62,23 @@ export function Footer() {
             </address>
           </div>
 
-          <div>
-            <p className="label">Site</p>
-            <ul className="mt-5 space-y-3 text-sm">
-              {site.nav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-bone-dim transition-colors hover:text-accent-text"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {site.footerGroups.map((group) => (
+            <div key={group.label}>
+              <p className="label">{group.label}</p>
+              <ul className="mt-5 space-y-3 text-sm">
+                {group.links.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-bone-dim transition-colors hover:text-accent-text"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div className="mt-20 flex flex-col gap-3 border-t border-hairline pt-7 text-xs text-bone-faint sm:flex-row sm:items-center sm:justify-between">

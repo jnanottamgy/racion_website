@@ -8,7 +8,7 @@ import { layerFor, tools } from "@/content/tools";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Tools",
+  title: "Pneumatic Nailing Machines for Court Flooring",
   description: "The machines RACEON install with: a nailer for the shock pads, a coil nailer for the interlocked pine framework, and a flooring cleat nailer that blind-nails the teak through the tongue.",
   path: "/tools",
 });
@@ -17,7 +17,8 @@ export default function ToolsPage() {
   return (
     <PageShell
       path="/tools"
-      eyebrow="Tools"
+      crumb="Tools"
+      eyebrow="Pneumatic nailing machines for wood flooring"
       title={
         <>
           Three machines,

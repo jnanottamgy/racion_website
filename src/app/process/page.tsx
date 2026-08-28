@@ -11,7 +11,7 @@ import { tools } from "@/content/tools";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Process",
+  title: "How a Wooden Badminton Court Is Built",
   description: `Survey to handover on one contract: how RACEON builds a wooden badminton or squash court in five phases and ${steps.length} steps, from set-out through the interlocked pine framework to a final measurement of the court as built.`,
   path: "/process",
 });
@@ -20,7 +20,8 @@ export default function ProcessPage() {
   return (
     <PageShell
       path="/process"
-      eyebrow="Process"
+      crumb="Process"
+      eyebrow="How a wooden badminton court is built"
       title={
         <>
           One programme,

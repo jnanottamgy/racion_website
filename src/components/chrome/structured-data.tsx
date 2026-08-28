@@ -1,5 +1,6 @@
 import { projects, totalCourts, totalSites } from "@/content/projects";
 import { site } from "@/lib/site";
+import { LOCAL_BUSINESS_ID, ORGANISATION_ID } from "@/lib/schema";
 
 /**
  * The graph a search engine reads this business out of.
@@ -27,7 +28,7 @@ export function StructuredData() {
     addressCountry: "IN",
   };
 
-  const organisationId = `${site.url}/#organisation`;
+  const organisationId = ORGANISATION_ID;
   const areas = [...new Set(projects.map((p) => p.location))];
 
   const organisation = {
@@ -61,7 +62,7 @@ export function StructuredData() {
 
   const localBusiness = {
     "@type": "LocalBusiness",
-    "@id": `${site.url}/#local`,
+    "@id": LOCAL_BUSINESS_ID,
     parentOrganization: { "@id": organisationId },
     name: site.legalName,
     description: site.description,

@@ -46,12 +46,25 @@ function BreadcrumbSchema({ name, path }: { name: string; path: string }) {
  */
 export function PageShell({
   eyebrow,
+  crumb,
   title,
   lede,
   path,
   children,
 }: {
+  /**
+   * The small line above the headline — and, since it sits inside the `h1`,
+   * half of what the page announces itself as.
+   *
+   * These used to echo the nav ("Systems", "Gallery"), which told a visitor
+   * nothing they had not just clicked and told a search engine nothing at all.
+   * They now say what the page is about in the words somebody would search for,
+   * while the display line underneath keeps the voice. One heading, both jobs,
+   * and no hidden text.
+   */
   eyebrow: string;
+  /** Short name for the breadcrumb trail. Falls back to the eyebrow. */
+  crumb?: string;
   title: ReactNode;
   lede?: ReactNode;
   /** Route path, leading slash. Emits the breadcrumb trail when supplied. */
@@ -60,7 +73,7 @@ export function PageShell({
 }) {
   return (
     <>
-      {path && <BreadcrumbSchema name={eyebrow} path={path} />}
+      {path && <BreadcrumbSchema name={crumb ?? eyebrow} path={path} />}
       <Header />
       {/* The homepage sits in a lit room; without this the inner pages read as
           a different, flatter site. One soft violet wash is enough to keep them
@@ -71,9 +84,11 @@ export function PageShell({
       />
       <main id="main" className="relative">
         <header className="container-x border-b border-hairline pt-[9.5rem] pb-16">
-          <p className="label">{eyebrow}</p>
-          <h1 className="display mt-7 max-w-[18ch] text-[length:var(--text-d1)] text-bone">
-            {title}
+          <h1>
+            <span className="label block">{eyebrow}</span>
+            <span className="display mt-7 block max-w-[18ch] text-[length:var(--text-d1)] text-bone">
+              {title}
+            </span>
           </h1>
           {lede && (
             <p className="mt-8 max-w-[54ch] text-[length:var(--text-lead)] leading-[1.55] text-bone-dim">

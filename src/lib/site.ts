@@ -75,14 +75,54 @@ export const site = {
     yearsPhrase: "Karnataka & South India",
   },
 
+  /**
+   * Header navigation.
+   *
+   * The two service pages lead it, because they are what the business sells and
+   * what a stranger arriving from a search needs to find. Everything after them
+   * is evidence for the claim the first two make.
+   */
   nav: [
-    { label: "Systems", href: "/systems" },
+    { label: "Badminton", href: "/badminton-court-flooring" },
+    { label: "Squash", href: "/squash-court-flooring" },
     { label: "Lighting", href: "/lighting" },
+    { label: "Systems", href: "/systems" },
+    { label: "Process", href: "/process" },
     { label: "Tools", href: "/tools" },
     { label: "Projects", href: "/projects" },
     { label: "Gallery", href: "/gallery" },
-    { label: "Process", href: "/process" },
     { label: "About", href: "/about" },
+  ],
+
+  /**
+   * Footer navigation, grouped — and written out in full.
+   *
+   * The header has to fit nine links across a bar, so its labels are one word
+   * each. The footer has no such constraint, and the words a link is made of
+   * are the strongest thing on a page for telling a search engine what sits at
+   * the other end of it. "Wooden badminton courts" pointing at the badminton
+   * page is worth having on all twelve routes; "Badminton" is worth much less.
+   */
+  footerGroups: [
+    {
+      label: "What RACEON builds",
+      links: [
+        { label: "Wooden badminton court flooring", href: "/badminton-court-flooring" },
+        { label: "Maple squash court flooring", href: "/squash-court-flooring" },
+        { label: "Badminton court lighting", href: "/lighting" },
+        { label: "The five-layer court system", href: "/systems" },
+      ],
+    },
+    {
+      label: "The work",
+      links: [
+        { label: "How a court is built", href: "/process" },
+        { label: "Installation machinery", href: "/tools" },
+        { label: "Courts delivered", href: "/projects" },
+        { label: "Photographs", href: "/gallery" },
+        { label: "About RACEON", href: "/about" },
+      ],
+    },
   ],
 } as const;
 
