@@ -185,10 +185,12 @@ Reviews on the profile move a local ranking more than anything on the site.
 Everything above is about a search for **RACEON**. This is the other half: the
 searches from people who do not know the name yet, which is most of them.
 
-> wooden flooring for badminton courts · badminton court flooring cost ·
-> badminton court laying company in bangalore · wooden badminton court
-> construction · squash court flooring · maple squash flooring ·
-> badminton court lighting installation
+> wooden flooring for badminton courts · badminton floor laying company ·
+> badminton court laying company in bangalore · best badminton court flooring
+> company · wooden badminton court construction · shuttle court flooring ·
+> squash floor laying · maple squash court flooring · sports infrastructure
+> company bangalore · sports flooring contractors · badminton court lighting
+> installation
 
 ### What the site now does about it
 
@@ -197,11 +199,25 @@ Until now every page was titled in the brand's voice. *Systems*. *Process*.
 badminton courts", because none of those words appeared in a title, a heading
 or a first paragraph anywhere on the site.
 
-- **Two service pages** that did not exist before —
-  `/badminton-court-flooring` and `/squash-court-flooring`. They are the pages
-  a stranger should land on: what is included, what is under the floor, the
-  towns it has been built in, the questions people ask, and a way to message
-  RACEON. Both lead the header nav.
+- **Three new pages** that did not exist before —
+  `/badminton-court-flooring`, `/squash-court-flooring` and
+  `/badminton-court-flooring-bangalore`. They are the pages a stranger should
+  land on: what is included, what is under the floor, the towns it has been
+  built in, the questions people ask, and a way to message RACEON. The first
+  two lead the header nav.
+- **One city page, not twelve.** Bangalore gets its own page because it is the
+  registered office and 44 of the 99 courts — it has the schedule, the address
+  and four questions the service page does not. Every other town is a row in
+  the places list, which is what a town with one court is worth. A page per
+  town with the name swapped in is a doorway page, and Google has been
+  demoting those for a decade.
+- **A "choosing a company" section**: the eight questions that actually tell
+  two quotes apart — what is under the boards, is there plywood, which way do
+  the framework members run, how is the final bill calculated — each with
+  RACEON's answer beside it. Nobody can honestly publish a page claiming to be
+  the *best* badminton court flooring company; this is the version of that page
+  the site is entitled to, and it is more convincing to a buyer who builds
+  courts for a living.
 - **Every page retitled** around the question it actually answers.
   `Systems — RACEON` became `Wooden Court Flooring Specification — RACEON`;
   `Process` became `How a Wooden Badminton Court Is Built`; `About` became
@@ -211,8 +227,8 @@ or a first paragraph anywhere on the site.
 - **Headings that say what the page is.** The small line above each headline is
   now part of the `h1` and carries the phrase; the display line underneath keeps
   the voice. No hidden text, nothing stuffed — one heading doing both jobs.
-- **Fourteen questions answered on the page**, marked up as `FAQPage`, which is
-  what Google expands underneath a result. Every answer is built from what
+- **Twenty-five questions answered on the page**, marked up as `FAQPage`, which
+  is what Google expands underneath a result. Every answer is built from what
   RACEON supplied. There is no price per square foot and no programme duration
   on this site, because neither was given, and inventing either would put a
   number in front of a buyer that a site engineer then has to defend.
@@ -227,6 +243,24 @@ or a first paragraph anywhere on the site.
   Dharwad 7, Mandya 6, Udupi 6, and so on. Real work in real towns, counted off
   the same list as everything else. No page is invented for a town with nothing
   in it — those are doorway pages and Google demotes them.
+
+- **The vocabulary widened** across titles, headings and copy to the phrasings
+  people actually use — court *laying* as well as flooring, *shuttle court*,
+  *sports infrastructure company*, *sports flooring contractors*, Bengaluru as
+  well as Bangalore. The `About` page is now titled
+  `Sports Infrastructure Company in Bangalore`, because that is a search.
+- **`knowsAbout` and `makesOffer` expanded** in the structured data, and the
+  business typed as `GeneralContractor` as well as `LocalBusiness` — a more
+  specific type gives a search engine more to work with.
+
+### One thing about "best …" searches
+
+"Best badminton court flooring company in Bangalore" almost never returns a
+contractor's own website. It returns JustDial, Sulekha and *Top 10* listicles,
+because that is what the searcher is asking for — a list to compare. The way to
+win that search is to **be on those lists**, not to write a page claiming the
+title. So: get listed, get reviewed, and let the site win the searches where
+somebody is looking for the thing itself rather than a ranking of it.
 
 ### What the site cannot do on its own
 
@@ -306,5 +340,6 @@ a wrong one puts the business on the wrong street.
   "99 courts across 31 sites" because it reads the project list. Adding a
   project updates the meta description, the homepage, the footer, the places
   section, the FAQ answers and the structured data at once.
-- **Two service pages, `Service` and `FAQPage` markup**, and every page titled
-  around the query it answers — see section 4.
+- **Three service pages, `Service` and `FAQPage` markup**, a contractor
+  comparison section, and every page titled around the query it answers — see
+  section 4.

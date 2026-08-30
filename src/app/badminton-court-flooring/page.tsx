@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageShell, Section } from "@/components/chrome/page-shell";
 import { Enquire } from "@/components/marketing/enquire";
+import { ContractorChecks } from "@/components/marketing/contractor-checks";
 import { FaqSection } from "@/components/marketing/faq-section";
 import { badmintonFaq } from "@/content/faq";
 import { plate } from "@/content/photography";
@@ -171,6 +172,14 @@ export default function BadmintonCourtFlooringPage() {
               </p>
               <p className="mt-7 text-sm text-bone-dim">
                 <Link
+                  href="/badminton-court-flooring-bangalore"
+                  className="text-accent-text underline-offset-4 hover:underline"
+                >
+                  Badminton court flooring in Bangalore &rarr;
+                </Link>
+              </p>
+              <p className="mt-3 text-sm text-bone-dim">
+                <Link
                   href="/projects"
                   className="text-accent-text underline-offset-4 hover:underline"
                 >
@@ -182,7 +191,22 @@ export default function BadmintonCourtFlooringPage() {
             <ul className="grid grid-cols-2 gap-x-10 gap-y-5 self-start sm:grid-cols-3">
               {byLocality.map((l) => (
                 <li key={l.location} className="border-t border-hairline pt-3">
-                  <p className="text-sm text-bone">{l.location}</p>
+                  {/* Bangalore is the one place with a page of its own — the
+                      registered office and nearly half the courts. Everywhere
+                      else is a row, which is what a town with one court is
+                      worth. */}
+                  <p className="text-sm text-bone">
+                    {l.location === "Bangalore" ? (
+                      <Link
+                        href="/badminton-court-flooring-bangalore"
+                        className="transition-colors hover:text-accent-text"
+                      >
+                        {l.location}
+                      </Link>
+                    ) : (
+                      l.location
+                    )}
+                  </p>
                   <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-bone-faint">
                     <span className="text-accent-text">{l.courts}</span>{" "}
                     {l.courts === 1 ? "court" : "courts"} ·{" "}
@@ -206,6 +230,8 @@ export default function BadmintonCourtFlooringPage() {
             className="w-full border border-hairline"
           />
         </Section>
+
+        <ContractorChecks title="Choosing a badminton court flooring company" />
 
         <FaqSection
           items={badmintonFaq}

@@ -110,6 +110,7 @@ export const site = {
         { label: "Wooden badminton court flooring", href: "/badminton-court-flooring" },
         { label: "Maple squash court flooring", href: "/squash-court-flooring" },
         { label: "Badminton court lighting", href: "/lighting" },
+        { label: "Court flooring in Bangalore", href: "/badminton-court-flooring-bangalore" },
         { label: "The five-layer court system", href: "/systems" },
       ],
     },

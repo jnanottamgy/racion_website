@@ -8,8 +8,8 @@ import { projects, totalCourts, totalSites } from "@/content/projects";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Badminton Court Flooring Contractor in Bangalore",
-  description: `Badminton court flooring contractor in Shivajinagar, Bangalore. ${site.legalName} builds wooden badminton and squash courts, base to lighting — ${totalCourts} courts across ${totalSites} sites for academies, colleges, associations and government departments.`,
+  title: "Sports Infrastructure Company in Bangalore",
+  description: `Sports infrastructure company and badminton court flooring contractor in Shivajinagar, Bangalore. ${site.legalName} lays wooden sports flooring and builds badminton and squash courts, base to lighting — ${totalCourts} courts across ${totalSites} sites for academies, colleges, associations and government departments.`,
   path: "/about",
 });
 
@@ -27,9 +27,9 @@ export default function AboutPage() {
     <PageShell
       path="/about"
       crumb="About"
-      eyebrow="Badminton court flooring contractor, Bangalore"
+      eyebrow="Sports infrastructure company & badminton court flooring contractor, Bangalore"
       title={<>A sports infrastructure company, not a flooring supplier.</>}
-      lede={`${site.legalName} delivers high-quality wooden sports flooring and complete badminton and squash court solutions — base structure, teak flooring, lighting, poles and nets.`}
+      lede={`${site.legalName} delivers high-quality wooden sports flooring and complete badminton and squash court solutions — base structure, teak flooring, lighting, poles and nets. A court-laying contractor and a sports infrastructure company, working from Shivajinagar, Bangalore.`}
     >
       <Section>
         <div className="grid gap-14 lg:grid-cols-[1fr_0.8fr]">

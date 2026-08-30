@@ -12,6 +12,7 @@ import { site } from "@/lib/site";
 const ROUTES = [
   { path: "", priority: 1 },
   { path: "/badminton-court-flooring", priority: 0.9 },
+  { path: "/badminton-court-flooring-bangalore", priority: 0.8 },
   { path: "/squash-court-flooring", priority: 0.8 },
   { path: "/systems", priority: 0.8 },
   { path: "/lighting", priority: 0.7 },

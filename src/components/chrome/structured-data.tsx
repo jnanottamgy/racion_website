@@ -50,18 +50,32 @@ export function StructuredData() {
       caption: site.legalName,
     },
     slogan: site.tagline,
+    // The subjects this business is an authority on, in the words people use
+    // for them. Every entry is something an actual page on this site covers.
     knowsAbout: [
       "Wooden badminton court flooring",
-      "Squash court construction",
+      "Badminton court laying",
+      "Badminton court construction",
+      "Wooden sports flooring",
       "African teak sports flooring",
+      "Squash court flooring",
       "Maple squash court flooring",
       "Interlocked pine timber framework",
-      "Sports lighting installation",
+      "Shock pad and moisture membrane sub-floor systems",
+      "Blind-nailed tongue and groove flooring",
+      "Pneumatic nailing machinery for wood flooring",
+      "Badminton court lighting installation",
+      "Sports infrastructure",
+      "Indoor sports hall flooring",
     ],
   };
 
   const localBusiness = {
-    "@type": "LocalBusiness",
+    // GeneralContractor is the closest schema.org type to what this business
+    // is, and a more specific type than LocalBusiness gives a search engine
+    // more to go on. Both are declared so nothing that only understands the
+    // general one loses the record.
+    "@type": ["LocalBusiness", "GeneralContractor"],
     "@id": LOCAL_BUSINESS_ID,
     parentOrganization: { "@id": organisationId },
     name: site.legalName,
@@ -78,9 +92,24 @@ export function StructuredData() {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Wooden badminton and squash court installation",
+          name: "Wooden badminton court flooring and laying",
+          alternateName: [
+            "Badminton court construction",
+            "Badminton court laying",
+            "Wooden sports flooring installation",
+          ],
           description:
-            "Turnkey wooden court construction: prepared base, shock pads, interlocked pine framework, and African teak or maple laid directly onto it with a PU court finish.",
+            "Turnkey wooden court construction: prepared base, shock pads, interlocked pine framework, and African teak laid directly onto it with a PU court finish, plus markings, freestanding poles and nets.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Maple squash court flooring",
+          alternateName: ["Squash court flooring installation"],
+          description:
+            "Maple laid over the same sealed base, moisture-resistant membrane, shock pads and interlocked pine framework, sanded and sealed under a water-based PU court finish.",
         },
       },
       {

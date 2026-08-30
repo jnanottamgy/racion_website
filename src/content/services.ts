@@ -85,3 +85,74 @@ export const squashScope: ServiceScope[] = [
       "Industrial sanding and finish, then sealed under a water-based polyurethane court finish.",
   },
 ];
+
+/**
+ * The eight questions that separate one court-laying contractor from another.
+ *
+ * This is here because of the search it answers. People type "best badminton
+ * court flooring company" and no page can honestly answer it by claiming to be
+ * the best — RACEON has supplied a specification and a project list, not an
+ * award. What it can do is set out what the question actually turns on, state
+ * RACEON's answer to each, and let a buyer put the same eight to whoever else
+ * they are quoting. That is a more useful page than a superlative, and it is
+ * the only version of it this site is entitled to publish.
+ *
+ * Every `raceon` line is quoted from the build-up specification or the
+ * brochure. None of them says anyone else is doing it wrong.
+ */
+export interface ContractorCheck {
+  ask: string;
+  why: string;
+  raceon: string;
+}
+
+export const contractorChecks: ContractorCheck[] = [
+  {
+    ask: "What is under the boards?",
+    why: "The playing surface is the layer everyone quotes on and the one that decides least. Ask for the whole build-up, bottom to top.",
+    raceon:
+      "A prepared and sealed concrete substrate, a 3–5 mm moisture-resistant membrane, 20–21 mm button-type shock pads, then the framework.",
+  },
+  {
+    ask: "Is there plywood in the build-up?",
+    why: "A plywood deck between the framework and the boards is a common way to build a wooden court, and it is a different floor from one without it.",
+    raceon:
+      "None. There is no plywood and no underlayment; the boards are laid directly over the completed pine framework.",
+  },
+  {
+    ask: "Which way do the framework members run?",
+    why: "Supports running one way and members running both ways and interlocking are two different constructions, whatever the quote calls them.",
+    raceon:
+      "Both directions, notched into each other at every crossing so both occupy the same plane — one continuous framework rather than a set of individual supports.",
+  },
+  {
+    ask: "Is the timber treated, and against what?",
+    why: "Untreated softwood under a sports floor in a humid hall is a decision somebody made to save money.",
+    raceon:
+      "Chemically treated and seasoned pine, proofed against termite and moisture, with the framework leaving room for air circulation so the floor can handle environmental expansion.",
+  },
+  {
+    ask: "What timber is the playing surface, and how thick?",
+    why: "\"Wooden flooring\" covers everything from a laminate to a solid hardwood plank. Get the species and the millimetres in writing.",
+    raceon:
+      "20–21 mm African teak on a badminton court, maple on a squash court, tongue-and-groove locked.",
+  },
+  {
+    ask: "How are the boards fixed down?",
+    why: "Fixings driven through the face of a board are visible for the life of the floor, and a shoe finds them.",
+    raceon:
+      "Blind-nailed through the tongue, so nothing shows on the playing face. The whole of the wood-flooring work processing is carried out using pneumatic nailing machines.",
+  },
+  {
+    ask: "Who does the lighting, the poles and the nets?",
+    why: "Three trades on three contracts is three people to chase when the court is not ready and each of them is waiting on another.",
+    raceon:
+      "The same contractor. Flooring, 150 W lighting with supports and fittings, markings to international dimensions, and freestanding poles and nets, on one contract.",
+  },
+  {
+    ask: "How is the final bill calculated?",
+    why: "A quote against a drawing and a bill against a building are rarely the same number, and the difference is usually discovered at the end.",
+    raceon:
+      "Final measurements are taken after completion and billing is based on the actual site dimensions.",
+  },
+];

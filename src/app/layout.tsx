@@ -93,19 +93,39 @@ export const metadata: Metadata = {
    * Nothing aspirational goes in it.
    */
   keywords: [
+    // Badminton — the head terms and the phrasings people actually type.
     "wooden flooring for badminton courts",
     "badminton court flooring",
-    "badminton court construction",
+    "badminton court laying",
+    "badminton floor laying company",
     "badminton court laying company",
-    "wooden badminton court flooring Bangalore",
+    "badminton court construction",
+    "badminton court installation",
     "badminton court flooring contractors",
-    "African teak sports flooring",
+    "wooden badminton court",
+    "shuttle court flooring",
+    "indoor badminton court flooring",
+    // Squash.
     "squash court flooring",
+    "squash floor laying",
     "maple squash court flooring",
-    "sports wooden flooring",
+    "squash court construction",
+    // Materials and method.
+    "African teak sports flooring",
+    "wooden sports flooring",
+    "sports flooring contractors",
+    "interlocked pine framework flooring",
+    "tongue and groove sports flooring",
+    // The company, as a category.
+    "sports infrastructure company",
+    "sports infrastructure company Bangalore",
+    "sports flooring company Bangalore",
+    "badminton court flooring Bangalore",
+    "badminton court flooring Karnataka",
+    // Lighting.
     "badminton court lighting installation",
-    "Bangalore",
-    "Karnataka",
+    "sports lighting installation",
+    "indoor sports hall lighting",
   ],
 };
 
