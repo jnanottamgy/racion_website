@@ -137,20 +137,86 @@ just do not delete it.
 
 ---
 
-## 2. Google Search Console
+## 2. Submit the sitemap to Google
 
-This is how Google finds the site in days rather than weeks.
+The site generates its own XML sitemap. It is live now and needs nothing built:
 
-1. Go to <https://search.google.com/search-console>, add the domain.
-2. Choose the **HTML tag** verification method and copy the `content` value.
-3. In Vercel, set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to that value and
-   redeploy. The tag appears in the page head automatically.
-4. Back in Search Console, click Verify.
-5. Submit `https://www.raceon.co.in/sitemap.xml` under **Sitemaps**.
-6. Use **URL Inspection** on the homepage and click *Request indexing*.
+```
+https://www.raceon.co.in/sitemap.xml
+```
 
-(Bing works the same way via `NEXT_PUBLIC_BING_SITE_VERIFICATION`. Worth ten
-minutes; a small share of Indian desktop search runs through it.)
+Eleven URLs, regenerated on every deploy, ordered by what each page is worth.
+Add a page and it appears there on the next build — there is no file to keep in
+step by hand. `robots.txt` also names it, so a crawler that never gets told
+about it still finds it.
+
+**Do the DNS first.** Every URL inside the sitemap says `www.raceon.co.in`,
+because that is the address the site is going to live at. Until that hostname
+resolves, Search Console has nothing to accept: a sitemap whose URLs are on a
+different host than the property it is submitted to is rejected, every time.
+So section 1, then this.
+
+### Step by step
+
+**1. Open Search Console.** <https://search.google.com/search-console>, signed
+in with the Google account that should own this — RACEON's, not a personal one
+that is awkward to hand over later.
+
+**2. Add a property.** Two boxes appear. Use the left one, **Domain**, and type
+`raceon.co.in` — no `https://`, no `www`. The domain property covers www, the
+bare domain, http and https and every subdomain in one property. The right-hand
+box makes four separate properties out of the same website.
+
+**3. Verify it with a DNS record.** Google shows a TXT record that looks like
+`google-site-verification=` followed by a long string. Copy the whole thing.
+Then, in GoDaddy → the domain → **DNS** → **Add New Record**:
+
+| Field | Value |
+|---|---|
+| Type | TXT |
+| Name | `@` |
+| Value | the `google-site-verification=…` string, pasted whole |
+| TTL | leave the default |
+
+Save, wait a few minutes, and press **Verify** in Search Console. If it fails
+the first time it is almost always propagation — wait ten minutes and press it
+again rather than changing anything.
+
+*(There is a second way, if DNS is being difficult: choose **URL prefix** with
+`https://www.raceon.co.in`, pick **HTML tag**, copy only the value inside
+`content="…"`, and set it in Vercel as the environment variable
+`NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, then redeploy. The tag appears in the
+page head on its own. The DNS route is better here — nothing to redeploy, and
+one property instead of four.)*
+
+**4. Submit the sitemap.** In the left sidebar, **Sitemaps**. The box already
+has `https://raceon.co.in/` in front of it, so type just:
+
+```
+sitemap.xml
+```
+
+Press **Submit**. Status goes to *Success* and *Discovered URLs* to 11 —
+sometimes immediately, sometimes after a day. *"Couldn't fetch"* on the first
+try usually means it was submitted before DNS finished; leave it and it clears
+itself.
+
+**5. Ask for the homepage to be crawled.** Paste `https://www.raceon.co.in`
+into the search box at the top, wait for the inspection, then **Request
+indexing**. Do the same for `/badminton-court-flooring`. That is the whole
+quota worth using — the sitemap handles the rest.
+
+**6. Come back in a week.** **Performance** will start showing the actual
+phrases the site is being shown for. After a month that report is a better
+guide to the next page worth writing than any guess made today.
+
+### Bing, while you are at it
+
+<https://www.bing.com/webmasters> takes ten minutes and can import everything
+straight from Search Console. Worth doing: a real share of Indian desktop
+search runs through Bing, and it feeds ChatGPT's browsing besides. Same
+sitemap URL. If it asks for a meta tag rather than importing, the variable is
+`NEXT_PUBLIC_BING_SITE_VERIFICATION`.
 
 ---
 
