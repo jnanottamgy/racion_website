@@ -72,20 +72,20 @@ export function Header() {
           : "border-b border-transparent"
       }`}
     >
-      {/* A little taller than the 4.5rem it was, because the logo is now a
-          stack — the portrait above the lockup — and not much more than that.
-          The portrait is matched to the lockup's height rather than set above
-          it: that is what keeps the pair reading as one mark rather than two
-          stacked things, and it keeps a fixed header from eating the viewport.
-          The bar steps down again on small screens. */}
-      <div className="container-x flex h-[4.75rem] items-center justify-between gap-8 lg:h-[5.5rem]">
+      {/* Back to the 4.5rem this bar was before the logo became a stack, which
+          is as small as it goes while the portrait still sits above the lockup:
+          two elements in the height of one, so both give up a little. The
+          wordmark is the thing paying for it — at 26px it is a shape you
+          recognise rather than text you read, which is the trade for keeping
+          the bar where it was. */}
+      <div className="container-x flex h-[4.5rem] items-center justify-between gap-8">
         <Logo
           variant="lockup"
-          height={30}
+          height={26}
           guru
-          guruScale={1.05}
-          guruClass="h-[26px] w-auto lg:h-[32px]"
-          markClass="h-[24px] w-auto lg:h-[30px]"
+          guruScale={1}
+          guruClass="h-[22px] w-auto lg:h-[26px]"
+          markClass="h-[22px] w-auto lg:h-[26px]"
         />
 
         {/* Nine links across a bar at 1024px is tight; the type steps down a

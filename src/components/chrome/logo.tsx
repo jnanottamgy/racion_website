@@ -70,7 +70,7 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={`inline-flex ${guru ? "flex-col items-center gap-1" : "items-center"} ${className}`}
+      className={`inline-flex ${guru ? "flex-col items-center gap-0.5" : "items-center"} ${className}`}
       aria-label={`${site.name} — home`}
     >
       {/* Both images are decorative: the link already carries the accessible
