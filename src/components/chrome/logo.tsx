@@ -8,14 +8,18 @@ import { site } from "@/lib/site";
  * without a raster fallback.
  */
 /**
- * `hand` is where the figure's raised hand tips the top edge of the artwork,
- * as a fraction of the asset's width — measured off the rendered SVG, not
- * eyeballed. The portrait is centred on it, so it reads as being held up
- * rather than parked on top of the logo.
+ * `head` is the centre of the figure's head, as a fraction of the asset's
+ * width — measured off the rendered SVG by scanning for the row where a second
+ * green run appears beside the raised arm, not eyeballed.
+ *
+ * The portrait sits over the head. The raised arm reaches higher than the head
+ * does and for a while the portrait sat on the hand instead, which put it a
+ * third of the way across the lockup and read as the figure holding something
+ * out to one side. Over the head it reads as what it is.
  */
 const VARIANTS = {
   /** Stacked lockup, as it appears in the brochure. For large placements. */
-  full: { src: "/brand/raceon-logo.svg", ratio: 104.5 / 80.8, hand: 0.4686 },
+  full: { src: "/brand/raceon-logo.svg", ratio: 104.5 / 80.8, head: 0.239 },
   /**
    * Horizontal lockup, rebuilt for the navigation bar. The stacked original
    * sets RACEON at 22% of the figure's height, which is fine under a print
@@ -23,9 +27,9 @@ const VARIANTS = {
    * moved alongside — the standard rebalance any identity gets when it has to
    * work in a horizontal slot.
    */
-  lockup: { src: "/brand/raceon-lockup.svg", ratio: 166.41 / 79.39, hand: 0.2942 },
+  lockup: { src: "/brand/raceon-lockup.svg", ratio: 166.41 / 79.39, head: 0.150 },
   /** Figure and orbit only. Favicons, tight spaces, loading states. */
-  mark: { src: "/brand/raceon-mark.svg", ratio: 53.1 / 79.4, hand: 0.9207 },
+  mark: { src: "/brand/raceon-mark.svg", ratio: 53.1 / 79.4, head: 0.470 },
 } as const;
 
 /**
@@ -75,17 +79,11 @@ export function Logo({
   guruPadClass?: string;
   /**
    * Override where the portrait is centred, as a fraction of the logo's width.
-   *
-   * The default is the measured hand. This exists because the measured centre
-   * and the point the portrait looks lifted *from* are not the same: the arm
-   * arrives at the hand from the lower left, so a portrait sitting exactly on
-   * the hand's centre of mass reads as balanced on the fingertips, and one
-   * nudged left of it reads as being raised. That is a judgement, so it is a
-   * number someone chose rather than one the measurement produced.
+   * The default is the measured head; this is for nudging by eye.
    */
   guruAnchor?: number;
 }) {
-  const { src, ratio, hand } = VARIANTS[variant];
+  const { src, ratio, head } = VARIANTS[variant];
   const guruHeight = Math.round(height * guruScale);
 
   const logo = (
@@ -121,7 +119,7 @@ export function Logo({
             width={Math.round(guruHeight * GURU.ratio)}
             height={guruHeight}
             className={`absolute top-0 -translate-x-1/2 ${guruClass ?? ""}`}
-            style={{ left: `${(guruAnchor ?? hand) * 100}%` }}
+            style={{ left: `${(guruAnchor ?? head) * 100}%` }}
             priority
           />
           {logo}

@@ -83,7 +83,6 @@ export function Header() {
           guru
           guruClass="h-[12px] w-auto lg:h-[14px]"
           guruPadClass="pt-[12px] lg:pt-[14px]"
-          guruAnchor={0.24}
           markClass="h-[26px] w-auto lg:h-[30px]"
         />
 

@@ -16,7 +16,6 @@ export function Footer() {
               guru
               guruScale={0.38}
               guruPadClass="pt-[20px]"
-              guruAnchor={0.383}
             />
             <p className="mt-7 max-w-[34ch] text-sm leading-relaxed text-bone-faint">
               {site.legalName}
