@@ -72,8 +72,21 @@ export function Header() {
           : "border-b border-transparent"
       }`}
     >
-      <div className="container-x flex h-[4.5rem] items-center justify-between gap-8">
-        <Logo variant="lockup" height={34} />
+      {/* Taller than a nav bar needs to be, because the logo is now a stack:
+          the portrait above the lockup. Squeezed into the old 4.5rem the
+          portrait came out around 24px and the wordmark under it stopped being
+          readable — both things the stack exists to show. The bar steps down on
+          small screens, where a fixed header costs a bigger share of the
+          viewport. */}
+      <div className="container-x flex h-[5.25rem] items-center justify-between gap-8 lg:h-[6.5rem]">
+        <Logo
+          variant="lockup"
+          height={32}
+          guru
+          guruScale={1.35}
+          guruClass="h-[34px] w-auto lg:h-[44px]"
+          markClass="h-[26px] w-auto lg:h-[32px]"
+        />
 
         {/* Nine links across a bar at 1024px is tight; the type steps down a
             notch and the gaps close until there is room for it at xl. */}

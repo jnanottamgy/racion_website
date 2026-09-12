@@ -83,7 +83,7 @@ export function PageShell({
         className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(ellipse_90%_60%_at_50%_-10%,var(--brand-violet-deep),transparent_70%)] opacity-60"
       />
       <main id="main" className="relative">
-        <header className="container-x border-b border-hairline pt-[9.5rem] pb-16">
+        <header className="container-x border-b border-hairline pt-[8.5rem] pb-16 lg:pt-[10.5rem]">
           <h1>
             <span className="label block">{eyebrow}</span>
             <span className="display mt-7 block max-w-[18ch] text-[length:var(--text-d1)] text-bone">
