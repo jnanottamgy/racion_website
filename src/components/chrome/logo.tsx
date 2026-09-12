@@ -7,9 +7,15 @@ import { site } from "@/lib/site";
  * pixel-accurate to the original at 10 KB, so it stays sharp at any size
  * without a raster fallback.
  */
+/**
+ * `hand` is where the figure's raised hand tips the top edge of the artwork,
+ * as a fraction of the asset's width — measured off the rendered SVG, not
+ * eyeballed. The portrait is centred on it, so it reads as being held up
+ * rather than parked on top of the logo.
+ */
 const VARIANTS = {
   /** Stacked lockup, as it appears in the brochure. For large placements. */
-  full: { src: "/brand/raceon-logo.svg", ratio: 104.5 / 80.8 },
+  full: { src: "/brand/raceon-logo.svg", ratio: 104.5 / 80.8, hand: 0.4686 },
   /**
    * Horizontal lockup, rebuilt for the navigation bar. The stacked original
    * sets RACEON at 22% of the figure's height, which is fine under a print
@@ -17,9 +23,9 @@ const VARIANTS = {
    * moved alongside — the standard rebalance any identity gets when it has to
    * work in a horizontal slot.
    */
-  lockup: { src: "/brand/raceon-lockup.svg", ratio: 166.41 / 79.39 },
+  lockup: { src: "/brand/raceon-lockup.svg", ratio: 166.41 / 79.39, hand: 0.2942 },
   /** Figure and orbit only. Favicons, tight spaces, loading states. */
-  mark: { src: "/brand/raceon-mark.svg", ratio: 53.1 / 79.4 },
+  mark: { src: "/brand/raceon-mark.svg", ratio: 53.1 / 79.4, hand: 0.9207 },
 } as const;
 
 /**
@@ -48,6 +54,7 @@ export function Logo({
   guruScale = 1.3,
   markClass,
   guruClass,
+  guruPadClass,
 }: {
   variant?: keyof typeof VARIANTS;
   className?: string;
@@ -63,37 +70,53 @@ export function Logo({
    */
   markClass?: string;
   guruClass?: string;
+  /** Top padding reserving the portrait's height. Match it to `guruClass`. */
+  guruPadClass?: string;
 }) {
-  const { src, ratio } = VARIANTS[variant];
+  const { src, ratio, hand } = VARIANTS[variant];
   const guruHeight = Math.round(height * guruScale);
+
+  const logo = (
+    <Image
+      src={src}
+      alt=""
+      width={Math.round(height * ratio)}
+      height={height}
+      className={markClass}
+      priority
+    />
+  );
 
   return (
     <Link
       href="/"
-      className={`inline-flex ${guru ? "flex-col items-center gap-0.5" : "items-center"} ${className}`}
+      className={`inline-flex items-center ${className}`}
       aria-label={`${site.name} — home`}
     >
       {/* Both images are decorative: the link already carries the accessible
           name, and a second copy of it here would have a screen reader read
           the company twice on every page. */}
-      {guru && (
-        <Image
-          src={GURU.src}
-          alt=""
-          width={Math.round(guruHeight * GURU.ratio)}
-          height={guruHeight}
-          className={guruClass}
-          priority
-        />
+      {guru ? (
+        // The portrait goes over the raised hand, not over the middle of the
+        // lockup. Reserved as padding on the box and then placed inside it, so
+        // it takes up its own height in the layout — absolutely positioned
+        // without the padding it would hang out of the header — while being
+        // free to sit off-centre, which centring in a flex column cannot do.
+        <span className={`relative block leading-none ${guruPadClass}`}>
+          <Image
+            src={GURU.src}
+            alt=""
+            width={Math.round(guruHeight * GURU.ratio)}
+            height={guruHeight}
+            className={`absolute top-0 -translate-x-1/2 ${guruClass ?? ""}`}
+            style={{ left: `${hand * 100}%` }}
+            priority
+          />
+          {logo}
+        </span>
+      ) : (
+        logo
       )}
-      <Image
-        src={src}
-        alt=""
-        width={Math.round(height * ratio)}
-        height={height}
-        className={markClass}
-        priority
-      />
     </Link>
   );
 }

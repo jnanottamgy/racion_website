@@ -72,20 +72,18 @@ export function Header() {
           : "border-b border-transparent"
       }`}
     >
-      {/* Back to the 4.5rem this bar was before the logo became a stack, which
-          is as small as it goes while the portrait still sits above the lockup:
-          two elements in the height of one, so both give up a little. The
-          wordmark is the thing paying for it — at 26px it is a shape you
-          recognise rather than text you read, which is the trade for keeping
-          the bar where it was. */}
+      {/* The bar keeps the 4.5rem it always had. The portrait is small and
+          sits over the figure's raised hand rather than squarely on top of the
+          lockup, so it costs the bar its own height and nothing else — the
+          wordmark goes back to the size it was before any of this. */}
       <div className="container-x flex h-[4.5rem] items-center justify-between gap-8">
         <Logo
           variant="lockup"
-          height={26}
+          height={30}
           guru
-          guruScale={1}
-          guruClass="h-[22px] w-auto lg:h-[26px]"
-          markClass="h-[22px] w-auto lg:h-[26px]"
+          guruClass="h-[16px] w-auto lg:h-[18px]"
+          guruPadClass="pt-[16px] lg:pt-[18px]"
+          markClass="h-[26px] w-auto lg:h-[30px]"
         />
 
         {/* Nine links across a bar at 1024px is tight; the type steps down a
