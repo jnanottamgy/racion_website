@@ -81,8 +81,9 @@ export function Header() {
           variant="lockup"
           height={30}
           guru
-          guruClass="h-[16px] w-auto lg:h-[18px]"
-          guruPadClass="pt-[16px] lg:pt-[18px]"
+          guruClass="h-[12px] w-auto lg:h-[14px]"
+          guruPadClass="pt-[12px] lg:pt-[14px]"
+          guruAnchor={0.24}
           markClass="h-[26px] w-auto lg:h-[30px]"
         />
 

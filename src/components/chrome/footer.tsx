@@ -11,7 +11,13 @@ export function Footer() {
       <div className="container-x py-20">
         <div className="grid gap-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1.1fr_1fr]">
           <div>
-            <Logo height={52} guru guruScale={0.5} guruPadClass="pt-[26px]" />
+            <Logo
+              height={52}
+              guru
+              guruScale={0.38}
+              guruPadClass="pt-[20px]"
+              guruAnchor={0.383}
+            />
             <p className="mt-7 max-w-[34ch] text-sm leading-relaxed text-bone-faint">
               {site.legalName}
             </p>

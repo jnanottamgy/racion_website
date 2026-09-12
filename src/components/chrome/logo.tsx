@@ -55,6 +55,7 @@ export function Logo({
   markClass,
   guruClass,
   guruPadClass,
+  guruAnchor,
 }: {
   variant?: keyof typeof VARIANTS;
   className?: string;
@@ -72,6 +73,17 @@ export function Logo({
   guruClass?: string;
   /** Top padding reserving the portrait's height. Match it to `guruClass`. */
   guruPadClass?: string;
+  /**
+   * Override where the portrait is centred, as a fraction of the logo's width.
+   *
+   * The default is the measured hand. This exists because the measured centre
+   * and the point the portrait looks lifted *from* are not the same: the arm
+   * arrives at the hand from the lower left, so a portrait sitting exactly on
+   * the hand's centre of mass reads as balanced on the fingertips, and one
+   * nudged left of it reads as being raised. That is a judgement, so it is a
+   * number someone chose rather than one the measurement produced.
+   */
+  guruAnchor?: number;
 }) {
   const { src, ratio, hand } = VARIANTS[variant];
   const guruHeight = Math.round(height * guruScale);
@@ -109,7 +121,7 @@ export function Logo({
             width={Math.round(guruHeight * GURU.ratio)}
             height={guruHeight}
             className={`absolute top-0 -translate-x-1/2 ${guruClass ?? ""}`}
-            style={{ left: `${hand * 100}%` }}
+            style={{ left: `${(guruAnchor ?? hand) * 100}%` }}
             priority
           />
           {logo}
